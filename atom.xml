@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://z0ekball.github.io</id>
     <title>z0ekball</title>
-    <updated>2021-06-09T16:45:17.496Z</updated>
+    <updated>2021-06-09T16:46:21.271Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://z0ekball.github.io"/>
     <link rel="self" href="https://z0ekball.github.io/atom.xml"/>
@@ -11,7 +11,7 @@
     <icon>https://z0ekball.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, z0ekball</rights>
     <entry>
-        <title type="html"><![CDATA[sqli-labs学习1~19]]></title>
+        <title type="html"><![CDATA[sqli-labs学习1~20]]></title>
         <id>https://z0ekball.github.io/post/sql-zhu-ru-ji-chu-zhi-shi/</id>
         <link href="https://z0ekball.github.io/post/sql-zhu-ru-ji-chu-zhi-shi/">
         </link>
