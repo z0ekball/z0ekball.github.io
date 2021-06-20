@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://z0ekball.github.io/favicon.ico?v=1624224285975">
+<link rel="shortcut icon" href="https://z0ekball.github.io/favicon.ico?v=1624224515584">
 <link rel="stylesheet" href="https://z0ekball.github.io/styles/main.css">
 
 
@@ -20,15 +20,14 @@
 
     <meta name="description" content="一些准备
 
+安装sqlmap
 命令行pip install requests 检查时候安装request或者需要更新，否则无法使用；
 加引号快捷键用不，用正则表达式进行替换
 
 (.*?):(.*)
 '$1':'$2'，
 
-sqlmap基础知识
-
-sqlmap..." />
+sqlmap基础知..." />
     <meta name="keywords" content="sqlmap,脚本,sql注入" />
   </head>
   <body>
@@ -38,7 +37,7 @@ sqlmap..." />
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://z0ekball.github.io">
-        <img src="https://z0ekball.github.io/images/avatar.png?v=1624224285975" class="site-logo">
+        <img src="https://z0ekball.github.io/images/avatar.png?v=1624224515584" class="site-logo">
         <h1 class="site-title">z0ekball</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -109,6 +108,7 @@ sqlmap..." />
             <div class="post-content" v-pre>
               <h2 id="一些准备">一些准备</h2>
 <ol>
+<li>安装sqlmap</li>
 <li>命令行pip install requests 检查时候安装request或者需要更新，否则无法使用；</li>
 <li>加引号快捷键用不，用正则表达式进行替换</li>
 </ol>
@@ -248,7 +248,8 @@ print(name)
 </code></pre>
 <figure data-type="image" tabindex="6"><img src="https://z0ekball.github.io/post-images/1624218772000.png" alt="" loading="lazy"></figure>
 <h3 id="脚本查询id2的用户密码">脚本：查询id=2的用户密码</h3>
-<pre><code class="language-python">import urllib.parse
+<pre><code class="language-python"># 复制粘贴修改body
+import urllib.parse
 import http.client
 
 #爆破字典
