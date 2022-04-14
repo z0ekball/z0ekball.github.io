@@ -159,59 +159,93 @@
         <article class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12 col-xs-offset-0">
             <figure class="animate-box">
                 
+                    <img src="https://z0ekball.github.io/post-images/dvwaxss.png" alt="DVWA练习(XSS)" class="img-responsive">
+                
             </figure>
             <span class="fh5co-meta animate-box">
                 
+                    <div class="tag-container">
+                        
+                            <a href="https://z0ekball.github.io/tag/zT5Cd8WkN/" class="tag">xss, </a>
+                        
+                    </div>
+                
             </span>
-            <h2 class="fh5co-article-title animate-box">python学习（1）</h2>
+            <h2 class="fh5co-article-title animate-box">DVWA练习(XSS)</h2>
             <ol class="breadcrumb fh5co-meta fh5co-date animate-box" style="margin-bottom:0; background-color:#f8f9fa">
-                <li>2021-09-16</li>
-                <li>98字</li>
-                <li>1 min read</li>
+                <li>2021-11-15</li>
+                <li>361字</li>
+                <li>2 min read</li>
             </ol>
 
             <div class="col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-left content-article">
                 <div class="row">
                     <div class="col-md-12 animate-box post-content">
-                        <p> <p>#输入输出<br>
-###print()</p>
-<pre><code>print(56)
-print('asdaswd','sdsa','wasd')
-</code></pre>
-<p>###open():输出到文件</p>
-<pre><code>fp=open('D:/t.txt','a')
-print('hello',file=fp)
-</code></pre>
-<p>###input():输入函数</p>
-<pre><code>a=input()
-input('提示内容')
-</code></pre>
-<p>#转义字符</p>
-<pre><code>反斜：\\
-单引：\'
-双引：\&quot;
-换行：\n
-回车：\r
-制表：\t
-退格：\b
-</code></pre>
-<p>#进制表示</p>
-<pre><code>二进制：0b
-八进制：0o
-十六进制：0x
-</code></pre>
-<p>#数据类型转换</p>
-<pre><code>转字符串：str()
-转整数：int()
-转浮点：float()
-</code></pre>
-<h1 id=""></h1>
+                        <p> <h2 id="xssreflected-low">XSS(Reflected)-Low</h2>
+<p>查看源码，对name参数没有任何过滤和检查<br>
+​                         <img src="https://z0ekball.github.io/post-images/image-20220415014029290.png" alt="image-20220415014029290" loading="lazy"></p>
+<p>输入一段JavaScript代码：<code>&lt;script&gt;alert('xss')&lt;/script&gt;</code>，返回一个弹窗，攻击成功</p>
+<figure data-type="image" tabindex="1"><img src="https://z0ekball.github.io/post-images/image-20220415014034811.png" alt="image-20220415014034811" loading="lazy"></figure>
+<p>获取cookie:<code>&lt;script&gt;alert(document.cookie)&lt;/script&gt;</code></p>
+<figure data-type="image" tabindex="2"><img src="https://z0ekball.github.io/post-images/image-20220415014038390.png" alt="image-20220415014038390" loading="lazy"></figure>
+<h2 id="xssreflected-medium">XSS(Reflected)- Medium</h2>
+<p>查看源码，发现存在对script的简单过滤，匹配<code>&lt;script&gt;</code>换成null，只执行一次</p>
+<figure data-type="image" tabindex="3"><img src="https://z0ekball.github.io/post-images/image-20220415014047015.png" alt="image-20220415014047015" loading="lazy"></figure>
+<p>采用双写绕过，输入<code>&lt;scr&lt;script&gt;ipt&gt;alert('xss')&lt;/script&gt;</code></p>
+<figure data-type="image" tabindex="4"><img src="https://z0ekball.github.io/post-images/image-20220415014050608.png" alt="image-20220415014050608" loading="lazy"></figure>
+<h2 id="xssreflected-high">XSS(Reflected)-High</h2>
+<p>查看源码，采用正则表达式过滤，故无法使用大小写绕过和双写绕过</p>
+<figure data-type="image" tabindex="5"><img src="https://z0ekball.github.io/post-images/image-20220415014058357.png" alt="image-20220415014058357" loading="lazy"></figure>
+<p>换一种标签，输入：<code>&lt;img src=&quot;&quot; onerror=&quot;alert('xss')&quot;&gt;</code>，攻击成功</p>
+<figure data-type="image" tabindex="6"><img src="https://z0ekball.github.io/post-images/image-20220415014101999.png" alt="image-20220415014101999" loading="lazy"></figure>
+<h2 id="xssstored-low">XSS(Stored)-Low</h2>
+<p>输入<code>&lt;script&gt;alert('xss')&lt;/script&gt;</code>，有弹窗</p>
+<figure data-type="image" tabindex="7"><img src="https://z0ekball.github.io/post-images/image-20220415014119504.png" alt="image-20220415014107878" loading="lazy"></figure>
+<p>输入<code>&lt;a href='' onclick=alert('xss')&gt;click&lt;/a&gt;</code>，设计一个按钮打开弹窗</p>
+<figure data-type="image" tabindex="8"><img src="https://z0ekball.github.io/post-images/image-20220415014125565.png" alt="image-20220415014125565" loading="lazy"></figure>
+<p>输入<code>&lt;a href=http://www.bilibili.com&gt;click&lt;/a&gt;</code>，按下按钮打开bilibili网页</p>
+<figure data-type="image" tabindex="9"><img src="https://z0ekball.github.io/post-images/image-20220415014129626.png" alt="image-20220415014129626" loading="lazy"></figure>
+<p>输入<code>&lt;script&gt;alert(document.cookie)&lt;/script&gt;</code>，返回页面cookie</p>
+<figure data-type="image" tabindex="10"><img src="https://z0ekball.github.io/post-images/image-20220415014136222.png" alt="image-20220415014136222" loading="lazy"></figure>
+<h2 id="xssstored-medium">XSS(Stored)-Medium</h2>
+<p>查看源码，message参数把需要转义的字符进行转义防止了xss攻击</p>
+<figure data-type="image" tabindex="11"><img src="https://z0ekball.github.io/post-images/image-20220415014216650.png" alt="image-20220415014216650" loading="lazy"></figure>
+<p>转义结果</p>
+<figure data-type="image" tabindex="12"><img src="https://z0ekball.github.io/post-images/image-20220415014144308.png" alt="image-20220415014144308" loading="lazy"></figure>
+<p>name参数对<code>&lt;script&gt;</code>有简单过滤，替换第一个<code>&lt;script&gt;</code>，且限制输入10个字符</p>
+<figure data-type="image" tabindex="13"><img src="https://z0ekball.github.io/post-images/image-20220415014226987.png" alt="image-20220415014226987" loading="lazy"></figure>
+<p>抓包，进行简单绕过</p>
+<figure data-type="image" tabindex="14"><img src="https://z0ekball.github.io/post-images/image-20220415014233230.png" alt="image-20220415014233230" loading="lazy"></figure>
+<p>编码成url</p>
+<figure data-type="image" tabindex="15"><img src="https://z0ekball.github.io/post-images/image-20220415014238817.png" alt="image-20220415014238817" loading="lazy"></figure>
+<p>成功执行</p>
+<figure data-type="image" tabindex="16"><img src="https://z0ekball.github.io/post-images/image-20220415014242586.png" alt="image-20220415014242586" loading="lazy"></figure>
+<p>获取cookie</p>
+<figure data-type="image" tabindex="17"><img src="https://z0ekball.github.io/post-images/image-20220415014249018.png" alt="image-20220415014249018" loading="lazy"></figure>
+<figure data-type="image" tabindex="18"><img src="https://z0ekball.github.io/post-images/image-20220415014317151.png" alt="image-20220415014258608" loading="lazy"></figure>
+<h2 id="xssstored-high">XSS(Stored)-High</h2>
+<p>查看源码，在medium的基础上对script进行严格过滤</p>
+<figure data-type="image" tabindex="19"><img src="https://z0ekball.github.io/post-images/image-20220415014343501.png" alt="image-20220415014343501" loading="lazy"></figure>
+<p>不使用script即可，输入<code>&lt;a href='' onclick=alert('xss')&gt;click&lt;/a&gt;</code></p>
+<figure data-type="image" tabindex="20"><img src="https://z0ekball.github.io/post-images/image-20220415014350676.png" alt="image-20220415014350676" loading="lazy"></figure>
+<figure data-type="image" tabindex="21"><img src="https://z0ekball.github.io/post-images/image-20220415014357200.png" alt="image-20220415014357200" loading="lazy"></figure>
+<p>攻击成功</p>
+<figure data-type="image" tabindex="22"><img src="https://z0ekball.github.io/post-images/image-20220415014402390.png" alt="image-20220415014402390" loading="lazy"></figure>
  </p>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-12 animate-box">
+                        
+                            <div class="next-post">
+                                <div class="next">下一篇</div>
+                                <a href="https://z0ekball.github.io/post/dvwa-lian-xi-sql-injection/">
+                                    <h3 class="post-title">
+                                        DVWA练习(SQL Injection)
+                                    </h3>
+                                </a>
+                            </div>
                         
                     </div>
                 </div>
@@ -243,7 +277,16 @@ input('提示内容')
 
 <div class="post-toc animated fadeInRight hidden-xs hidden-sm" style="display: none;">
     <ul class="markdownIt-TOC">
-<li></li>
+<li>
+<ul>
+<li><a href="#xssreflected-low">XSS(Reflected)-Low</a></li>
+<li><a href="#xssreflected-medium">XSS(Reflected)- Medium</a></li>
+<li><a href="#xssreflected-high">XSS(Reflected)-High</a></li>
+<li><a href="#xssstored-low">XSS(Stored)-Low</a></li>
+<li><a href="#xssstored-medium">XSS(Stored)-Medium</a></li>
+<li><a href="#xssstored-high">XSS(Stored)-High</a></li>
+</ul>
+</li>
 </ul>
 
 </div>

