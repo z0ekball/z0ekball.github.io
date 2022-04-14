@@ -2,14 +2,55 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://z0ekball.github.io</id>
     <title>z0ekball</title>
-    <updated>2021-06-21T21:05:12.040Z</updated>
+    <updated>2022-04-14T08:57:31.324Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://z0ekball.github.io"/>
     <link rel="self" href="https://z0ekball.github.io/atom.xml"/>
     <subtitle>温故而知新</subtitle>
     <logo>https://z0ekball.github.io/images/avatar.png</logo>
     <icon>https://z0ekball.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2021, z0ekball</rights>
+    <rights>All rights reserved 2022, z0ekball</rights>
+    <entry>
+        <title type="html"><![CDATA[python学习（1）]]></title>
+        <id>https://z0ekball.github.io/post/python-xue-xi-1/</id>
+        <link href="https://z0ekball.github.io/post/python-xue-xi-1/">
+        </link>
+        <updated>2021-09-16T00:38:56.000Z</updated>
+        <content type="html"><![CDATA[<p>#输入输出<br>
+###print()</p>
+<pre><code>print(56)
+print('asdaswd','sdsa','wasd')
+</code></pre>
+<p>###open():输出到文件</p>
+<pre><code>fp=open('D:/t.txt','a')
+print('hello',file=fp)
+</code></pre>
+<p>###input():输入函数</p>
+<pre><code>a=input()
+input('提示内容')
+</code></pre>
+<p>#转义字符</p>
+<pre><code>反斜：\\
+单引：\'
+双引：\&quot;
+换行：\n
+回车：\r
+制表：\t
+退格：\b
+</code></pre>
+<p>#进制表示</p>
+<pre><code>二进制：0b
+八进制：0o
+十六进制：0x
+</code></pre>
+<p>#数据类型转换</p>
+<pre><code>转字符串：str()
+转整数：int()
+转浮点：float()
+</code></pre>
+<h1 id=""></h1>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[sqli-labs(11~20)脚本、sqlmap学习]]></title>
         <id>https://z0ekball.github.io/post/sqli-labs11~20jiao-ben-sqlmap-xue-xi/</id>
@@ -637,7 +678,7 @@ User-Agent:' or updatexml(1,concat(0x7e,(database())),1),'','')#
         <link href="https://z0ekball.github.io/post/a-sa-da-d/">
         </link>
         <updated>2021-03-08T13:13:45.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="总所周知猪的睫毛很长">总所周知，猪的睫毛很长</h2>
+        <content type="html"><![CDATA[<h2 id="众所周知猪的睫毛很长">众所周知，猪的睫毛很长</h2>
 <p>zyy也不例外</p>
 <h2 id="猪猪不爱干净">猪猪不爱干净</h2>
 <p>zyy也是个不爱洗澡的邋遢怪</p>
