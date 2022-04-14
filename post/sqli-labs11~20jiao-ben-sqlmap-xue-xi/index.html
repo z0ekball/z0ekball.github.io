@@ -1,109 +1,189 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" >
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<title>sqli-labs(11~20)脚本、sqlmap学习 | z0ekball</title>
+<title>z0ekball</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="description" content="温故而知新"/>
+<meta name="keywords" content="温故而知新"/>
 
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://z0ekball.github.io/favicon.ico?v=1649947759498">
+<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+<link rel="shortcut icon" href="https://z0ekball.github.io/favicon.ico">
+
 <link rel="stylesheet" href="https://z0ekball.github.io/styles/main.css">
 
+<!-- Modernizr JS -->
+<script src="https://z0ekball.github.io/media/scripts/modernizr-2.6.2.min.js"></script>
+<!-- FOR IE9 below -->
+<!--[if lt IE 9]>
+<scripts src="https://z0ekball.github.io/media/scripts/respond.min.js"></scripts>
+<![endif]-->
+
+<!-- Comment -->
 
 
-<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<!-- katex -->
+<!--<link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet">-->
+
+<link href="https://cdn.bootcss.com/font-awesome/5.11.2/css/all.min.css" rel="stylesheet">
 
 
 
-    <meta name="description" content="sqlmap知识补充
--r 表示加载一个文件
--p 指定参数
-
-less-11(普普通通的post)
-上传post文件，得到参数
-sqlmap.py -r &quot;C:\Users\丷木丷\Desktop\less-11.txt&quo..." />
-    <meta name="keywords" content="sqlmap,脚本,sql注入" />
-  </head>
-  <body>
-    <div id="app" class="main">
-
-      <div class="sidebar" :class="{ 'full-height': menuVisible }">
-  <div class="top-container" data-aos="fade-right">
-    <div class="top-header-container">
-      <a class="site-title-container" href="https://z0ekball.github.io">
-        <img src="https://z0ekball.github.io/images/avatar.png?v=1649947759498" class="site-logo">
-        <h1 class="site-title">z0ekball</h1>
-      </a>
-      <div class="menu-btn" @click="menuVisible = !menuVisible">
-        <div class="line"></div>
-      </div>
+</head>
+<body>
+    <div id="fh5co-offcanvas">
+    <a href="#!" class="fh5co-close-offcanvas js-fh5co-close-offcanvas">
+        <span><i class="icon-cross3"></i> <span>Close</span></span>
+    </a>
+    <div class="fh5co-bio">
+        <figure>
+            <img src="https://z0ekball.github.io/images/avatar.png" alt="z0ekball"
+                 class="img-responsive">
+        </figure>
+        <a href="https://z0ekball.github.io/post/about/"><h3 class="heading">ABOUT ME</h3></a>
+        <h2>z0ekball</h2>
+        <p>温故而知新</p>
+        <ul class="fh5co-social">
+            
+                <li>
+                    
+                </li>
+            
+                <li>
+                    
+                </li>
+            
+                <li>
+                    
+                </li>
+            
+                <li>
+                    
+                </li>
+            
+                <li>
+                    
+                </li>
+            
+        </ul>
     </div>
-    <div>
-      
-        
-          <a href="/" class="site-nav">
-            首页
-          </a>
-        
-      
-        
-          <a href="/archives" class="site-nav">
-            归档
-          </a>
-        
-      
-        
-          <a href="/tags" class="site-nav">
-            标签
-          </a>
-        
-      
-        
-          <a href="/post/about" class="site-nav">
-            关于
-          </a>
-        
-      
+
+    <div class="fh5co-menu">
+
+        <!-- 标签 -->
+        <div class="fh5co-box">
+            <a href="https://z0ekball.github.io/tags/"><h3 class="heading">👉标签</h3></a>
+            <ul>
+                
+                    <li><a href="https://z0ekball.github.io/tag/Wdr9TG9nw/">CTF</a></li>
+                
+                    <li><a href="https://z0ekball.github.io/tag/XU2qz0752/">WriteUp</a></li>
+                
+                    <li><a href="https://z0ekball.github.io/tag/_3AKbRpvm/">文件包含</a></li>
+                
+                    <li><a href="https://z0ekball.github.io/tag/MNo87J4Xuo/">文件上传</a></li>
+                
+                    <li><a href="https://z0ekball.github.io/tag/CholFiCiP/">sqlmap</a></li>
+                
+                    <li><a href="https://z0ekball.github.io/tag/04IxTMI4I/">脚本</a></li>
+                
+                    <li><a href="https://z0ekball.github.io/tag/Xnf6eEgg-/">sql注入</a></li>
+                
+            </ul>
+        </div>
     </div>
-  </div>
-  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
-    <div class="social-container">
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-    </div>
-    <div class="site-description">
-      温故而知新
-    </div>
-    <div class="site-footer">
-      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://z0ekball.github.io/atom.xml" target="_blank">RSS</a>
-    </div>
-  </div>
 </div>
 
+<header id="fh5co-header">
+    <div class="container-fluid">
+        <div class="row">
+            <a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle"><i></i></a>
+            <ul class="fh5co-social">
+                
+                    <li>
+                        <a href="/"
+                        
+                        >
+                            首页
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/archives"
+                        
+                        >
+                            归档
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/tags"
+                        
+                        >
+                            标签
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/post/about"
+                        
+                        >
+                            关于
+                        </a>
+                    </li>
+                
+            </ul>
+            <div class="col-lg-12 col-md-12 text-center">
+                <h1 id="fh5co-logo">
+                    <a href="https://z0ekball.github.io">z0ekball </a>
+                </h1>
+            </div>
+        </div>
+    </div>
+</header>
 
-      <div class="main-container">
-        <div class="content-container" data-aos="fade-up">
-          <div class="post-detail">
-            <h2 class="post-title">sqli-labs(11~20)脚本、sqlmap学习</h2>
-            <div class="post-date">2021-06-18</div>
-            
-              <div class="feature-container" style="background-image: url('https://z0ekball.github.io/post-images/sqli-labs11~20jiao-ben-sqlmap-xue-xi.webp')">
-              </div>
-            
-            <div class="post-content" v-pre>
-              <h1 id="sqlmap知识补充">sqlmap知识补充</h1>
+
+    <!--  <a href="#" class="fh5co-post-prev"><span>👈 Prev</span></a>-->
+    <!--  <a href="#" class="fh5co-post-next"><span>Next 👉</span></a>-->
+
+    <!-- 等gridea出自定义页面功能再优化一下 -->
+    
+        <div class="container-fluid">
+    <div class="row fh5co-post-entry single-entry">
+        <article class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12 col-xs-offset-0">
+            <figure class="animate-box">
+                
+                    <img src="https://z0ekball.github.io/post-images/sqli-labs11~20jiao-ben-sqlmap-xue-xi.webp" alt="sqli-labs(11~20)脚本、sqlmap学习" class="img-responsive">
+                
+            </figure>
+            <span class="fh5co-meta animate-box">
+                
+                    <div class="tag-container">
+                        
+                            <a href="https://z0ekball.github.io/tag/CholFiCiP/" class="tag">sqlmap, </a>
+                        
+                            <a href="https://z0ekball.github.io/tag/04IxTMI4I/" class="tag">脚本, </a>
+                        
+                            <a href="https://z0ekball.github.io/tag/Xnf6eEgg-/" class="tag">sql注入, </a>
+                        
+                    </div>
+                
+            </span>
+            <h2 class="fh5co-article-title animate-box">sqli-labs(11~20)脚本、sqlmap学习</h2>
+            <ol class="breadcrumb fh5co-meta fh5co-date animate-box" style="margin-bottom:0; background-color:#f8f9fa">
+                <li>2021-06-18</li>
+                <li>1091字</li>
+                <li>6 min read</li>
+            </ol>
+
+            <div class="col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-left content-article">
+                <div class="row">
+                    <div class="col-md-12 animate-box post-content">
+                        <p> <h1 id="sqlmap知识补充">sqlmap知识补充</h1>
 <pre><code>-r 表示加载一个文件
 -p 指定参数
 </code></pre>
@@ -302,62 +382,170 @@ print(t)
 </code></pre>
 <h3 id="结果整不出来应该是版本问题暂时未解决">结果：整不出来，应该是版本问题，暂时未解决</h3>
 <figure data-type="image" tabindex="12"><img src="https://z0ekball.github.io/post-images/1624308452186.png" alt="" loading="lazy"></figure>
+ </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 animate-box">
+                        
+                            <div class="next-post">
+                                <div class="next">下一篇</div>
+                                <a href="https://z0ekball.github.io/post/sqli-jiao-ben/">
+                                    <h3 class="post-title">
+                                        sqli-labs(1~10)脚本、sqlmap学习
+                                    </h3>
+                                </a>
+                            </div>
+                        
+                    </div>
+                </div>
+
+                <div class="row">
+    <div class="col-md-12 animate-box">
+        
+    </div>
+</div>
 
             </div>
-            
-              <div class="tag-container">
-                
-                  <a href="https://z0ekball.github.io/tag/CholFiCiP/" class="tag">
-                    sqlmap
-                  </a>
-                
-                  <a href="https://z0ekball.github.io/tag/04IxTMI4I/" class="tag">
-                    脚本
-                  </a>
-                
-                  <a href="https://z0ekball.github.io/tag/Xnf6eEgg-/" class="tag">
-                    sql注入
-                  </a>
-                
-              </div>
-            
-            
-              <div class="next-post">
-                <div class="next">下一篇</div>
-                <a href="https://z0ekball.github.io/post/sqli-jiao-ben/">
-                  <h3 class="post-title">
-                    sqli-labs(1~10)脚本、sqlmap学习
-                  </h3>
-                </a>
-              </div>
-            
 
-            
-
-          </div>
-
-        </div>
-      </div>
+        </article>
     </div>
+</div>
 
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    
+
+    <!-- 返回顶部 -->
+    <div class="back-to-top">
+    
+        <a href="#!" id="tool-toc" class="hidden-xs hidden-sm">
+            <i class="fa fa-map"></i>
+        </a>
+        <br>
+    
+    <a href="#top" class="hidden-xs hidden-sm"><i class="fa fa-paper-plane"></i></a>
+</div>
+
+<div class="post-toc animated fadeInRight hidden-xs hidden-sm" style="display: none;">
+    <ul class="markdownIt-TOC">
+<li><a href="#sqlmap%E7%9F%A5%E8%AF%86%E8%A1%A5%E5%85%85">sqlmap知识补充</a></li>
+<li><a href="#less-11%E6%99%AE%E6%99%AE%E9%80%9A%E9%80%9A%E7%9A%84post">less-11(普普通通的post)</a><br>
+*
+<ul>
+<li><a href="#%E4%B8%8A%E4%BC%A0post%E6%96%87%E4%BB%B6%E5%BE%97%E5%88%B0%E5%8F%82%E6%95%B0">上传post文件，得到参数</a></li>
+<li><a href="#%E6%A0%B9%E6%8D%AE%E5%8F%82%E6%95%B0%E5%BE%97%E5%88%B0%E5%BD%93%E5%89%8D%E6%95%B0%E6%8D%AE%E5%BA%93">根据参数，得到当前数据库</a></li>
+<li><a href="#%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E5%AF%86%E7%A0%81">获取用户名和密码</a></li>
+<li><a href="#%E8%84%9A%E6%9C%AC%E6%9F%A5%E8%AF%A2%E5%BD%93%E5%89%8D%E6%95%B0%E6%8D%AE%E5%BA%93%E5%90%8D%E7%A7%B0%E9%87%87%E7%94%A8%E7%9B%B2%E6%B3%A8%E5%BD%A2%E5%BC%8F">脚本：查询当前数据库名称(采用盲注形式)</a></li>
+<li><a href="#%E7%BB%93%E6%9E%9C">结果</a></li>
+</ul>
+</li>
+<li><a href="#less-12">less-12</a></li>
+<li><a href="#less-13%E6%97%B6%E9%97%B4%E7%9B%B2%E6%B3%A8">less-13(时间盲注)</a><br>
+*
+<ul>
+<li><a href="#%E8%8E%B7%E5%8F%96id%E5%92%8C%E7%94%A8%E6%88%B7%E5%90%8D">获取id和用户名</a></li>
+<li><a href="#%E8%84%9A%E6%9C%AC%E8%8E%B7%E5%8F%96id3%E7%9A%84%E7%94%A8%E6%88%B7%E5%90%8D%E5%8F%82%E8%80%83%E6%97%B6%E9%97%B4%E7%9B%B2%E6%B3%A8">脚本：获取id=3的用户名，参考时间盲注</a></li>
+<li><a href="#%E7%BB%93%E6%9E%9C-2">结果</a></li>
+</ul>
+</li>
+<li><a href="#less-14">less-14</a><br>
+*
+<ul>
+<li><a href="#%E8%84%9A%E6%9C%AC%E8%8E%B7%E5%8F%96%E5%BA%93">脚本：获取库</a></li>
+<li><a href="#%E7%BB%93%E6%9E%9C-3">结果</a></li>
+</ul>
+</li>
+<li><a href="#less-15%E5%AF%86%E7%A0%81%E6%B3%A8%E5%85%A5%E7%82%B9">less-15(密码注入点)</a><br>
+*
+<ul>
+<li><a href="#%E8%84%9A%E6%9C%AC%E8%8E%B7%E5%8F%96%E5%BA%93-2">脚本：获取库</a></li>
+<li><a href="#%E7%BB%93%E6%9E%9C-4">结果</a></li>
+</ul>
+</li>
+<li><a href="#less-16">less-16</a></li>
+<li><a href="#less-17updatexml%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5">less-17(updatexml报错注入)</a><br>
+*
+<ul>
+<li><a href="#%E8%84%9A%E6%9C%AC%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE%E5%BA%93">脚本：查询数据库</a></li>
+<li><a href="#%E7%BB%93%E6%9E%9C%E5%9C%A8%E6%8A%A5%E9%94%99%E4%BF%A1%E6%81%AF%E4%B8%AD%E5%8F%AF%E8%A7%81%E5%BA%93">结果：在报错信息中可见库</a></li>
+</ul>
+</li>
+<li><a href="#less-18user-agent%E6%B3%A8%E5%85%A5">less-18(user-agent注入)</a><br>
+*
+<ul>
+<li><a href="#%E8%84%9A%E6%9C%ACpost%E8%AF%B7%E6%B1%82%E4%BF%AE%E6%94%B9%E8%AF%B7%E6%B1%82%E5%A4%B4%E7%9A%84user-agent-bibi%E8%B5%96%E8%B5%96%E8%BD%AC%E4%B9%89%E6%94%B9%E7%9A%84%E5%BF%83%E6%80%81%E5%B4%A9%E4%BA%86">脚本：post请求修改请求头的user-agent    (bibi赖赖：转义改的心态崩了= =)</a></li>
+<li><a href="#%E7%BB%93%E6%9E%9C-5">结果</a></li>
+</ul>
+</li>
+<li><a href="#less-19referer%E6%B3%A8%E5%85%A5">less-19(referer注入)</a><br>
+*
+<ul>
+<li><a href="#%E8%84%9A%E6%9C%AC%E8%B7%9F18%E4%B8%80%E6%A0%B7%E6%94%B9%E6%88%90referer%E5%B0%B1%E8%A1%8C%E5%90%8C%E6%A0%B7%E9%9C%80%E8%A6%81%E8%BD%AC%E4%B9%89">脚本：跟18一样，改成referer就行，同样需要转义</a></li>
+<li><a href="#%E7%BB%93%E6%9E%9C-6">结果</a></li>
+</ul>
+</li>
+<li><a href="#less-20cookie%E6%B3%A8%E5%85%A5">less-20(cookie注入)</a><br>
+*
+<ul>
+<li><a href="#%E8%84%9A%E6%9C%AC">脚本</a></li>
+<li><a href="#%E7%BB%93%E6%9E%9C%E6%95%B4%E4%B8%8D%E5%87%BA%E6%9D%A5%E5%BA%94%E8%AF%A5%E6%98%AF%E7%89%88%E6%9C%AC%E9%97%AE%E9%A2%98%E6%9A%82%E6%97%B6%E6%9C%AA%E8%A7%A3%E5%86%B3">结果：整不出来，应该是版本问题，暂时未解决</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+
+
+    
+<footer id="fh5co-footer">
+  <p>Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a></p>
+</footer>
+
+
+    <!-- jQuery -->
+<script src="https://z0ekball.github.io/media/scripts/jquery.min.js"></script>
+<!-- img lazy load -->
+<script src="https://z0ekball.github.io/media/scripts/jquery.lazyload.min.js"></script>
+<!-- jQuery Easing -->
+<script src="https://z0ekball.github.io/media/scripts/jquery.easing.1.3.js"></script>
+<!-- Bootstrap -->
+<script src="https://z0ekball.github.io/media/scripts/bootstrap.min.js"></script>
+<!-- Waypoints -->
+<script src="https://z0ekball.github.io/media/scripts/jquery.waypoints.min.js"></script>
+<!-- Main JS -->
+<script src="https://z0ekball.github.io/media/scripts/main.js"></script>
+<!-- Md5 Min JS -->
+<script src="https://z0ekball.github.io/media/scripts/md5.min.js"></script>
+<!-- katex -->
+<!--<script src="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.js"></script>-->
+<!-- highlight -->
+<script src="https://cdn.bootcss.com/highlight.js/9.15.8/highlight.min.js"></script>
+
+
 <script type="application/javascript">
+    // 代码高亮
+    hljs.initHighlightingOnLoad();
 
-AOS.init();
+    // img 懒加载
+    $(function () {
+        $("img.lazy").lazyload({
+            effect: "fadeIn",  // 懒加载动画
+            threshold: 180  // 在图片距离屏幕180px时提前载入
+        });
+        // tooltip
+        $('[data-toggle="tooltip"]').tooltip();
 
-var app = new Vue({
-  el: '#app',
-  data: {
-    menuVisible: false,
-  },
-})
+        // 目录
+        $('#tool-toc').click(function () {
+            $('.post-toc').toggle();
+        });
+    });
 
+    
 </script>
 
 
 
 
-
-
-  </body>
+</body>
 </html>

@@ -1,110 +1,185 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" >
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<title>文件上传 | z0ekball</title>
+<title>z0ekball</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="description" content="温故而知新"/>
+<meta name="keywords" content="温故而知新"/>
 
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://z0ekball.github.io/favicon.ico?v=1649947759498">
+<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+<link rel="shortcut icon" href="https://z0ekball.github.io/favicon.ico">
+
 <link rel="stylesheet" href="https://z0ekball.github.io/styles/main.css">
 
+<!-- Modernizr JS -->
+<script src="https://z0ekball.github.io/media/scripts/modernizr-2.6.2.min.js"></script>
+<!-- FOR IE9 below -->
+<!--[if lt IE 9]>
+<scripts src="https://z0ekball.github.io/media/scripts/respond.min.js"></scripts>
+<![endif]-->
+
+<!-- Comment -->
 
 
-<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<!-- katex -->
+<!--<link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet">-->
+
+<link href="https://cdn.bootcss.com/font-awesome/5.11.2/css/all.min.css" rel="stylesheet">
 
 
 
-    <meta name="description" content="文件上传漏洞
-1.无验证
-也就是前端和后端都不过滤上传的文件，故只需传入含一句话木马
-&lt;?php @eval($_POST['pass']);?&gt;
-
-的php文件，再用菜刀或者蚁剑连接即可。
-2.js前端验证
-顾名思义，就是只在..." />
-    <meta name="keywords" content="文件上传" />
-  </head>
-  <body>
-    <div id="app" class="main">
-
-      <div class="sidebar" :class="{ 'full-height': menuVisible }">
-  <div class="top-container" data-aos="fade-right">
-    <div class="top-header-container">
-      <a class="site-title-container" href="https://z0ekball.github.io">
-        <img src="https://z0ekball.github.io/images/avatar.png?v=1649947759498" class="site-logo">
-        <h1 class="site-title">z0ekball</h1>
-      </a>
-      <div class="menu-btn" @click="menuVisible = !menuVisible">
-        <div class="line"></div>
-      </div>
+</head>
+<body>
+    <div id="fh5co-offcanvas">
+    <a href="#!" class="fh5co-close-offcanvas js-fh5co-close-offcanvas">
+        <span><i class="icon-cross3"></i> <span>Close</span></span>
+    </a>
+    <div class="fh5co-bio">
+        <figure>
+            <img src="https://z0ekball.github.io/images/avatar.png" alt="z0ekball"
+                 class="img-responsive">
+        </figure>
+        <a href="https://z0ekball.github.io/post/about/"><h3 class="heading">ABOUT ME</h3></a>
+        <h2>z0ekball</h2>
+        <p>温故而知新</p>
+        <ul class="fh5co-social">
+            
+                <li>
+                    
+                </li>
+            
+                <li>
+                    
+                </li>
+            
+                <li>
+                    
+                </li>
+            
+                <li>
+                    
+                </li>
+            
+                <li>
+                    
+                </li>
+            
+        </ul>
     </div>
-    <div>
-      
-        
-          <a href="/" class="site-nav">
-            首页
-          </a>
-        
-      
-        
-          <a href="/archives" class="site-nav">
-            归档
-          </a>
-        
-      
-        
-          <a href="/tags" class="site-nav">
-            标签
-          </a>
-        
-      
-        
-          <a href="/post/about" class="site-nav">
-            关于
-          </a>
-        
-      
+
+    <div class="fh5co-menu">
+
+        <!-- 标签 -->
+        <div class="fh5co-box">
+            <a href="https://z0ekball.github.io/tags/"><h3 class="heading">👉标签</h3></a>
+            <ul>
+                
+                    <li><a href="https://z0ekball.github.io/tag/Wdr9TG9nw/">CTF</a></li>
+                
+                    <li><a href="https://z0ekball.github.io/tag/XU2qz0752/">WriteUp</a></li>
+                
+                    <li><a href="https://z0ekball.github.io/tag/_3AKbRpvm/">文件包含</a></li>
+                
+                    <li><a href="https://z0ekball.github.io/tag/MNo87J4Xuo/">文件上传</a></li>
+                
+                    <li><a href="https://z0ekball.github.io/tag/CholFiCiP/">sqlmap</a></li>
+                
+                    <li><a href="https://z0ekball.github.io/tag/04IxTMI4I/">脚本</a></li>
+                
+                    <li><a href="https://z0ekball.github.io/tag/Xnf6eEgg-/">sql注入</a></li>
+                
+            </ul>
+        </div>
     </div>
-  </div>
-  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
-    <div class="social-container">
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-    </div>
-    <div class="site-description">
-      温故而知新
-    </div>
-    <div class="site-footer">
-      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://z0ekball.github.io/atom.xml" target="_blank">RSS</a>
-    </div>
-  </div>
 </div>
 
+<header id="fh5co-header">
+    <div class="container-fluid">
+        <div class="row">
+            <a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle"><i></i></a>
+            <ul class="fh5co-social">
+                
+                    <li>
+                        <a href="/"
+                        
+                        >
+                            首页
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/archives"
+                        
+                        >
+                            归档
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/tags"
+                        
+                        >
+                            标签
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/post/about"
+                        
+                        >
+                            关于
+                        </a>
+                    </li>
+                
+            </ul>
+            <div class="col-lg-12 col-md-12 text-center">
+                <h1 id="fh5co-logo">
+                    <a href="https://z0ekball.github.io">z0ekball </a>
+                </h1>
+            </div>
+        </div>
+    </div>
+</header>
 
-      <div class="main-container">
-        <div class="content-container" data-aos="fade-up">
-          <div class="post-detail">
-            <h2 class="post-title">文件上传</h2>
-            <div class="post-date">2021-07-27</div>
-            
-              <div class="feature-container" style="background-image: url('https://z0ekball.github.io/post-images/wen-jian-shang-chuan.png')">
-              </div>
-            
-            <div class="post-content" v-pre>
-              <h2 id="文件上传漏洞">文件上传漏洞</h2>
+
+    <!--  <a href="#" class="fh5co-post-prev"><span>👈 Prev</span></a>-->
+    <!--  <a href="#" class="fh5co-post-next"><span>Next 👉</span></a>-->
+
+    <!-- 等gridea出自定义页面功能再优化一下 -->
+    
+        <div class="container-fluid">
+    <div class="row fh5co-post-entry single-entry">
+        <article class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12 col-xs-offset-0">
+            <figure class="animate-box">
+                
+                    <img src="https://z0ekball.github.io/post-images/wen-jian-shang-chuan.png" alt="文件上传" class="img-responsive">
+                
+            </figure>
+            <span class="fh5co-meta animate-box">
+                
+                    <div class="tag-container">
+                        
+                            <a href="https://z0ekball.github.io/tag/MNo87J4Xuo/" class="tag">文件上传, </a>
+                        
+                    </div>
+                
+            </span>
+            <h2 class="fh5co-article-title animate-box">文件上传</h2>
+            <ol class="breadcrumb fh5co-meta fh5co-date animate-box" style="margin-bottom:0; background-color:#f8f9fa">
+                <li>2021-07-27</li>
+                <li>1676字</li>
+                <li>7 min read</li>
+            </ol>
+
+            <div class="col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-left content-article">
+                <div class="row">
+                    <div class="col-md-12 animate-box post-content">
+                        <p> <h2 id="文件上传漏洞">文件上传漏洞</h2>
 <h3 id="1无验证">1.无验证</h3>
 <p>也就是前端和后端都不过滤上传的文件，故只需传入含一句话木马</p>
 <pre><code class="language-php">&lt;?php @eval($_POST['pass']);?&gt;
@@ -222,54 +297,136 @@ SetHandler application/x-httpd-php
 emmmm，御剑连上了但打不开，文件名换成php.xx(<code>Apache解析漏洞</code>)<br>
 上传后访问，得到flag<br>
 <img src="https://z0ekball.github.io/post-images/image-20211019192014051.png" alt="" loading="lazy"></p>
+ </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 animate-box">
+                        
+                            <div class="next-post">
+                                <div class="next">下一篇</div>
+                                <a href="https://z0ekball.github.io/post/sqli-labs11~20jiao-ben-sqlmap-xue-xi/">
+                                    <h3 class="post-title">
+                                        sqli-labs(11~20)脚本、sqlmap学习
+                                    </h3>
+                                </a>
+                            </div>
+                        
+                    </div>
+                </div>
+
+                <div class="row">
+    <div class="col-md-12 animate-box">
+        
+    </div>
+</div>
 
             </div>
-            
-              <div class="tag-container">
-                
-                  <a href="https://z0ekball.github.io/tag/MNo87J4Xuo/" class="tag">
-                    文件上传
-                  </a>
-                
-              </div>
-            
-            
-              <div class="next-post">
-                <div class="next">下一篇</div>
-                <a href="https://z0ekball.github.io/post/sqli-labs11~20jiao-ben-sqlmap-xue-xi/">
-                  <h3 class="post-title">
-                    sqli-labs(11~20)脚本、sqlmap学习
-                  </h3>
-                </a>
-              </div>
-            
 
-            
-
-          </div>
-
-        </div>
-      </div>
+        </article>
     </div>
+</div>
 
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    
+
+    <!-- 返回顶部 -->
+    <div class="back-to-top">
+    
+        <a href="#!" id="tool-toc" class="hidden-xs hidden-sm">
+            <i class="fa fa-map"></i>
+        </a>
+        <br>
+    
+    <a href="#top" class="hidden-xs hidden-sm"><i class="fa fa-paper-plane"></i></a>
+</div>
+
+<div class="post-toc animated fadeInRight hidden-xs hidden-sm" style="display: none;">
+    <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E">文件上传漏洞</a>
+<ul>
+<li><a href="#1%E6%97%A0%E9%AA%8C%E8%AF%81">1.无验证</a></li>
+<li><a href="#2js%E5%89%8D%E7%AB%AF%E9%AA%8C%E8%AF%81">2.js前端验证</a></li>
+<li><a href="#3mime%E7%BB%95%E8%BF%87">3.MIME绕过</a></li>
+<li><a href="#4htaccess">4.htaccess</a></li>
+<li><a href="#5%E6%96%87%E4%BB%B6%E5%A4%B4%E6%A3%80%E6%9F%A5">5.文件头检查</a></li>
+<li><a href="#6%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E">6.解析漏洞</a>
+<ul>
+<li><a href="#00%E6%88%AA%E6%96%AD%E6%94%BB%E5%87%BB">00截断攻击</a></li>
+<li><a href="#%E9%BB%91%E5%90%8D%E5%8D%95%E7%BB%95%E8%BF%87">黑名单绕过</a></li>
+<li><a href="#apache%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E">Apache解析漏洞</a></li>
+<li><a href="#iis%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E">IIS解析漏洞</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E7%BB%83%E4%B9%A0%E9%A2%98%E7%9B%AE">练习题目</a>
+<ul>
+<li><a href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019upload1">[极客大挑战 2019]Upload1</a></li>
+<li><a href="#actf2020-%E6%96%B0%E7%94%9F%E8%B5%9Bupload1">[ACTF2020 新生赛]Upload1</a></li>
+<li><a href="#mrctf2020%E4%BD%A0%E4%BC%A0%E4%BD%A0%E5%91%A21">[MRCTF2020]你传你🐎呢1</a></li>
+<li><a href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-web%E8%BF%9B%E9%98%B6%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A01">[第二章 web进阶]文件上传1</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+
+
+    
+<footer id="fh5co-footer">
+  <p>Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a></p>
+</footer>
+
+
+    <!-- jQuery -->
+<script src="https://z0ekball.github.io/media/scripts/jquery.min.js"></script>
+<!-- img lazy load -->
+<script src="https://z0ekball.github.io/media/scripts/jquery.lazyload.min.js"></script>
+<!-- jQuery Easing -->
+<script src="https://z0ekball.github.io/media/scripts/jquery.easing.1.3.js"></script>
+<!-- Bootstrap -->
+<script src="https://z0ekball.github.io/media/scripts/bootstrap.min.js"></script>
+<!-- Waypoints -->
+<script src="https://z0ekball.github.io/media/scripts/jquery.waypoints.min.js"></script>
+<!-- Main JS -->
+<script src="https://z0ekball.github.io/media/scripts/main.js"></script>
+<!-- Md5 Min JS -->
+<script src="https://z0ekball.github.io/media/scripts/md5.min.js"></script>
+<!-- katex -->
+<!--<script src="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.js"></script>-->
+<!-- highlight -->
+<script src="https://cdn.bootcss.com/highlight.js/9.15.8/highlight.min.js"></script>
+
+
 <script type="application/javascript">
+    // 代码高亮
+    hljs.initHighlightingOnLoad();
 
-AOS.init();
+    // img 懒加载
+    $(function () {
+        $("img.lazy").lazyload({
+            effect: "fadeIn",  // 懒加载动画
+            threshold: 180  // 在图片距离屏幕180px时提前载入
+        });
+        // tooltip
+        $('[data-toggle="tooltip"]').tooltip();
 
-var app = new Vue({
-  el: '#app',
-  data: {
-    menuVisible: false,
-  },
-})
+        // 目录
+        $('#tool-toc').click(function () {
+            $('.post-toc').toggle();
+        });
+    });
 
+    
 </script>
 
 
 
 
-
-
-  </body>
+</body>
 </html>
