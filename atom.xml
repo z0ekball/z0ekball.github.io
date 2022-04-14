@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://z0ekball.github.io</id>
     <title>z0ekball</title>
-    <updated>2022-04-14T19:13:12.277Z</updated>
+    <updated>2022-04-14T19:26:29.740Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://z0ekball.github.io"/>
     <link rel="self" href="https://z0ekball.github.io/atom.xml"/>
@@ -368,10 +368,10 @@ __globals__  对包含函数全局变量的字典的引用
 <figure data-type="image" tabindex="10"><img src="https://z0ekball.github.io/post-images/image-20220415020820891.png" alt="image-20220415020820891" loading="lazy"></figure>
 <p>再次输入1’or 1&gt;0#，得到flag</p>
 <figure data-type="image" tabindex="11"><img src="https://z0ekball.github.io/post-images/image-20220415020828269.png" alt="image-20220415020828269" loading="lazy"></figure>
-<h2 id="极客大挑战-2019knife">[极客大挑战] 2019]Knife</h2>
+<h2 id="极客大挑战-2019knife">[极客大挑战] 2019Knife</h2>
 <figure data-type="image" tabindex="12"><img src="https://z0ekball.github.io/post-images/image-20220415020846527.png" alt="image-20220415020846527" loading="lazy"></figure>
 <p>很直白，蚁剑连接拿到flag</p>
-<h3 id="6gxyctf2019babyupload">6.[GXYCTF2019]BabyUpload</h3>
+<h2 id="gxyctf2019babyupload">[GXYCTF2019]BabyUpload</h2>
 <p>不能含有ph，尝试用<code>Apache漏洞</code>php.xxx绕过，不成功。</p>
 <p>上传<code>.htaccess文件</code>，.htaccess文件内容为把同名文件2.jpeg解析为php文件</p>
 <figure data-type="image" tabindex="13"><img src="https://z0ekball.github.io/post-images/image-20220415020917405.png" alt="image-20220415020917405" loading="lazy"></figure>
