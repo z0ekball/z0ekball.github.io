@@ -239,13 +239,15 @@ PHP  5.5.9
 <h4 id="验证-3">验证</h4>
 <p>输入xss<br>
 <img src="https://z0ekball.github.io/post-images/image-20220415001753617.png" alt="" loading="lazy"></p>
-<p>输入<code>&lt;script&gt;alert('xss')&lt;/script&gt;</code>，存在xss漏洞<br>
-<img src="https://z0ekball.github.io/post-images/image-20220415001801617.png" alt="" loading="lazy"></p>
+<pre><code>输入&lt;script&gt;alert('xss')&lt;/script&gt;，存在xss漏洞
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://z0ekball.github.io/post-images/image-20220415001801617.png" alt="" loading="lazy"></figure>
 <h3 id="修复-2">修复</h3>
 <p>基于原漏洞文件，作如下修改即可<br>
 <img src="https://z0ekball.github.io/post-images/image-20220415003101438.png" alt="" loading="lazy"></p>
-<p>输入<code>&lt;script&gt;alert('xss')&lt;/script&gt;</code>，xss攻击失败<br>
-<img src="https://z0ekball.github.io/post-images/image-20220415003106157.png" alt="" loading="lazy"></p>
+<pre><code>输入&lt;script&gt;alert('xss')&lt;/script&gt;，xss攻击失败
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="https://z0ekball.github.io/post-images/image-20220415003106157.png" alt="" loading="lazy"></figure>
  </p>
                     </div>
                 </div>
