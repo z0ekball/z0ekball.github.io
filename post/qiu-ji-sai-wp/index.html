@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://z0ekball.github.io/favicon.ico?v=1649945411209">
+<link rel="shortcut icon" href="https://z0ekball.github.io/favicon.ico?v=1649946801843">
 <link rel="stylesheet" href="https://z0ekball.github.io/styles/main.css">
 
 
@@ -34,7 +34,7 @@ http://doc.yonyou..." />
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://z0ekball.github.io">
-        <img src="https://z0ekball.github.io/images/avatar.png?v=1649945411209" class="site-logo">
+        <img src="https://z0ekball.github.io/images/avatar.png?v=1649946801843" class="site-logo">
         <h1 class="site-title">z0ekball</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -124,28 +124,29 @@ http://doc.yonyou..." />
 <p>因为=被过滤，不想麻烦绕过就直接爆出整个表名</p>
 <pre><code>username=1'/**/union/**/(SeleCT/**/group_concat(table_name),2/**/from/**/information_schema.tables)#&amp;password=
 </code></pre>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414200726337.png" alt="image-20220414200726337" style="zoom:80%;" />
+<figure data-type="image" tabindex="1"><img src="https://z0ekball.github.io/post-images/image-20220414200726337.png" alt="" loading="lazy"></figure>
 <p>查找到含flag的表名:flag_table_1</p>
 <pre><code>username=1'/**/union/**/(SeleCT/**/FLAG,2/**/from/**/flag_table_1)#&amp;password=
 </code></pre>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414200749595.png" alt="image-20220414200749595" style="zoom:80%;" />
+<figure data-type="image" tabindex="2"><img src="https://z0ekball.github.io/post-images/image-20220414200749595.png" alt="" loading="lazy"></figure>
 <p>得flag</p>
 <h3 id="easy-ez_upload">Easy-ez_upload</h3>
-<p>用御剑扫描目录</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414200819812.png" alt="image-20220414200819812" style="zoom:80%;" />
-<p>访问/robot.txt</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414201035855.png" alt="image-20220414201035855" style="zoom:150%;" />
-<p>得文件上传地址,只允许图片上传。用一句话木马攻击，尝试各种方法都没法上传成php格式后,尝试图马。一开始直接把一句话木马写在图片末尾，上传后发现被过滤掉了，考虑二次渲染。网上说png、jpeg不好改，用gif改。用winhex对比原gif和二次渲染过的gif找出相同的字段，插入木马。</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414201044815.png" alt="image-20220414201044815" style="zoom:150%;" />
-<p>上传图片，木马没有被过滤，但图片还是以gif格式解析，蚁剑无法连接…卡了好久之后看原来黑屏的网页</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414201056641.png" alt="image-20220414201056641" style="zoom:100%;" />
+<p>用御剑扫描目录<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414200819812.png" alt="" loading="lazy"></p>
+<p>访问/robot.txt<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201035855.png" alt="" loading="lazy"></p>
+<p>得文件上传地址,只允许图片上传。用一句话木马攻击，尝试各种方法都没法上传成php格式后,尝试图马。一开始直接把一句话木马写在图片末尾，上传后发现被过滤掉了，考虑二次渲染。网上说png、jpeg不好改，用gif改。用winhex对比原gif和二次渲染过的gif找出相同的字段，插入木马。<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201044815.png" alt="" loading="lazy"></p>
+<p>上传图片，木马没有被过滤，但图片还是以gif格式解析，蚁剑无法连接…卡了好久之后看原来黑屏的网页<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201056641.png" alt="" loading="lazy"></p>
 <p>明明有提示文件包含我却没看…</p>
-<p>利用文件包含漏洞，使gif以php格式解析，访问</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414201118117.png" alt="image-20220414201118117" style="zoom:150%;" />
-<p>蚁剑终于连接成功</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414201126951.png" alt="image-20220414201126951" style="zoom:100%;" />
-<p>找不到flag文件，用命令行试试</p>
-<p><img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414201206436.png" alt="image-20220414201206436" style="zoom:100%;" /><img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414201222636.png" alt="image-20220414201222636" style="zoom:100%;" /></p>
+<p>利用文件包含漏洞，使gif以php格式解析，访问<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201118117.png" alt="" loading="lazy"></p>
+<p>蚁剑终于连接成功<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201126951.png" alt="" loading="lazy"></p>
+<p>找不到flag文件，用命令行试试<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201206436.png" alt="" loading="lazy"><br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201222636.png" alt="" loading="lazy"></p>
 <p>找到flag</p>
 <h3 id="medium-web4">Medium-web4</h3>
 <p>布尔盲注，感觉出题人应该是个好人，所以猜测是同一个库，尝试题目sql1的注入语句</p>
@@ -155,84 +156,87 @@ http://doc.yonyou..." />
 <pre><code>username=1'or(length(database())&gt;6)#&amp;password=   good
 username=1'or(length(database())&gt;7)#&amp;password=   try again
 </code></pre>
-<p>库名长度为7，猜应该是cumtctf，脚本爆破验证一下</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414201316832.png" alt="image-20220414201316832" style="zoom:100%;" />
+<p>库名长度为7，猜应该是cumtctf，脚本爆破验证一下<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201316832.png" alt="" loading="lazy"></p>
 <p>没猜错，因为sql1的语句回显是good，猜测flag还是在flag_table_1</p>
 <p>因为=被过滤，判断字符用&lt;和&gt;绕过</p>
-<pre><code>username=1'or(select(ascii(mid((select(flag)from(flag_table_1)limit/**/0,1),1,1)))&gt;0)%26%26(select(ascii(mid((select(flag)from(flag_table_1)limit/**/0,1),1,1)))&lt;125)#&amp;password=
+<pre><code>username=1'or(select(ascii(mid((select(flag)from(flag_table_1)limit/**/0,1),1,
+1)))&gt;0)%26%26(select(ascii(mid((select(flag)from(flag_table_1)limit/**/0,1),1,
+1)))&lt;125)#&amp;password=
 </code></pre>
-<p>回显good，说明又猜对了，上脚本爆破得flag（脚本绕过语句存在注释符,所以和手注有区别，绕过空格不能用/**/,而用/<em>!</em>/），flag长度猜大一点</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414201336573.png" alt="image-20220414201336573" style="zoom:100%;" />
+<p>回显good，说明又猜对了，上脚本爆破得flag（脚本绕过语句存在注释符,所以和手注有区别，绕过空格不能用/**/,而用/<em>!</em>/），flag长度猜大一点<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201336573.png" alt="" loading="lazy"></p>
 <h2 id="re">RE</h2>
 <h3 id="easy-签到">Easy-签到</h3>
-<p>ida常规通过字符串找到函数</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414201406640.png" alt="image-20220414201406640" style="zoom:100%;" />
-<p>16进制解码得flag</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414201446312.png" alt="image-20220414201446312" style="zoom:80%;" />
+<p>ida常规通过字符串找到函数<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201406640.png" alt="" loading="lazy"></p>
+<p>16进制解码得flag<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201446312.png" alt="" loading="lazy"></p>
 <h3 id="easy-net">Easy-net</h3>
-<p>提示net，因为没有.net环境，无法看运行情况，但用ILSpy能直接反编译函数</p>
-<p><img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414201548593.png" alt="image-20220414201548593" style="zoom:80%;" /><img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414201600870.png" alt="image-20220414201600870" style="zoom:100%;" /></p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414201636689.png" alt="image-20220414201636689" style="zoom:80%;" />
+<p>提示net，因为没有.net环境，无法看运行情况，但用ILSpy能直接反编译函数<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201548593.png" alt="" loading="lazy"><br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201600870.png" alt="" loading="lazy"><br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201636689.png" alt="" loading="lazy"></p>
 <p>大致意思就是一个字符串经过一系列运算，能经过最后一个if判断。逆向爆破可以得到这个字符串，问题是不知道字符串长度。但经过算法OJ题的轮番折磨，我知道array2[j]里的j不能超过该数组长度28（array2有28个数），所以j最大值即字符串长度为28。</p>
-<p>这就好办了，上脚本爆破得flag</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414201654601.png" alt="image-20220414201654601" style="zoom:80%;" />
+<p>这就好办了，上脚本爆破得flag<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201654601.png" alt="" loading="lazy"></p>
 <h2 id="pwn">PWN</h2>
 <h3 id="easy-pwn1">Easy-pwn1</h3>
-<p>Nc一下，cat flag</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414201725664.png" alt="image-20220414201725664" style="zoom:80%;" />
+<p>Nc一下，cat flag<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201725664.png" alt="" loading="lazy"></p>
 <h3 id="easy-pwn2">Easy-pwn2</h3>
-<p>标准栈溢出，buf是0x40h但要读入0x60h的数据，参考攻防世界栈溢出的题解写脚本</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414201801302.png" style="zoom:80%;" />
-<p>Call system地址</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414201819493.png" style="zoom:80%;" />
-<p>填充0x48覆盖buf和push内容，再覆盖返回地址，脚本：</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414201828914.png" style="zoom:80%;" />
-<p>执行</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414201839150.png" style="zoom:80%;" />
+<p>标准栈溢出，buf是0x40h但要读入0x60h的数据，参考攻防世界栈溢出的题解写脚本<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201801302.png" alt="" loading="lazy"><br>
+Call system地址<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201819493.png" alt="" loading="lazy"><br>
+填充0x48覆盖buf和push内容，再覆盖返回地址，脚本：<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201828914.png" alt="" loading="lazy"><br>
+执行<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201839150.png" alt="" loading="lazy"></p>
 <h3 id="easy-pwn3">Easy-pwn3</h3>
-<p>exeinfo查了一下, 32位</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414201911585.png" style="zoom:80%;" />
-<p>用ida32打开，通过字符串找到函数</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414201924140.png" style="zoom:80%;" />
+<p>exeinfo查了一下, 32位<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201911585.png" alt="" loading="lazy"></p>
+<p>用ida32打开，通过字符串找到函数<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201924140.png" alt="" loading="lazy"></p>
 <p>查资料时发现博客</p>
 <p><a href="https://blog.csdn.net/weixin_44145820/article/details/105482269">(10条消息) BUUCTF-PWN刷题记录-6_L.o.W的博客-CSDN博客</a></p>
 <p>不能说毫无相关，简直就是一模一样…</p>
-<p>先填充满缓冲区，泄露ebp，然后使用栈迁移执行system，运行得flag</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414201935583.png" style="zoom:80%;" />
+<p>先填充满缓冲区，泄露ebp，然后使用栈迁移执行system，运行得flag<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201935583.png" alt="" loading="lazy"></p>
 <h2 id="crypto">Crypto</h2>
 <h3 id="easy-签到-2">Easy-签到</h3>
 <p>逆向爆破，懒得判断数字和符号，爆出来再加上就是flag</p>
-<p>脚本</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414202014958.png" style="zoom:80%;" />
-<p>加上数字和符号</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414202025543.png" style="zoom:80%;" />
+<p>脚本<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414202014958.png" alt="" loading="lazy"></p>
+<p>加上数字和符号<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414202025543.png" alt="" loading="lazy"></p>
 <h3 id="easy-lcg">Easy-lcg</h3>
 <p>LCG就是线性同余法，得到的是弱伪随机数，参考lcg教程</p>
 <p>http://www.manongjc.com/detail/22-hpzrquvdaforjqj.html</p>
-<p>参考里面的脚本，运行得到flag</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414202049990.png" style="zoom:80%;" />
+<p>参考里面的脚本，运行得到flag<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414202049990.png" alt="" loading="lazy"></p>
 <h2 id="misc">Misc</h2>
 <h3 id="easy-签到-3">Easy-签到</h3>
-<p>base32解密</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414202112612.png" style="zoom:80%;" /> 
+<p>base32解密<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414202112612.png" alt="" loading="lazy"></p>
 <h3 id="easy-lsb">Easy-LSB?</h3>
-<p>LSB隐写，Stegslove多次尝试修改低位的0、1，如图拿到flag</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414202129805.png" style="zoom:80%;" />
+<p>LSB隐写，Stegslove多次尝试修改低位的0、1，如图拿到flag<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414202129805.png" alt="" loading="lazy"></p>
 <h3 id="easy-压缩包">Easy-压缩包</h3>
-<p>有点阴间的题目，第一个压缩包就是伪加密，HXD打开修改全局方式位标记为00 00，能够打开压缩包，得到下一个压缩包。HXD查看是真加密，根据提示用ziperello爆破得密码</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414202148412.png" style="zoom:80%;" />
+<p>有点阴间的题目，第一个压缩包就是伪加密，HXD打开修改全局方式位标记为00 00，能够打开压缩包，得到下一个压缩包。HXD查看是真加密，根据提示用ziperello爆破得密码<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414202148412.png" alt="" loading="lazy"></p>
 <p>又得到了真两个加密文件，卡了好久之后想起加密的图在别的题里有原图，对比两这的冗余码，确认是同一个文件。一个已知解密文件和一个相同的加密文件不就是明文攻击嘛。</p>
-<p>把已知图片压缩成包，ARCHPR明文攻击得密码，解开的flag</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414202156116.png" style="zoom:80%;" />
+<p>把已知图片压缩成包，ARCHPR明文攻击得密码，解开的flag<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414202156116.png" alt="" loading="lazy"></p>
 <h3 id="easy-加密">Easy-加密？</h3>
 <p>套娃加密题，图片是福尔摩斯密码，解密得到密码SHERLOCK</p>
-<p>第二个压缩包的txt文件是零宽字符加密，解密得密码</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414202220004.png" style="zoom:80%;" />
-<p>打开flag文件, base16解密</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414202227205.png" style="zoom:80%;" />
+<p>第二个压缩包的txt文件是零宽字符加密，解密得密码<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414202220004.png" alt="" loading="lazy"></p>
+<p>打开flag文件, base16解密<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414202227205.png" alt="" loading="lazy"></p>
 <h3 id="medium-社工">Medium-社工？</h3>
-<p>一开始用微信QQ扫码都没用，就着jpeg研究了好久还是解不出，直到我知道一个叫中国编码的东东…</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20220414202251180.png" style="zoom:80%;" />
+<p>一开始用微信QQ扫码都没用，就着jpeg研究了好久还是解不出，直到我知道一个叫中国编码的东东…<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414202251180.png" alt="" loading="lazy"></p>
 <p>WANG/JIA就是这个人的名字，也就拿到了flag</p>
 
             </div>
