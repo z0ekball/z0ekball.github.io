@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://z0ekball.github.io</id>
     <title>z0ekball</title>
-    <updated>2022-04-14T15:33:48.569Z</updated>
+    <updated>2022-04-14T16:09:24.610Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://z0ekball.github.io"/>
     <link rel="self" href="https://z0ekball.github.io/atom.xml"/>
@@ -151,6 +151,38 @@ Call system地址<br>
 <p>一开始用微信QQ扫码都没用，就着jpeg研究了好久还是解不出，直到我知道一个叫中国编码的东东…<br>
 <img src="https://z0ekball.github.io/post-images/image-20220414202251180.png" alt="" loading="lazy"></p>
 <p>WANG/JIA就是这个人的名字，也就拿到了flag</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[ARP欺骗实验]]></title>
+        <id>https://z0ekball.github.io/post/arp-qi-pian-shi-yan/</id>
+        <link href="https://z0ekball.github.io/post/arp-qi-pian-shi-yan/">
+        </link>
+        <updated>2021-10-14T15:59:00.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="arp欺骗实验">ARP欺骗实验</h1>
+<h2 id="信息收集">信息收集</h2>
+<p><code>网关</code>：IP:192.168.89.2     MAC: 00:50:56:fd:c6:0f</p>
+<p><code>攻击机</code>：IP: 192.168.89.129   MAC: 00:0c:29:e8:f7:fa<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414235504335.png" alt="" loading="lazy"></p>
+<p><code>靶机</code>：IP：192.168.89.130   MAC：00:0c:29:2f:af:50<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414235510538.png" alt="" loading="lazy"></p>
+<p>攻击机fping -g查看存活主机<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414235516996.png" alt="" loading="lazy"></p>
+<p>查勘表靶机arp缓存表<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414235520684.png" alt="" loading="lazy"></p>
+<h2 id="攻击过程">攻击过程</h2>
+<p>使用<code>arping</code>进行攻击</p>
+<pre><code>arping -S 192.168.89.2 -s 00:00:00:00:00:00 192.168.89.130
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://z0ekball.github.io/post-images/image-20220414235527380.png" alt="" loading="lazy"></figure>
+<p>靶机ping baidu.com失败<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414235624766.png" alt="" loading="lazy"></p>
+<p>arp -a查看mac地址，网关已改变，攻击成功<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414235632373.png" alt="" loading="lazy"></p>
+<p>只要把网关MAC改为正确地址，即可解除攻击<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414235656428.png" alt="" loading="lazy"></p>
+<p>靶机正常访问baidu.com，网关MAC正常<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414235651949.png" alt="" loading="lazy"></p>
 ]]></content>
     </entry>
     <entry>
