@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://z0ekball.github.io</id>
     <title>z0ekball</title>
-    <updated>2022-04-14T14:45:57.714Z</updated>
+    <updated>2022-04-14T14:49:22.527Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://z0ekball.github.io"/>
     <link rel="self" href="https://z0ekball.github.io/atom.xml"/>
@@ -20,9 +20,9 @@
 <p>一个人就是一支队伍</p>
 <h2 id="web">WEB</h2>
 <h3 id="easy-ssti">Easy-ssti</h3>
-<p>服务器模板注入，jinja2漏洞，{{7*7}}有回显说明有注入漏洞，_和[被过滤，用require函数结合attr绕过。</p>
-<p>Jinja2模板参考</p>
-<p><a href="http://doc.yonyoucloud.com/doc/jinja2-docs-cn/templates.html%23builtin-filters">http://doc.yonyoucloud.com/doc/jinja2-docs-cn/templates.html#builtin-filters</a></p>
+<p>服务器模板注入，jinja2漏洞，{{7*7}}有回显说明有注入漏洞，_和[被过滤，用require函数结合attr绕过。<br>
+Jinja2模板参考<br>
+<a href="http://doc.yonyoucloud.com/doc/jinja2-docs-cn/templates.html%23builtin-filters">http://doc.yonyoucloud.com/doc/jinja2-docs-cn/templates.html#builtin-filters</a></p>
 <p>注入语句：</p>
 <pre><code class="language-php">{{lipsum|attr(request.args.a)|attr(&quot;get&quot;)(request.args.b)|attr(&quot;get&quot;)(&quot;e&quot;+&quot;val&quot;) (request.args.c)}}&amp;a=globals&amp;b=builtins&amp;c=import(&quot;os&quot;).popen(&quot;cat /flag&quot;).read()
 
@@ -45,19 +45,19 @@
 <p>得flag</p>
 <h3 id="easy-ez_upload">Easy-ez_upload</h3>
 <p>用御剑扫描目录<br>
-<img src="https://z0ekball.github.io/post-images/image-20220414200819812.png" alt="" loading="lazy"></p>
-<p>访问/robot.txt<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414200819812.png" alt="" loading="lazy"><br>
+访问/robot.txt<br>
 <img src="https://z0ekball.github.io/post-images/image-20220414201035855.png" alt="" loading="lazy"></p>
 <p>得文件上传地址,只允许图片上传。用一句话木马攻击，尝试各种方法都没法上传成php格式后,尝试图马。一开始直接把一句话木马写在图片末尾，上传后发现被过滤掉了，考虑二次渲染。网上说png、jpeg不好改，用gif改。用winhex对比原gif和二次渲染过的gif找出相同的字段，插入木马。<br>
-<img src="https://z0ekball.github.io/post-images/image-20220414201044815.png" alt="" loading="lazy"></p>
-<p>上传图片，木马没有被过滤，但图片还是以gif格式解析，蚁剑无法连接…卡了好久之后看原来黑屏的网页<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201044815.png" alt="" loading="lazy"><br>
+上传图片，木马没有被过滤，但图片还是以gif格式解析，蚁剑无法连接…卡了好久之后看原来黑屏的网页<br>
 <img src="https://z0ekball.github.io/post-images/image-20220414201056641.png" alt="" loading="lazy"></p>
 <p>明明有提示文件包含我却没看…</p>
 <p>利用文件包含漏洞，使gif以php格式解析，访问<br>
-<img src="https://z0ekball.github.io/post-images/image-20220414201118117.png" alt="" loading="lazy"></p>
-<p>蚁剑终于连接成功<br>
-<img src="https://z0ekball.github.io/post-images/image-20220414201126951.png" alt="" loading="lazy"></p>
-<p>找不到flag文件，用命令行试试<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201118117.png" alt="" loading="lazy"><br>
+蚁剑终于连接成功<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201126951.png" alt="" loading="lazy"><br>
+找不到flag文件，用命令行试试<br>
 <img src="https://z0ekball.github.io/post-images/image-20220414201206436.png" alt="" loading="lazy"><br>
 <img src="https://z0ekball.github.io/post-images/image-20220414201222636.png" alt="" loading="lazy"></p>
 <p>找到flag</p>
@@ -82,8 +82,8 @@ username=1'or(length(database())&gt;7)#&amp;password=   try again
 <h2 id="re">RE</h2>
 <h3 id="easy-签到">Easy-签到</h3>
 <p>ida常规通过字符串找到函数<br>
-<img src="https://z0ekball.github.io/post-images/image-20220414201406640.png" alt="" loading="lazy"></p>
-<p>16进制解码得flag<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414201406640.png" alt="" loading="lazy"><br>
+16进制解码得flag<br>
 <img src="https://z0ekball.github.io/post-images/image-20220414201446312.png" alt="" loading="lazy"></p>
 <h3 id="easy-net">Easy-net</h3>
 <p>提示net，因为没有.net环境，无法看运行情况，但用ILSpy能直接反编译函数<br>
@@ -120,8 +120,8 @@ Call system地址<br>
 <h3 id="easy-签到-2">Easy-签到</h3>
 <p>逆向爆破，懒得判断数字和符号，爆出来再加上就是flag</p>
 <p>脚本<br>
-<img src="https://z0ekball.github.io/post-images/image-20220414202014958.png" alt="" loading="lazy"></p>
-<p>加上数字和符号<br>
+<img src="https://z0ekball.github.io/post-images/image-20220414202014958.png" alt="" loading="lazy"><br>
+加上数字和符号<br>
 <img src="https://z0ekball.github.io/post-images/image-20220414202025543.png" alt="" loading="lazy"></p>
 <h3 id="easy-lcg">Easy-lcg</h3>
 <p>LCG就是线性同余法，得到的是弱伪随机数，参考lcg教程</p>
