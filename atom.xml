@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://z0ekball.github.io</id>
     <title>z0ekball</title>
-    <updated>2022-04-14T16:25:02.141Z</updated>
+    <updated>2022-04-14T16:37:59.286Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://z0ekball.github.io"/>
     <link rel="self" href="https://z0ekball.github.io/atom.xml"/>
@@ -11,12 +11,13 @@
     <icon>https://z0ekball.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, z0ekball</rights>
     <entry>
-        <title type="html"><![CDATA[简单复现SQL、XSS漏洞]]></title>
+        <title type="html"><![CDATA[SQL注入、XSS漏洞简单复现与修复]]></title>
         <id>https://z0ekball.github.io/post/jian-dan-fu-xian-sqlxss-lou-dong/</id>
         <link href="https://z0ekball.github.io/post/jian-dan-fu-xian-sqlxss-lou-dong/">
         </link>
         <updated>2022-09-15T07:18:40.000Z</updated>
         <content type="html"><![CDATA[<h2 id="sql注入">SQL注入</h2>
+<h3 id="复现">复现</h3>
 <h4 id="环境">环境：</h4>
 <pre><code>Apache  2.4.39
 MySQL  5.0.96
@@ -43,21 +44,41 @@ PHP  5.5.9
 <img src="https://z0ekball.github.io/post-images/image-20220415001417936.png" alt="" loading="lazy"></p>
 <p>username=1' union select 1,2,group_concat(concat_ws('-',username,password)) from security.users#&amp;password=1，查字段<br>
 <img src="https://z0ekball.github.io/post-images/image-20220415001421336.png" alt="" loading="lazy"></p>
+<h3 id="修复">修复</h3>
+<p>采用<code>预编译</code>的方式修复sql漏洞</p>
+<h4 id="代码-2">代码：</h4>
+<p><img src="https://z0ekball.github.io/post-images/image-20220415002911790.png" alt="" loading="lazy"><br>
+简陋的slq漏洞修复网站搭成了<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415002939430.png" alt="" loading="lazy">)</p>
+<h4 id="验证-2">验证</h4>
+<p>输入正确的账号和密码username=Dumb&amp;password=Dumb回显正常<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415002945310.png" alt="" loading="lazy"></p>
+<p>输入万能密码username=1' or 1&gt;0#&amp;password=Dumb，失败<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415002949507.png" alt="" loading="lazy"></p>
+<p>联合注入username=1'union select 1,2,3#&amp;password=Dumb，失败<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415002953596.png" alt="" loading="lazy"></p>
+<p>Sql注入防御成功</p>
 <h2 id="xss漏洞">XSS漏洞</h2>
+<h3 id="复现-2">复现</h3>
 <h4 id="环境-2">环境：</h4>
 <pre><code>Apache  2.4.39
 MySQL  5.0.96
 PHP  5.5.9
 </code></pre>
-<h4 id="代码-2">代码：</h4>
+<h4 id="代码-3">代码：</h4>
 <figure data-type="image" tabindex="1"><img src="https://z0ekball.github.io/post-images/image-20220415001606551.png" alt="" loading="lazy"></figure>
 <p>简陋的xss漏洞网站搭成了<br>
 <img src="https://z0ekball.github.io/post-images/image-20220415001702624.png" alt="" loading="lazy"></p>
-<h4 id="验证-2">验证</h4>
+<h4 id="验证-3">验证</h4>
 <p>输入xss<br>
 <img src="https://z0ekball.github.io/post-images/image-20220415001753617.png" alt="" loading="lazy"></p>
 <p>输入<script>alert('xss')</script>，存在xss漏洞<br>
 <img src="https://z0ekball.github.io/post-images/image-20220415001801617.png" alt="" loading="lazy"></p>
+<h3 id="修复-2">修复</h3>
+<p>基于原漏洞文件，作如下修改即可<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415003101438.png" alt="" loading="lazy"></p>
+<p>输入<script>alert('xss')</script>，xss攻击失败<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415003106157.png" alt="" loading="lazy"></p>
 ]]></content>
     </entry>
     <entry>

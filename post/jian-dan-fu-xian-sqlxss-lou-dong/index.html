@@ -157,16 +157,16 @@
         <article class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12 col-xs-offset-0">
             <figure class="animate-box">
                 
-                    <img src="https://z0ekball.github.io/post-images/jian-dan-fu-xian-sqlxss-lou-dong.png" alt="简单复现SQL、XSS漏洞" class="img-responsive">
+                    <img src="https://z0ekball.github.io/post-images/jian-dan-fu-xian-sqlxss-lou-dong.png" alt="SQL注入、XSS漏洞简单复现与修复" class="img-responsive">
                 
             </figure>
             <span class="fh5co-meta animate-box">
                 
             </span>
-            <h2 class="fh5co-article-title animate-box">简单复现SQL、XSS漏洞</h2>
+            <h2 class="fh5co-article-title animate-box">SQL注入、XSS漏洞简单复现与修复</h2>
             <ol class="breadcrumb fh5co-meta fh5co-date animate-box" style="margin-bottom:0; background-color:#f8f9fa">
                 <li>2022-09-15</li>
-                <li>229字</li>
+                <li>349字</li>
                 <li>2 min read</li>
             </ol>
 
@@ -174,6 +174,7 @@
                 <div class="row">
                     <div class="col-md-12 animate-box post-content">
                         <p> <h2 id="sql注入">SQL注入</h2>
+<h3 id="复现">复现</h3>
 <h4 id="环境">环境：</h4>
 <pre><code>Apache  2.4.39
 MySQL  5.0.96
@@ -200,21 +201,41 @@ PHP  5.5.9
 <img src="https://z0ekball.github.io/post-images/image-20220415001417936.png" alt="" loading="lazy"></p>
 <p>username=1' union select 1,2,group_concat(concat_ws('-',username,password)) from security.users#&amp;password=1，查字段<br>
 <img src="https://z0ekball.github.io/post-images/image-20220415001421336.png" alt="" loading="lazy"></p>
+<h3 id="修复">修复</h3>
+<p>采用<code>预编译</code>的方式修复sql漏洞</p>
+<h4 id="代码-2">代码：</h4>
+<p><img src="https://z0ekball.github.io/post-images/image-20220415002911790.png" alt="" loading="lazy"><br>
+简陋的slq漏洞修复网站搭成了<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415002939430.png" alt="" loading="lazy">)</p>
+<h4 id="验证-2">验证</h4>
+<p>输入正确的账号和密码username=Dumb&amp;password=Dumb回显正常<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415002945310.png" alt="" loading="lazy"></p>
+<p>输入万能密码username=1' or 1&gt;0#&amp;password=Dumb，失败<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415002949507.png" alt="" loading="lazy"></p>
+<p>联合注入username=1'union select 1,2,3#&amp;password=Dumb，失败<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415002953596.png" alt="" loading="lazy"></p>
+<p>Sql注入防御成功</p>
 <h2 id="xss漏洞">XSS漏洞</h2>
+<h3 id="复现-2">复现</h3>
 <h4 id="环境-2">环境：</h4>
 <pre><code>Apache  2.4.39
 MySQL  5.0.96
 PHP  5.5.9
 </code></pre>
-<h4 id="代码-2">代码：</h4>
+<h4 id="代码-3">代码：</h4>
 <figure data-type="image" tabindex="1"><img src="https://z0ekball.github.io/post-images/image-20220415001606551.png" alt="" loading="lazy"></figure>
 <p>简陋的xss漏洞网站搭成了<br>
 <img src="https://z0ekball.github.io/post-images/image-20220415001702624.png" alt="" loading="lazy"></p>
-<h4 id="验证-2">验证</h4>
+<h4 id="验证-3">验证</h4>
 <p>输入xss<br>
 <img src="https://z0ekball.github.io/post-images/image-20220415001753617.png" alt="" loading="lazy"></p>
 <p>输入<script>alert('xss')</script>，存在xss漏洞<br>
 <img src="https://z0ekball.github.io/post-images/image-20220415001801617.png" alt="" loading="lazy"></p>
+<h3 id="修复-2">修复</h3>
+<p>基于原漏洞文件，作如下修改即可<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415003101438.png" alt="" loading="lazy"></p>
+<p>输入<script>alert('xss')</script>，xss攻击失败<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415003106157.png" alt="" loading="lazy"></p>
  </p>
                     </div>
                 </div>
@@ -263,20 +284,33 @@ PHP  5.5.9
     <ul class="markdownIt-TOC">
 <li>
 <ul>
-<li><a href="#sql%E6%B3%A8%E5%85%A5">SQL注入</a><br>
-*
+<li><a href="#sql%E6%B3%A8%E5%85%A5">SQL注入</a>
+<ul>
+<li><a href="#%E5%A4%8D%E7%8E%B0">复现</a>
 <ul>
 <li><a href="#%E7%8E%AF%E5%A2%83">环境：</a></li>
 <li><a href="#%E4%BB%A3%E7%A0%81">代码：</a></li>
 <li><a href="#%E9%AA%8C%E8%AF%81">验证</a></li>
 </ul>
 </li>
-<li><a href="#xss%E6%BC%8F%E6%B4%9E">XSS漏洞</a><br>
-*
+<li><a href="#%E4%BF%AE%E5%A4%8D">修复</a>
 <ul>
-<li><a href="#%E7%8E%AF%E5%A2%83-2">环境：</a></li>
 <li><a href="#%E4%BB%A3%E7%A0%81-2">代码：</a></li>
 <li><a href="#%E9%AA%8C%E8%AF%81-2">验证</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#xss%E6%BC%8F%E6%B4%9E">XSS漏洞</a>
+<ul>
+<li><a href="#%E5%A4%8D%E7%8E%B0-2">复现</a>
+<ul>
+<li><a href="#%E7%8E%AF%E5%A2%83-2">环境：</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81-3">代码：</a></li>
+<li><a href="#%E9%AA%8C%E8%AF%81-3">验证</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BF%AE%E5%A4%8D-2">修复</a></li>
 </ul>
 </li>
 </ul>
