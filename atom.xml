@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://z0ekball.github.io</id>
     <title>z0ekball</title>
-    <updated>2022-04-14T16:41:53.271Z</updated>
+    <updated>2022-04-14T16:47:31.303Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://z0ekball.github.io"/>
     <link rel="self" href="https://z0ekball.github.io/atom.xml"/>
@@ -246,12 +246,12 @@ PHP  5.5.9
 <h4 id="验证-3">验证</h4>
 <p>输入xss<br>
 <img src="https://z0ekball.github.io/post-images/image-20220415001753617.png" alt="" loading="lazy"></p>
-<p>输入<script>alert('xss')</script>，存在xss漏洞<br>
+<p>输入<code>&lt;script&gt;alert('xss')&lt;/script&gt;</code>，存在xss漏洞<br>
 <img src="https://z0ekball.github.io/post-images/image-20220415001801617.png" alt="" loading="lazy"></p>
 <h3 id="修复-2">修复</h3>
 <p>基于原漏洞文件，作如下修改即可<br>
 <img src="https://z0ekball.github.io/post-images/image-20220415003101438.png" alt="" loading="lazy"></p>
-<p>输入<script>alert('xss')</script>，xss攻击失败<br>
+<p>输入<code>&lt;script&gt;alert('xss')&lt;/script&gt;</code>，xss攻击失败<br>
 <img src="https://z0ekball.github.io/post-images/image-20220415003106157.png" alt="" loading="lazy"></p>
 ]]></content>
     </entry>
