@@ -159,45 +159,54 @@
         <article class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12 col-xs-offset-0">
             <figure class="animate-box">
                 
-                    <img src="https://z0ekball.github.io/post-images/arp-qi-pian-shi-yan.png" alt="ARP欺骗实验" class="img-responsive">
+                    <img src="https://z0ekball.github.io/post-images/dvwa-lian-xi-brute-force.png" alt="DVWA练习(Brute-Force)" class="img-responsive">
                 
             </figure>
             <span class="fh5co-meta animate-box">
                 
             </span>
-            <h2 class="fh5co-article-title animate-box">ARP欺骗实验</h2>
+            <h2 class="fh5co-article-title animate-box">DVWA练习(Brute-Force)</h2>
             <ol class="breadcrumb fh5co-meta fh5co-date animate-box" style="margin-bottom:0; background-color:#f8f9fa">
-                <li>2021-10-14</li>
-                <li>148字</li>
+                <li>2021-09-29</li>
+                <li>193字</li>
                 <li>1 min read</li>
             </ol>
 
             <div class="col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-left content-article">
                 <div class="row">
                     <div class="col-md-12 animate-box post-content">
-                        <p> <h2 id="信息收集">信息收集</h2>
-<p><code>网关</code>：IP:192.168.89.2     MAC: 00:50:56:fd:c6:0f</p>
-<p><code>攻击机</code>：IP: 192.168.89.129   MAC: 00:0c:29:e8:f7:fa<br>
-<img src="https://z0ekball.github.io/post-images/image-20220414235504335.png" alt="" loading="lazy"></p>
-<p><code>靶机</code>：IP：192.168.89.130   MAC：00:0c:29:2f:af:50<br>
-<img src="https://z0ekball.github.io/post-images/image-20220414235510538.png" alt="" loading="lazy"></p>
-<p>攻击机fping -g查看存活主机<br>
-<img src="https://z0ekball.github.io/post-images/image-20220414235516996.png" alt="" loading="lazy"></p>
-<p>查勘表靶机arp缓存表<br>
-<img src="https://z0ekball.github.io/post-images/image-20220414235520684.png" alt="" loading="lazy"></p>
-<h2 id="攻击过程">攻击过程</h2>
-<p>使用<code>arping</code>进行攻击</p>
-<pre><code>arping -S 192.168.89.2 -s 00:00:00:00:00:00 192.168.89.130
-</code></pre>
-<figure data-type="image" tabindex="1"><img src="https://z0ekball.github.io/post-images/image-20220414235527380.png" alt="" loading="lazy"></figure>
-<p>靶机ping baidu.com失败<br>
-<img src="https://z0ekball.github.io/post-images/image-20220414235624766.png" alt="" loading="lazy"></p>
-<p>arp -a查看mac地址，网关已改变，攻击成功<br>
-<img src="https://z0ekball.github.io/post-images/image-20220414235632373.png" alt="" loading="lazy"></p>
-<p>只要把网关MAC改为正确地址，即可解除攻击<br>
-<img src="https://z0ekball.github.io/post-images/image-20220414235656428.png" alt="" loading="lazy"></p>
-<p>靶机正常访问baidu.com，网关MAC正常<br>
-<img src="https://z0ekball.github.io/post-images/image-20220414235651949.png" alt="" loading="lazy"></p>
+                        <p> <h2 id="brute-force-low">Brute Force-Low</h2>
+<p><img src="https://z0ekball.github.io/post-images/image-20220415005815758.png" alt="" loading="lazy"><br>
+随便输入，burpsuite抓取，发送到instuder，选取爆破目标<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415005820686.png" alt="" loading="lazy"><br>
+选择爆破方式，这里选择<code>Cluster bomb</code>适用于两个参数的爆破<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415005825553.png" alt="" loading="lazy"><br>
+分别设置两个参数的爆破格式，选择<code>simple list</code>，添加爆破字典<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415005836345.png" alt="" loading="lazy"><br>
+<img src="https://z0ekball.github.io/post-images/image-20220415005832746.png" alt="" loading="lazy"><br>
+开始爆破，length降序排序找到唯一不同的页面，就是账号和密码<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415005840823.png" alt="" loading="lazy"><br>
+<img src="https://z0ekball.github.io/post-images/image-20220415005851995.png" alt="" loading="lazy"></p>
+<h2 id="brute-force-medium">Brute Force-Medium</h2>
+<p>当账号密码错误时，页面延迟两秒再显示，猜测后台存在延时<code>sleep()</code>函数，同样使用burpsuite爆破<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415005904983.png" alt="" loading="lazy"><br>
+<img src="https://z0ekball.github.io/post-images/image-20220415005959183.png" alt="" loading="lazy"><br>
+<img src="https://z0ekball.github.io/post-images/image-20220415010005414.png" alt="" loading="lazy"><br>
+取最长返回页面为正确账号密码<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415010014265.png" alt="" loading="lazy"></p>
+<h2 id="brute-force-high">Brute Force-High</h2>
+<p>抓包发现增加了一个<code>user-token</code>，增加了爆破难度<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415010018654.png" alt="" loading="lazy"><br>
+选中爆破目标，选择爆破方式<code>Pitchfork</code><br>
+<img src="https://z0ekball.github.io/post-images/image-20220415010022386.png" alt="" loading="lazy"><br>
+设置字典<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415010026049.png" alt="" loading="lazy"><br>
+<img src="https://z0ekball.github.io/post-images/image-20220415010034265.png" alt="" loading="lazy"><br>
+<img src="https://z0ekball.github.io/post-images/image-20220415010128796.png" alt="" loading="lazy"><br>
+设置<code>单线程</code><br>
+<img src="https://z0ekball.github.io/post-images/image-20220415010244279.png" alt="" loading="lazy"><br>
+开始爆破，得到密码<br>
+<img src="https://z0ekball.github.io/post-images/image-20220415010251470.png" alt="" loading="lazy"></p>
  </p>
                     </div>
                 </div>
@@ -207,9 +216,9 @@
                         
                             <div class="next-post">
                                 <div class="next">下一篇</div>
-                                <a href="https://z0ekball.github.io/post/dvwa-lian-xi-brute-force/">
+                                <a href="https://z0ekball.github.io/post/jian-dan-fu-xian-sqlxss-lou-dong/">
                                     <h3 class="post-title">
-                                        DVWA练习(Brute-Force)
+                                        SQL注入、XSS漏洞简单复现与修复
                                     </h3>
                                 </a>
                             </div>
@@ -246,8 +255,9 @@
     <ul class="markdownIt-TOC">
 <li>
 <ul>
-<li><a href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86">信息收集</a></li>
-<li><a href="#%E6%94%BB%E5%87%BB%E8%BF%87%E7%A8%8B">攻击过程</a></li>
+<li><a href="#brute-force-low">Brute Force-Low</a></li>
+<li><a href="#brute-force-medium">Brute Force-Medium</a></li>
+<li><a href="#brute-force-high">Brute Force-High</a></li>
 </ul>
 </li>
 </ul>
